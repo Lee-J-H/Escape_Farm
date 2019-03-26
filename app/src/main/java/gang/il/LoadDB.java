@@ -17,6 +17,8 @@ import java.net.URL;
 
 import static gang.il.StagePage.loadFinish;
 import static gang.il.StagePage.mhandler;
+import static gang.il.Valiable.objCount;
+import static gang.il.Valiable.totalObj;
 
 public class LoadDB {
     public static Context mContext;
@@ -56,9 +58,8 @@ public class LoadDB {
         protected String doInBackground(String... params) {
             String serverURL = params[0];
             getStage = params[1];
-            getMini = params[2];
 
-            String postParameters = "Stage=" + params[1] + "&Mini=" + params[2];
+            String postParameters = "Stage=" + params[1];
 
             try {
 
@@ -114,6 +115,7 @@ public class LoadDB {
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
+            objCount = jsonArray.length();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
                 if (jsonArray.length()==1) {
@@ -123,14 +125,26 @@ public class LoadDB {
                 }
                 else {
                     String structure = item.getString("Structure");
-                    int x = item.getInt("X");
-                    int y = item.getInt("Y");
+                    int x = item.getInt("posX");
+                    int y = item.getInt("posY");
+                    switch (structure){
+                        case ("dog"):
+                        case ("cat"):
+                        case ("cow"):
+                        case ("rabbit"):
+                        case ("lion"):
+                            totalObj[i] = new TotalObject(x,y,structure,true); break;
+                            default:
+                                totalObj[i] = new TotalObject(x,y,structure,false); break;
+                    }
+
                     if(i==1) boardSize= x/2;
                     else if(i == jsonArray.length()-1) {
                         LoadDB.GetDB Data = new LoadDB.GetDB();
-                        Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", item.getString("Stage"), "mini"); // 최소 횟수 로딩
+                        Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", item.getString("Stage")); // 최소 횟수 로딩
                     }
-                    Log.d("testStageDB","result:"+structure + "/" + x + "/" + y);
+                    Log.d("testStageDB","result:"+structure + "/" + totalObj[i].getPosX() + "/" + totalObj[i].getPosY());
+
                 }
             }
         } catch (JSONException e) {

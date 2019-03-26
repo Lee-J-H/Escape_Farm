@@ -13,6 +13,7 @@ public class Controller {
         if (structure.endsWith("_fin")) structure = "finish";
         switch (structure){
             case "trap":
+                totalObj[curObjNum].setMoveAble(false);
                 return 0;
             case "wall":
                 return 1;

@@ -3,11 +3,13 @@ package gang.il;
 class TotalObject {
     float posX, posY;
     String type; // animal, -fin, trap, wall
+    boolean moveAble;
 
-    public TotalObject(float posX, float posY, String type) {
+    public TotalObject(float posX, float posY, String type,boolean moveAble) {
         this.posX = posX;
         this.posY = posY;
         this.type = type;
+        this.moveAble = moveAble;
     }
 
     public float getPosX() {
@@ -30,6 +32,14 @@ class TotalObject {
         return type;
     }
 
+    public boolean isMoveAble() {
+        return moveAble;
+    }
+
+    public void setMoveAble(boolean moveAble) {
+        this.moveAble = moveAble;
+    }
+
     public int getLength(float posX, float posY, String direction) {
         switch (direction){
             case "left" :
@@ -40,23 +50,6 @@ class TotalObject {
                 return (int) Math.abs(posY - this.posY);
         }
         return 0;
-    }
-}
-
-class  AnimalObject extends TotalObject{
-    boolean moveAble = true;
-
-    public AnimalObject(float posX, float posY, String type, boolean moveAble){
-        super(posX,posY,type);
-        this.moveAble = moveAble;
-    }
-
-    public boolean isMoveAble() {
-        return moveAble;
-    }
-
-    public void setMoveAble(boolean moveAble) {
-        this.moveAble = moveAble;
     }
 }
 
