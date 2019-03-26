@@ -61,7 +61,7 @@ public class StagePage extends AppCompatActivity implements View.OnClickListener
 
         if (Integer.parseInt(stage) > lockImg.length) return;
         LoadDB.GetDB Data = new LoadDB.GetDB();
-        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stage,"");  //스테이지DB 로딩
+        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stage);  //스테이지DB 로딩
     }
 
     final static Handler mhandler = new Handler() {
