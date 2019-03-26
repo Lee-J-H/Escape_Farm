@@ -19,11 +19,12 @@ import static gang.il.CheckedStage.onCheckStage;
 
 public class StagePage extends AppCompatActivity implements View.OnClickListener {
     static final int CLEAR_STAGE = 1;
+    static final int loadFinish = 2;
+    static Activity StagePage;
+
     Context mContext = this;
     LinearLayout[] stageNum = new LinearLayout[4];
     ImageView[] lockImg;
-    static final int loadFinish = 1;
-    static Activity StagePage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class StagePage extends AppCompatActivity implements View.OnClickListener
 
         if (Integer.parseInt(stage) > lockImg.length) return;
         LoadDB.GetDB Data = new LoadDB.GetDB();
-        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stage,"");  //스테이지DB 로딩
+        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stage);  //스테이지DB 로딩
     }
 
     final static Handler mhandler = new Handler() {
