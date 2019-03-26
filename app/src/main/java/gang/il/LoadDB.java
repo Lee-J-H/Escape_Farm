@@ -2,6 +2,7 @@ package gang.il;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +14,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static gang.il.StagePage.loadFinish;
+import static gang.il.StagePage.mhandler;
 
 public class LoadDB {
     public static Context mContext;
@@ -39,7 +43,8 @@ public class LoadDB {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if (result == null) {
-                ;//mhandler.sendEmptyMessage(Faild_internet);
+                Log.d("test1234","result:faild");
+                //mhandler.sendEmptyMessage(Faild_internet);
             } else {
                 mJsonString = result;
                 showResult();
@@ -53,7 +58,7 @@ public class LoadDB {
             getStage = params[1];
             getMini = params[2];
 
-            String postParameters = "Stage=" + params[1];// + "&Mini=" + params[2];
+            String postParameters = "Stage=" + params[1] + "&Mini=" + params[2];
 
             try {
 
@@ -97,7 +102,7 @@ public class LoadDB {
 
             } catch (Exception e) {
                 errorString = e.toString();
-
+                Log.d("Failed get DB","result:"+errorString);
                 return null;
             }
 
@@ -111,13 +116,21 @@ public class LoadDB {
             JSONArray jsonArray = jsonObject.getJSONArray("result");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
-                if (getMini.equals("mini"))
+                if (jsonArray.length()==1) {
                     MinCount = item.getInt("Count");
+                    Log.d("testMinCount","result:" + MinCount);
+                    mhandler.sendEmptyMessage(loadFinish);
+                }
                 else {
                     String structure = item.getString("Structure");
                     int x = item.getInt("X");
                     int y = item.getInt("Y");
-                    if(i==1) boardSize= x;
+                    if(i==1) boardSize= x/2;
+                    else if(i == jsonArray.length()-1) {
+                        LoadDB.GetDB Data = new LoadDB.GetDB();
+                        Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", item.getString("Stage"), "mini"); // 최소 횟수 로딩
+                    }
+                    Log.d("testStageDB","result:"+structure + "/" + x + "/" + y);
                 }
             }
         } catch (JSONException e) {

@@ -162,16 +162,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         private void doDraw() {
             switch (boardSize) {
                 case 4:
+                    blankX = spaceX * 3;
+                    blankY = spaceY * 7;
+                    break;
+                case 6:
                     blankX = spaceX * 2;
                     blankY = spaceY * 6;
                     break;
-                case 6:
+                case 8:
                     blankX = spaceX * 1;
                     blankY = spaceY * 5;
-                    break;
-                case 8:
-                    blankX = spaceX * 0;
-                    blankY = spaceY * 4;
                     break;
             }
                 for (int i = 0; i < boardSize; i++)
