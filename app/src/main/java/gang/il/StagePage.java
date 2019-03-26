@@ -16,12 +16,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import static gang.il.CheckedStage.onCheckStage;
+import static gang.il.Valiable.CLEAR_STAGE;
+import static gang.il.Valiable.StagePage;
+import static gang.il.Valiable.LOAD_FINISH;
 
 public class StagePage extends AppCompatActivity implements View.OnClickListener {
-    static final int CLEAR_STAGE = 1;
-    static final int loadFinish = 2;
-    static Activity StagePage;
-
     Context mContext = this;
     LinearLayout[] stageNum = new LinearLayout[4];
     ImageView[] lockImg;
@@ -59,7 +58,7 @@ public class StagePage extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         String stage = v.getTag().toString();
-
+        Log.d("test1235","stageclick");
         if (Integer.parseInt(stage) > lockImg.length) return;
         LoadDB.GetDB Data = new LoadDB.GetDB();
         Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stage);  //스테이지DB 로딩
@@ -69,7 +68,7 @@ public class StagePage extends AppCompatActivity implements View.OnClickListener
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case loadFinish:
+                case LOAD_FINISH:
                     Intent intent = new Intent(StagePage, GamePage.class);
                     StagePage.startActivityForResult(intent, CLEAR_STAGE);
                     break;
