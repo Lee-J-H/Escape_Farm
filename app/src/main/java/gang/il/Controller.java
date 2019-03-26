@@ -2,84 +2,55 @@ package gang.il;
 
 import static gang.il.Valiable.curObjNum;
 import static gang.il.Valiable.direction;
-import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.stageSize;
 import static gang.il.Valiable.totalObj;
 
 public class Controller {
 
-    public void check() { // 전역변수로 지정된 현재 객체의 이동여부를 검사
+    public int check(int moveIndex) { // 전역변수로 지정된 현재 객체의 이동여부를 검사
 
-        //임시 변수 지정
-        totalObj[0] = new AnimalObject(3, 4, "animal1", true);
-        totalObj[1] = new TotalObject(2,4,"wall");
-        totalObj[2] = new TotalObject(5,4,"wall");
-        objCount = 2;
-        curObjNum = 0;
-        direction = "left";
+        String structure= totalObj[moveIndex].getType();
+        if (structure.endsWith("_fin")) structure = "finish";
+        switch (structure){
+            case "trap":
+                return 0;
+            case "wall":
+                return 1;
+            case "finish":
+                return 0;
+                default:
+                    return 1;
+        }
+    }
 
-        // 클래스에서 필요한 변수
-        float min=0, max=stageSize;
-        int moveIndex=999; //하나도 찾지 못했을 경우
-        float desX,desY;
+    public void move(){
 
-        //가로 이동
-        for(int i=0 ; i< objCount ; i++){
-            if(totalObj[curObjNum].posY == totalObj[i].posY){ //Y좌표가 같을경우
-                if (direction.equals("left")){ // 왼쪽으로 이동일경우
-                    if(totalObj[i].posX >= min && totalObj[i].posX < totalObj[curObjNum].posX){ // 가장 가까운 말 구하기
-                        min = totalObj[i].posX;
-                        moveIndex = i;
-                    }
-                    if(moveIndex == 999){
-                        totalObj[curObjNum].posX = 0;
-                    }else{
-                        if(totalObj[moveIndex].type.equals("animal")){
-                            while(totalObj[curObjNum].posX != totalObj[moveIndex].posX + 1){
-                                totalObj[curObjNum].posX -= 0.00001f ;
-                            }
-                        } else if(totalObj[moveIndex].type.equals("wall")){
-                            while(totalObj[curObjNum].posX != totalObj[moveIndex].posX + 1){
-                                totalObj[curObjNum].posX -= 0.00001f ;
-                            }
-                        } else if(totalObj[moveIndex].type.equals("trap")){
-                            while(totalObj[curObjNum].posX != totalObj[moveIndex].posX){
-                                totalObj[curObjNum].posX -= 0.00001f ;
-                            }
-                        } else if(totalObj[moveIndex].type.equals("fin")){
-                            while(totalObj[curObjNum].posX != totalObj[moveIndex].posX){
-                                totalObj[curObjNum].posX -= 0.00001f ;
-                            }
-                        }
-                    }
-                } else {
-                    if(totalObj[i].posX <= max && totalObj[i].posX > totalObj[curObjNum].posX){ // 가장 가까운 말 구하기
-                        max = totalObj[i].posX;
-                        moveIndex = i;
-                    }
-                    if(moveIndex == 999){
-                        totalObj[curObjNum].posX = stageSize;
-                    }else{
-                        if(totalObj[moveIndex].type.equals("animal")){
-                            while(totalObj[curObjNum].posX != totalObj[moveIndex].posX + 1){
-                                totalObj[curObjNum].posX -= 0.00001f ;
-                            }
-                        } else if(totalObj[moveIndex].type.equals("wall")){
-                            while(totalObj[curObjNum].posX != totalObj[moveIndex].posX + 1){
-                                totalObj[curObjNum].posX -= 0.00001f ;
-                            }
-                        } else if(totalObj[moveIndex].type.equals("trap")){
-                            while(totalObj[curObjNum].posX != totalObj[moveIndex].posX){
-                                totalObj[curObjNum].posX -= 0.00001f ;
-                            }
-                        } else if(totalObj[moveIndex].type.equals("fin")){
-                            while(totalObj[curObjNum].posX != totalObj[moveIndex].posX){
-                                totalObj[curObjNum].posX -= 0.00001f ;
-                            }
-                        }
-                    }
-                }
-            }
+        int moveIndex, movePoint;
+
+        if(direction.equals("left") || direction.equals("up"))
+            moveIndex=0;
+        else
+            moveIndex=1;
+
+        for(int i=2 ; i< totalObj.length ; i++)
+            if(totalObj[i].getLength(totalObj[curObjNum].getPosX(),totalObj[curObjNum].getPosY(),direction) < totalObj[moveIndex].getLength(totalObj[curObjNum].getPosX(),totalObj[curObjNum].getPosY(),direction))
+                moveIndex = i;
+
+        movePoint = check(moveIndex);
+
+        switch (direction){
+            case "left":
+                while((totalObj[moveIndex].getPosX() + movePoint) !=totalObj[curObjNum].getPosX())
+                    totalObj[curObjNum].setPosX(totalObj[curObjNum].getPosX()-0.0000f);
+            case "right":
+                while((totalObj[moveIndex].getPosX() - movePoint) !=totalObj[curObjNum].getPosX())
+                    totalObj[curObjNum].setPosX(totalObj[curObjNum].getPosX()+0.0000f);
+            case "up":
+                while((totalObj[moveIndex].getPosY() + movePoint) !=totalObj[curObjNum].getPosY())
+                    totalObj[curObjNum].setPosY(totalObj[curObjNum].getPosY()-0.0000f);
+            case "down":
+                while((totalObj[moveIndex].getPosY() - movePoint) !=totalObj[curObjNum].getPosY())
+                    totalObj[curObjNum].setPosY(totalObj[curObjNum].getPosY()+0.0000f);
         }
     }
 }

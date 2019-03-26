@@ -29,22 +29,34 @@ class TotalObject {
     public String getType() {
         return type;
     }
+
+    public int getLength(float posX, float posY, String direction) {
+        switch (direction){
+            case "left" :
+            case "right":
+                return (int) Math.abs(posX - this.posX);
+            case "up" :
+            case "down" :
+                return (int) Math.abs(posY - this.posY);
+        }
+        return 0;
+    }
 }
 
 class  AnimalObject extends TotalObject{
-    boolean moveAvailable = true;
+    boolean moveAble = true;
 
-    public AnimalObject(float posX, float posY, String type, boolean moveAvailable){
+    public AnimalObject(float posX, float posY, String type, boolean moveAble){
         super(posX,posY,type);
-        this.moveAvailable = moveAvailable;
+        this.moveAble = moveAble;
     }
 
-    public boolean isMoveAvailable() {
-        return moveAvailable;
+    public boolean isMoveAble() {
+        return moveAble;
     }
 
-    public void setMoveAvailable(boolean moveAvailable) {
-        this.moveAvailable = moveAvailable;
+    public void setMoveAble(boolean moveAble) {
+        this.moveAble = moveAble;
     }
 }
 
