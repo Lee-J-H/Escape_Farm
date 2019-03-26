@@ -22,6 +22,7 @@ public class LoadDB {
     public static Context mContext;
     public static String mJsonString;
     public static String getStage;
+    public static String getMini;
     public static int MinCount;
     public static int boardSize;
 
@@ -55,8 +56,9 @@ public class LoadDB {
         protected String doInBackground(String... params) {
             String serverURL = params[0];
             getStage = params[1];
+            getMini = params[2];
 
-            String postParameters = "Stage=" + params[1];
+            String postParameters = "Stage=" + params[1] + "&Mini=" + params[2];
 
             try {
 
@@ -115,18 +117,18 @@ public class LoadDB {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
                 if (jsonArray.length()==1) {
-                    MinCount = item.getInt("Count");;;;
+                    MinCount = item.getInt("Count");
                     Log.d("testMinCount","result:" + MinCount);
                     mhandler.sendEmptyMessage(loadFinish);
                 }
                 else {
                     String structure = item.getString("Structure");
-                    int x = item.getInt("posX");
-                    int y = item.getInt("posY");
+                    int x = item.getInt("X");
+                    int y = item.getInt("Y");
                     if(i==1) boardSize= x/2;
                     else if(i == jsonArray.length()-1) {
                         LoadDB.GetDB Data = new LoadDB.GetDB();
-                        Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", item.getString("Stage")); // 최소 횟수 로딩
+                        Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", item.getString("Stage"), "mini"); // 최소 횟수 로딩
                     }
                     Log.d("testStageDB","result:"+structure + "/" + x + "/" + y);
                 }
