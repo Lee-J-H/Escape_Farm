@@ -7,13 +7,16 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
-import static gang.il.LoadDB.boardSize;
+import static gang.il.Valiable.stageSize;
+import static gang.il.Valiable.totalObj;
+import static gang.il.Valiable.direction;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     Context mContext;
@@ -23,7 +26,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     float Width, Height;
     int spaceX, spaceY, blankX, blankY;
     boolean animal_clk = false;
-    public static String direction;
 
     public GameSurfaceView(Context context) {
         super(context);
@@ -160,35 +162,37 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
 
         private void doDraw() {
-            switch (boardSize) {
+            switch (stageSize) {
                 case 4:
-                    blankX = spaceX * 3;
-                    blankY = spaceY * 7;
-                    break;
-                case 6:
                     blankX = spaceX * 2;
                     blankY = spaceY * 6;
                     break;
-                case 8:
+                case 6:
                     blankX = spaceX * 1;
                     blankY = spaceY * 5;
                     break;
+                case 8:
+                    blankX = spaceX * 0;
+                    blankY = spaceY * 4;
+                    break;
             }
-                for (int i = 0; i < boardSize; i++)
-                    for (int j = 0; j < boardSize; j++)
-                        mCanvas.drawBitmap(ground, (spaceX * i) + blankX, (spaceY * j) + blankY, null);
+                for (int i = 0; i < stageSize; i++)
+                    for (int j = 0; j < stageSize; j++) {
+                        mCanvas.drawBitmap(ground, (spaceX * (i+1)) + blankX, (spaceY * (j+1)) + blankY, null);
+                    }
             //stage.get(0)[0] 종류 ()[1] x, ()[2] y, ()[3] 우측벽, ()[4] 아래벽
 
-            /*for(int i=0; i<animals.length; i++){
-                if(animals[i].getStructure().equals("block")){
-                    if(animals[i].getX()%2==0) //아래쪽 벽
-                        mCanvas.drawBitmap(wall_down, spaceX * (animals[i].getX()/2) + blankX, spaceY * (animals[i].getY/2) + 0.95f + blankY , null);
+
+            for(int i=0; i<totalObj.length; i++){
+                if(totalObj[i].getType().equals("block")){
+                    if(totalObj[i].getPosX()%2==0) //아래쪽 벽
+                        mCanvas.drawBitmap(wall_down, spaceX * (totalObj[i].getPosX()/2) + blankX, spaceY * ((int)totalObj[i].getPosY()/2 + 0.95f) + blankY , null);
                     else //오른쪽 벽
-                        mCanvas.drawBitmap(wall_down, spaceX * (animals[i].getX()/2) + 0.95f + blankX, (spaceY * animals[i].getY/2) + blankY , null);
+                        mCanvas.drawBitmap(wall_right, spaceX * ((int)totalObj[i].getPosX()/2+0.95f) + blankX, (spaceY * totalObj[i].getPosY()/2) + blankY , null);
                 }
-                if(animals[i].getStructure().equals("dog"))
-                    mCanvas.drawBitmap(animal_1, spaceX * animals[i].getX() + blankX, spaceY * animals[i].getY() + blankY, null);
-            }*/
+                if(totalObj[i].getType().equals("dog"))
+                    mCanvas.drawBitmap(animal_1, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+            }
 
 
 

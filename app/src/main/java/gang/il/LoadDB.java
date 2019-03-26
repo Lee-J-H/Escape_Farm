@@ -15,18 +15,17 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static gang.il.StagePage.loadFinish;
 import static gang.il.StagePage.mhandler;
+import static gang.il.Valiable.LOAD_FINISH;
 import static gang.il.Valiable.objCount;
+import static gang.il.Valiable.stageSize;
 import static gang.il.Valiable.totalObj;
 
 public class LoadDB {
     public static Context mContext;
     public static String mJsonString;
     public static String getStage;
-    public static String getMini;
     public static int MinCount;
-    public static int boardSize;
 
     public LoadDB(Context context) {
         mContext = context;
@@ -45,7 +44,7 @@ public class LoadDB {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if (result == null) {
-                Log.d("test1234","result:faild");
+                Log.d("test1234", "result:faild");
                 //mhandler.sendEmptyMessage(Faild_internet);
             } else {
                 mJsonString = result;
@@ -103,7 +102,7 @@ public class LoadDB {
 
             } catch (Exception e) {
                 errorString = e.toString();
-                Log.d("Failed get DB","result:"+errorString);
+                Log.d("Failed get DB", "result:" + errorString);
                 return null;
             }
 
@@ -115,35 +114,36 @@ public class LoadDB {
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
-            objCount = jsonArray.length();
+            if (jsonArray.length() != 1) {
+                objCount = jsonArray.length();
+                totalObj = new TotalObject[objCount];
+            }
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
-                if (jsonArray.length()==1) {
+                if (jsonArray.length() == 1) {
                     MinCount = item.getInt("Count");
-                    Log.d("testMinCount","result:" + MinCount);
-                    mhandler.sendEmptyMessage(loadFinish);
-                }
-                else {
+                    Log.d("testMinCount", "result:" + MinCount);
+                    mhandler.sendEmptyMessage(LOAD_FINISH);
+                } else {
                     String structure = item.getString("Structure");
                     int x = item.getInt("posX");
                     int y = item.getInt("posY");
-                    switch (structure){
-                        case ("dog"):
-                        case ("cat"):
-                        case ("cow"):
-                        case ("rabbit"):
-                        case ("lion"):
-                            totalObj[i] = new TotalObject(x,y,structure,true); break;
-                            default:
-                                totalObj[i] = new TotalObject(x,y,structure,false); break;
+                    switch (structure) {
+                        case "dog":
+                        case "cat":
+                        case "rabbit":
+                        case "cow":
+                        case "lion":
+                            totalObj[i] = new TotalObject(x, y, structure, true);
+                        default:
+                            totalObj[i] = new TotalObject(x, y, structure, false);
                     }
-
-                    if(i==1) boardSize= x/2;
-                    else if(i == jsonArray.length()-1) {
+                    Log.d("testStageDB", "result:" + totalObj[i].getType() + "/" + totalObj[i].getPosX() + "/" + totalObj[i].getPosY());
+                    if (i == 1) stageSize = x / 2;
+                    else if (i == jsonArray.length() - 1) {
                         LoadDB.GetDB Data = new LoadDB.GetDB();
                         Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", item.getString("Stage")); // 최소 횟수 로딩
                     }
-                    Log.d("testStageDB","result:"+structure + "/" + totalObj[i].getPosX() + "/" + totalObj[i].getPosY());
 
                 }
             }
