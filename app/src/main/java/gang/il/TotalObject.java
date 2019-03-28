@@ -1,5 +1,7 @@
 package gang.il;
 
+import static gang.il.Valiable.direction;
+
 class TotalObject {
     float posX, posY;
     String type; // animal, -fin, trap, wall
@@ -40,7 +42,7 @@ class TotalObject {
         this.moveAble = moveAble;
     }
 
-    public int getLength(float posX, float posY, String direction) {
+    public int getLength(float posX, float posY) {
         switch (direction){
             case "left" :
             case "right":

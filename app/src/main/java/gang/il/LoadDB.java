@@ -122,7 +122,6 @@ public class LoadDB {
                 JSONObject item = jsonArray.getJSONObject(i);
                 if (jsonArray.length() == 1) {
                     MinCount = item.getInt("Count");
-                    Log.d("testMinCount", "result:" + MinCount);
                     mhandler.sendEmptyMessage(LOAD_FINISH);
                 } else {
                     String structure = item.getString("Structure");
@@ -135,10 +134,11 @@ public class LoadDB {
                         case "cow":
                         case "lion":
                             totalObj[i] = new TotalObject(x, y, structure, true);
+                            break;
                         default:
                             totalObj[i] = new TotalObject(x, y, structure, false);
+                            break;
                     }
-                    Log.d("testStageDB", "result:" + totalObj[i].getType() + "/" + totalObj[i].getPosX() + "/" + totalObj[i].getPosY());
                     if (i == 1) stageSize = x / 2;
                     else if (i == jsonArray.length() - 1) {
                         LoadDB.GetDB Data = new LoadDB.GetDB();

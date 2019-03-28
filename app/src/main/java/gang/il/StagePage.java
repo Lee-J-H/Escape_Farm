@@ -58,7 +58,6 @@ public class StagePage extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         String stage = v.getTag().toString();
-        Log.d("test1235","stageclick");
         if (Integer.parseInt(stage) > lockImg.length) return;
         LoadDB.GetDB Data = new LoadDB.GetDB();
         Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stage);  //스테이지DB 로딩
