@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import static gang.il.Valiable.stageSize;
 import static gang.il.Valiable.totalObj;
 import static gang.il.Valiable.direction;
+import static gang.il.Valiable.curObjNum;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     Context mContext;
@@ -74,14 +75,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             case MotionEvent.ACTION_DOWN:
                 firstPoint.x = event.getX();
                 firstPoint.y = event.getY();
-                /*for (int i = 0; i < animals.length; i++)
-                    if (!animals[i].getKind().equals("none") && (int)(firstPoint.x - blankX) / spaceX == animals[i].getX() && (int) (firstPoint.y - blankY) / spaceY == animals[i].getY()) { //빈칸이 아니고 동물이 있는 땅을 눌렀을 때
-                        if (!animals[i].getKind().endsWith("fin") && !animals[i].getKind().equals("trap") && !animals[i].getKind().startsWith("warp")) {
+                for (int i = 0; i < totalObj.length; i++)
+                    if (!totalObj[i].getType().equals("none") && (int)(firstPoint.x - blankX) / spaceX == totalObj[i].getPosX()/2 && (int) (firstPoint.y - blankY) / spaceY == totalObj[i].getPosY()/2) { //빈칸이 아니고 동물이 있는 땅을 눌렀을 때
+                        if (!totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals("trap") && !totalObj[i].getType().startsWith("warp")) {
                             animal_clk = true;
-                            animal = i;
+                            curObjNum = i;
                         }
                         break;
-                    }*/
+                    }
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -90,7 +91,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 lastPoint.x=event.getX();
                 lastPoint.y=event.getY();
                 if (animal_clk) {
-                    getAngle(firstPoint,lastPoint);
+                    firstPoint = new PointF(spaceX * totalObj[curObjNum].getPosX()/2 + blankX, spaceY * totalObj[curObjNum].getPosY()/2 + blankY);
+                    setDirection(firstPoint,lastPoint);
+                    Controller control = new Controller();
+                    control.move();
+
                 }
                 animal_clk = false;
                 return false;
@@ -98,18 +103,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         return true;
     }
 
-    public void getAngle(PointF start, PointF end) {
+    public void setDirection(PointF start, PointF end) {
         double dy = end.y-start.y;
         double dx = end.x-start.x;
-        direction="";
-        if(315 <= Math.atan2(dy, dx) * (180.0 / Math.PI) || Math.atan2(dy, dx) * (180.0 / Math.PI) < 45 ) //우
-            direction = "right";
-        if(45 <=Math.atan2(dy, dx) * (180.0 / Math.PI) && Math.atan2(dy, dx) * (180.0 / Math.PI) < 135) // 하
-            direction = "down";
-        if(135 <=Math.atan2(dy, dx) * (180.0 / Math.PI) && Math.atan2(dy, dx) * (180.0 / Math.PI) < 225) //좌
-            direction = "right";
-        if(225 <=Math.atan2(dy, dx) * (180.0 / Math.PI) && Math.atan2(dy, dx) * (180.0 / Math.PI) < 315) //상
+        if(-135 < Math.toDegrees(Math.atan2(dy,dx))  && Math.toDegrees(Math.atan2(dy,dx)) <= -45) //상 -135보다 크고 -45보다 작다
             direction = "up";
+        else if(45 < Math.toDegrees(Math.atan2(dy,dx)) && Math.toDegrees(Math.atan2(dy,dx)) <=135 ) // 하 45보다 크고 135보단 작다.
+            direction = "down";
+        else if(135 < Math.toDegrees(Math.atan2(dy,dx)) && Math.toDegrees(Math.atan2(dy,dx)) <= 180 || -180 <= Math.toDegrees(Math.atan2(dy,dx)) && Math.toDegrees(Math.atan2(dy,dx)) < -135) //좌 135보단 크고 180보단 작으며 / -180보다 크고 -135보다 작다
+            direction = "left";
+        else if(-45 < Math.toDegrees(Math.atan2(dy,dx)) && Math.toDegrees(Math.atan2(dy,dx)) <= 45) //우 -45보다 크고 0보단 작으며 / 0보다 크며 45보단 작다
+            direction = "right";
     }
 
 
@@ -184,7 +188,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
             for(int i=0; i<totalObj.length; i++){
-                if(totalObj[i].getType().equals("block")){
+                if(totalObj[i].getType().equals("wall")){
                     if(totalObj[i].getPosX()%2==0) //아래쪽 벽
                         mCanvas.drawBitmap(wall_down, spaceX * (totalObj[i].getPosX()/2) + blankX, spaceY * ((int)totalObj[i].getPosY()/2 + 0.95f) + blankY , null);
                     else //오른쪽 벽
@@ -192,48 +196,27 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 }
                 if(totalObj[i].getType().equals("dog"))
                     mCanvas.drawBitmap(animal_1, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+                if(totalObj[i].getType().equals("cat"))
+                    mCanvas.drawBitmap(animal_2, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+                if(totalObj[i].getType().equals("rabbit"))
+                    mCanvas.drawBitmap(animal_3, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+                if(totalObj[i].getType().equals("cow"))
+                    mCanvas.drawBitmap(animal_4, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+                if(totalObj[i].getType().equals("lion"))
+                    mCanvas.drawBitmap(animal_5, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+                if(totalObj[i].getType().equals("dog_fin"))
+                    mCanvas.drawBitmap(finish_1, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+                if(totalObj[i].getType().equals("cat_fin"))
+                    mCanvas.drawBitmap(finish_2, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+                if(totalObj[i].getType().equals("rabbit_fin"))
+                    mCanvas.drawBitmap(finish_3, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+                if(totalObj[i].getType().equals("cow_fin"))
+                    mCanvas.drawBitmap(finish_4, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+                if(totalObj[i].getType().equals("lion_fin"))
+                    mCanvas.drawBitmap(animal_5, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+                if(totalObj[i].getType().equals("trap"))
+                    mCanvas.drawBitmap(trap, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
             }
-
-
-
-
-
-            /*for (int i = 0; i < animals.length; i++) {
-                if (animals[i].getBlock().equals("right")) //오른쪽 벽
-                    mCanvas.drawBitmap(wall_right, (spaceX * (animals[i].getX() + 0.9f)) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getBlock().equals("down")) //아래쪽 벽
-                    mCanvas.drawBitmap(wall_down, (spaceX * animals[i].getX()) + blankX, (spaceY * (animals[i].getY() + 0.9f)) + blankY, null);
-                if (animals[i].getBlock().equals("twice")) {
-                    mCanvas.drawBitmap(wall_right, (spaceX * (animals[i].getX() + 0.9f)) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                    mCanvas.drawBitmap(wall_down, (spaceX * animals[i].getX()) + blankX, (spaceY * (animals[i].getY() + 0.9f)) + blankY, null);
-                }
-                if (animals[i].getKind().equals("dog"))
-                    mCanvas.drawBitmap(animal_1, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("cat"))
-                    mCanvas.drawBitmap(animal_2, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("rabbit"))
-                    mCanvas.drawBitmap(animal_3, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("cow"))
-                    mCanvas.drawBitmap(animal_4, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("lion"))
-                    mCanvas.drawBitmap(animal_5, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("dog_fin"))
-                    mCanvas.drawBitmap(finish_1, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("cat_fin"))
-                    mCanvas.drawBitmap(finish_2, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("rabbit_fin"))
-                    mCanvas.drawBitmap(finish_3, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("cow_fin"))
-                    mCanvas.drawBitmap(finish_4, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("lion_fin"))
-                    mCanvas.drawBitmap(finish_5, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("tarp"))
-                    mCanvas.drawBitmap(trap, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("warp"))
-                    mCanvas.drawBitmap(warp, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-                if (animals[i].getKind().equals("warp_"))
-                    mCanvas.drawBitmap(warp, (spaceX * animals[i].getX()) + blankX, (spaceY * animals[i].getY()) + blankY, null);
-            }*/
         }
 
         public void run() {

@@ -9,15 +9,17 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import static gang.il.LoadDB.getStage;
+
 public class GamePage extends AppCompatActivity {
     StageClearDialog dialog;
     Context context = this;
-    public  int moveCount, stageCount;
+    public  int moveCount;//, stageCount;
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         moveCount=0;
-        stageCount=0;
+        //stageCount=0;
         finish();
     }
 
@@ -35,7 +37,7 @@ public class GamePage extends AppCompatActivity {
 
     public void setStageCount(){
         TextView stageText = findViewById(R.id.stageCount);
-        stageText.setText("스테이지: " + stageCount);
+        stageText.setText("스테이지: " + getStage);
     }
 
     public void backStage(){
