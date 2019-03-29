@@ -17,6 +17,7 @@ import java.net.URL;
 
 import static gang.il.StagePage.mhandler;
 import static gang.il.Valiable.LOAD_FINISH;
+import static gang.il.Valiable.animalCount;
 import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.stageSize;
 import static gang.il.Valiable.totalObj;
@@ -133,6 +134,7 @@ public class LoadDB {
                         case "rabbit":
                         case "cow":
                         case "lion":
+                            animalCount++;
                             totalObj[i] = new TotalObject(x, y, structure, true);
                             break;
                         default:
