@@ -17,7 +17,8 @@ import java.net.URL;
 
 import static gang.il.StagePage.mhandler;
 import static gang.il.Valiable.LOAD_FINISH;
-import static gang.il.Valiable.animalCount;
+import static gang.il.Valiable.finishCount;
+import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.stageSize;
 import static gang.il.Valiable.totalObj;
@@ -25,8 +26,6 @@ import static gang.il.Valiable.totalObj;
 public class LoadDB {
     public static Context mContext;
     public static String mJsonString;
-    public static String getStage;
-    public static int MinCount;
 
     public LoadDB(Context context) {
         mContext = context;
@@ -57,7 +56,6 @@ public class LoadDB {
         @Override
         protected String doInBackground(String... params) {
             String serverURL = params[0];
-            getStage = params[1];
 
             String postParameters = "Stage=" + params[1];
 
@@ -116,13 +114,14 @@ public class LoadDB {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
             if (jsonArray.length() != 1) {
+                finishCount=0;
                 objCount = jsonArray.length();
                 totalObj = new TotalObject[objCount];
             }
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
                 if (jsonArray.length() == 1) {
-                    MinCount = item.getInt("Count");
+                    minCount = item.getInt("Count");
                     mhandler.sendEmptyMessage(LOAD_FINISH);
                 } else {
                     String structure = item.getString("Structure");
@@ -134,19 +133,18 @@ public class LoadDB {
                         case "rabbit":
                         case "cow":
                         case "lion":
-                            animalCount++;
                             totalObj[i] = new TotalObject(x, y, structure, true);
                             break;
                         default:
                             totalObj[i] = new TotalObject(x, y, structure, false);
                             break;
                     }
+                    if(totalObj[i].getType().endsWith("_fin")) finishCount++; //총 finish 개수 저장
                     if (i == 1) stageSize = x / 2;
                     else if (i == jsonArray.length() - 1) {
                         LoadDB.GetDB Data = new LoadDB.GetDB();
                         Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", item.getString("Stage")); // 최소 횟수 로딩
                     }
-
                 }
             }
         } catch (JSONException e) {

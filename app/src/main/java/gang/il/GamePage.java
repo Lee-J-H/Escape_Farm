@@ -9,17 +9,18 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
-import static gang.il.LoadDB.getStage;
+import static gang.il.Valiable.minCount;
+import static gang.il.Valiable.moveCount;
+import static gang.il.Valiable.stageCount;
 
 public class GamePage extends AppCompatActivity {
     StageClearDialog dialog;
     Context context = this;
-    public  int moveCount;//, stageCount;
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         moveCount=0;
-        //stageCount=0;
+        stageCount="0";
         finish();
     }
 
@@ -37,7 +38,7 @@ public class GamePage extends AppCompatActivity {
 
     public void setStageCount(){
         TextView stageText = findViewById(R.id.stageCount);
-        stageText.setText("스테이지: " + getStage);
+        stageText.setText("스테이지: " + stageCount);
     }
 
     public void backStage(){
@@ -49,7 +50,7 @@ public class GamePage extends AppCompatActivity {
 
     public void Dialog() {
         dialog = new StageClearDialog(context,
-                "스테이지 완료"+"\n이동횟수:"+moveCount, // 내용
+                "스테이지 완료"+"\n이동횟수:"+moveCount+"\n점수:"+checkMinimumMove(), // 내용
                 DialogListener); // 왼쪽 버튼 이벤트
         // 오른쪽 버튼 이벤트
 
@@ -68,4 +69,15 @@ public class GamePage extends AppCompatActivity {
         }
     };
 //출처: http://yoo-hyeok.tistory.com/51 [유혁의 엉터리 개발]
+
+    private String checkMinimumMove(){
+        String rating;
+        if(moveCount<minCount)
+            rating = "10점";
+        else if(minCount < moveCount && moveCount < minCount + 2)
+            rating = "5점";
+        else
+            rating = "1점";
+        return rating;
+    }
 }
