@@ -19,6 +19,7 @@ import static gang.il.CheckedStage.onCheckStage;
 import static gang.il.Valiable.CLEAR_STAGE;
 import static gang.il.Valiable.StagePage;
 import static gang.il.Valiable.LOAD_FINISH;
+import static gang.il.Valiable.stageCount;
 
 public class StagePage extends AppCompatActivity implements View.OnClickListener {
     Context mContext = this;
@@ -57,10 +58,10 @@ public class StagePage extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        String stage = v.getTag().toString();
-        if (Integer.parseInt(stage) > lockImg.length) return;
+        stageCount = v.getTag().toString();
+        if (Integer.parseInt(stageCount) > lockImg.length) return;
         LoadDB.GetDB Data = new LoadDB.GetDB();
-        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stage);  //스테이지DB 로딩
+        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount);  //스테이지DB 로딩
     }
 
     final static Handler mhandler = new Handler() {

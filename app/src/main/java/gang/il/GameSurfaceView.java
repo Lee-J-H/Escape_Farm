@@ -14,6 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
+import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.stageSize;
 import static gang.il.Valiable.totalObj;
 import static gang.il.Valiable.direction;
@@ -75,7 +76,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             case MotionEvent.ACTION_DOWN:
                 firstPoint.x = event.getX();
                 firstPoint.y = event.getY();
-                for (int i = 0; i < totalObj.length; i++)
+                for (int i = 0; i < objCount; i++)
                     if (!totalObj[i].getType().equals("none") && (int)(firstPoint.x - blankX) / spaceX == totalObj[i].getPosX()/2 && (int) (firstPoint.y - blankY) / spaceY == totalObj[i].getPosY()/2) { //빈칸이 아니고 동물이 있는 땅을 눌렀을 때
                         if (!totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals("trap") && !totalObj[i].getType().startsWith("warp")) {
                             animal_clk = true;
@@ -93,7 +94,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 if (animal_clk) {
                     firstPoint = new PointF(spaceX * totalObj[curObjNum].getPosX()/2 + blankX, spaceY * totalObj[curObjNum].getPosY()/2 + blankY);
                     setDirection(firstPoint,lastPoint);
-                    Controller control = new Controller();
+                    Controller control = new Controller(mContext);
                     control.move();
 
                 }
@@ -187,7 +188,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             //stage.get(0)[0] 종류 ()[1] x, ()[2] y, ()[3] 우측벽, ()[4] 아래벽
 
 
-            for(int i=0; i<totalObj.length; i++){
+            for(int i=0; i<objCount; i++){
                 if(totalObj[i].getType().equals("wall")){
                     if(totalObj[i].getPosX()%2==0) //아래쪽 벽
                         mCanvas.drawBitmap(wall_down, spaceX * (totalObj[i].getPosX()/2) + blankX, spaceY * ((int)totalObj[i].getPosY()/2 + 0.95f) + blankY , null);
