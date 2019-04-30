@@ -29,28 +29,18 @@ public class Controller {
             case "finish":
                 return 0;
             case "wall":
-                return 1;
-            case "none":
+            case "boundary":
                 return 1;
             default:
                 return 2;
         }
     }
 
-    /*
-    public boolean IsMyFinish(String checkType) {
-        String curType = totalObj[curObjNum].getType();
-        if (curType.equals(checkType.substring(0, checkType.length() - 4))) {
-            return true;
-        }
-        return false;
-    }*/ //!@#$이 함수 안만들어도 될거 같아
-
     public void move() {
 
         int moveIndex, movePoint; //가장 가까운 장애물의 인덱스
         float curPosX = totalObj[curObjNum].getPosX(), curPosY = totalObj[curObjNum].getPosY(); // 현재 위치에 대한 x,y 좌표의 값을 저장
-        PointF curPosition = new PointF(curPosX, curPosY); //기존 좌표 저장  !@#$curPosY 이 친구 이름을 바꿔야 될듯?? 이동될 좌표 뭐 이런 의미로...? 마지막에 좌표변경이 되었는지 여부를 확인해야되어서 변경되지 않는 현재 좌표가 필요함
+        float oriPosX = curPosX, oriPosY = curPosY;//기존 좌표 저장
 
         if (!totalObj[curObjNum].isMoveAble()) return; //트랩에 걸렸을때
 
@@ -109,13 +99,14 @@ public class Controller {
                     totalObj[curObjNum].setPosY(curPosY += 0.000001f);
                 break;
         }
-        if (curPosition.x != curPosX || curPosition.y != curPosY) { //객체가 이동을 한 경우
+        if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우
             moveCount++; //이동 횟수 증가
             ((GamePage) mContext).setMoveCount(); //뷰의 이동횟수 갱신
         }
         if (totalObj[moveIndex].getType().endsWith("fin")) { //이동지가 피니시인 경우
             StageClear StageClear = new StageClear(mContext);
-            StageClear.clearCheck(/*moveIndex*/);
+            StageClear.clearCheck();
+            moveCount=0; // 이동횟수 초기화인데 위치가 여기가 맞는지 확실치 않음.. (DB에 넣은 후에 초기화를 해야하니깐?)
         }
     }
 }

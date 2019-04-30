@@ -91,9 +91,20 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             case MotionEvent.ACTION_UP:
                 lastPoint.x=event.getX();
                 lastPoint.y=event.getY();
-                if (animal_clk) {
-                    firstPoint = new PointF(spaceX * totalObj[curObjNum].getPosX()/2 + blankX, spaceY * totalObj[curObjNum].getPosY()/2 + blankY);
+                firstPoint = new PointF(spaceX * totalObj[curObjNum].getPosX()/2 + blankX, spaceY * totalObj[curObjNum].getPosY()/2 + blankY);
+                // firstPoint를 굳이 if문 안에서 초기화한 이유가 없다면 여기다 써도 되지 않을까?
+                // 그리고 이거 보면서 생각난건데 setDirection에 포인트 말고 dx,dy를 구한값을 넣어도 되지 않냐
+                double dx = lastPoint.x - firstPoint.x , dy = lastPoint.y - firstPoint.y;
+                /*
+                if (animal_clk && (Math.abs(lastPoint.x - firstPoint.x) > spaceX/2 || Math.abs(lastPoint.y - firstPoint.y) > spaceY/2)) {
                     setDirection(firstPoint,lastPoint);
+                    Controller control = new Controller(mContext);
+                    control.move();
+
+                }
+                */
+                if (animal_clk && (Math.abs(dx) > spaceX/2 || Math.abs(dy) > spaceY/2)) {
+                    setDirection(dx,dy);
                     Controller control = new Controller(mContext);
                     control.move();
 
@@ -104,9 +115,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         return true;
     }
 
-    public void setDirection(PointF start, PointF end) {
+    public void setDirection(/*PointF first, PointF last*/ double dx, double dy) {
+        /*
         double dy = end.y-start.y;
         double dx = end.x-start.x;
+        */
         if(-135 < Math.toDegrees(Math.atan2(dy,dx))  && Math.toDegrees(Math.atan2(dy,dx)) <= -45) //상 -135보다 크고 -45보다 작다
             direction = "up";
         else if(45 < Math.toDegrees(Math.atan2(dy,dx)) && Math.toDegrees(Math.atan2(dy,dx)) <=135 ) // 하 45보다 크고 135보단 작다.
