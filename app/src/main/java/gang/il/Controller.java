@@ -22,11 +22,13 @@ public class Controller {
 
         String structure = totalObj[moveIndex].getType();
         if (structure.endsWith("fin")) structure = "finish";
+        if (structure.startsWith("food")) structure= "food";
         switch (structure) {
             case "trap":
                 totalObj[curObjNum].setMoveAble(false);
                 return 0;
             case "finish":
+            case "food":
                 return 0;
             case "wall":
             case "boundary":
@@ -54,9 +56,9 @@ public class Controller {
             if (totalObj[i].getType().equals(totalObj[curObjNum].getType()))
                 continue; //현재 선택된 객체는 제외
             if (totalObj[i].getLength(curPosX, curPosY) < totalObj[moveIndex].getLength(curPosX, curPosY)) {
-                /*String checkType = totalObj[i].getType();  !@#$이 스트링형 변수 한번밖에 안쓰이니깐 선언해서 쓰지 않아도 되지 않을까??
-                if (checkType.endsWith("fin") && !IsMyFinish(checkType)) */
-                if (totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals(totalObj[curObjNum].getType() + "_fin"))//선택된 객체의 피니시가 아닐 경우 제외     !@#$이건 방향에 따라 달라지지 않으니까 한번에 써도 될듯
+                if (totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals(totalObj[curObjNum].getType() + "_fin"))//선택된 객체의 피니시가 아닐 경우 제외
+                    continue;
+                if (totalObj[i].getType().startsWith("food") && !totalObj[curObjNum].foods.contains(totalObj[i].getType())) //선택된 객체의 음식이 아닐 경우 제외
                     continue;
                 switch (direction) {
                     case "left":
@@ -99,6 +101,15 @@ public class Controller {
                     totalObj[curObjNum].setPosY(curPosY += 0.000001f);
                 break;
         }
+
+        if (totalObj[moveIndex].type.startsWith("food")) { //이동지가 음식일 경우
+            objCount--;
+            for (int i = moveIndex; i < objCount; i++) {
+                totalObj[i] = new TotalObject(totalObj[i + 1].posX, totalObj[i + 1].posY, totalObj[i + 1].getType(), totalObj[i + 1].isMoveAble()); //해당 음식 기준으로 객체 값을 하나씩 앞으로 땡기기
+            }
+            totalObj[objCount] = null; //마지막 인덱스값 지우기
+        }
+
         if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우
             moveCount++; //이동 횟수 증가
             ((GamePage) mContext).setMoveCount(); //뷰의 이동횟수 갱신
@@ -106,7 +117,6 @@ public class Controller {
         if (totalObj[moveIndex].getType().endsWith("fin")) { //이동지가 피니시인 경우
             StageClear StageClear = new StageClear(mContext);
             StageClear.clearCheck();
-            moveCount=0; // 이동횟수 초기화인데 위치가 여기가 맞는지 확실치 않음.. (DB에 넣은 후에 초기화를 해야하니깐?)
         }
     }
 }

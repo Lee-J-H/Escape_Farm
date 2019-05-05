@@ -14,12 +14,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import static gang.il.StagePage.mhandler;
 import static gang.il.Valiable.LOAD_FINISH;
+import static gang.il.Valiable.STAGE_RESET;
 import static gang.il.Valiable.finishCount;
 import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.objCount;
+import static gang.il.Valiable.onReset;
+import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.stageSize;
 import static gang.il.Valiable.totalObj;
 
@@ -33,6 +37,7 @@ public class LoadDB {
 
     public static class GetDB extends AsyncTask<String, Void, String> {
         String errorString = null;
+
 
         @Override
         protected void onPreExecute() {
@@ -114,7 +119,7 @@ public class LoadDB {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
             if (jsonArray.length() != 1) {
-                finishCount=0;
+                finishCount = 0;
                 objCount = jsonArray.length();
                 totalObj = new TotalObject[objCount];
             }
@@ -127,28 +132,46 @@ public class LoadDB {
                     String structure = item.getString("Structure");
                     int x = item.getInt("posX");
                     int y = item.getInt("posY");
-                    switch (structure) {
-                        case "dog":
-                        case "cat":
-                        case "rabbit":
-                        case "cow":
-                        case "lion":
+                    int sort = item.getInt("sort_num");
+                    switch (sort) {
+                        case 10:
                             totalObj[i] = new TotalObject(x, y, structure, true);
+                            putInFood(structure, i); //해당 동물의 음식 속성 부여
                             break;
                         default:
                             totalObj[i] = new TotalObject(x, y, structure, false);
                             break;
                     }
-                    if(totalObj[i].getType().endsWith("_fin")) finishCount++; //총 finish 개수 저장
+                    if (totalObj[i].getType().endsWith("_fin")) finishCount++; //총 finish 개수 저장
                     if (i == 1) stageSize = x / 2;
                     else if (i == jsonArray.length() - 1) {
-                        LoadDB.GetDB Data = new LoadDB.GetDB();
-                        Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", item.getString("Stage")); // 최소 횟수 로딩
+                        if (onReset)
+                            onReset = false;
+                        else {
+                            LoadDB.GetDB Data = new LoadDB.GetDB();
+                            Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", stageCount); // 최소 횟수 로딩
+                        }
                     }
                 }
             }
         } catch (JSONException e) {
+        }
+    }
 
+    public static void putInFood(String animalName, int animalIndex) { //음식 테스트중
+        switch (animalName) {
+            case "dog":
+                totalObj[animalIndex].foods.add("food_bone");
+                break;
+            case "horse":
+                totalObj[animalIndex].foods.add("food_carrot");
+                break;
+            case "mouse":
+                totalObj[animalIndex].foods.add("food_cheese");
+                break;
+            case "rabbit":
+                totalObj[animalIndex].foods.add("food_carrot");
+                break;
         }
     }
 }

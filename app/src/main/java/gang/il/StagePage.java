@@ -16,8 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import static gang.il.CheckedStage.onCheckStage;
 import static gang.il.Valiable.CLEAR_STAGE;
+import static gang.il.Valiable.STAGE_RESET;
 import static gang.il.Valiable.StagePage;
 import static gang.il.Valiable.LOAD_FINISH;
 import static gang.il.Valiable.stageCount;

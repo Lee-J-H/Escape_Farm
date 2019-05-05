@@ -9,7 +9,7 @@ public class Valiable {
     public static String direction, stageCount; //이동 방향
     public static final int CLEAR_STAGE = 1;
     public static final int LOAD_FINISH = 2;
+    public static final int STAGE_RESET = 3;
     public static Activity StagePage;
-
-
+    public static boolean onReset=false;
 }
