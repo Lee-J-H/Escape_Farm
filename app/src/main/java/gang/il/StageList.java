@@ -55,10 +55,11 @@ public class StageList extends BaseAdapter {
             }
         }
 
+
         for (int i = 0; i < 3; i++) {
             viewHolder.stage_num_text[i].setText("" + (position * 3 + 1 + i));
             viewHolder.stage_area[i].setTag("" + (position * 3 + 1 + i));
-            if (Integer.parseInt(viewHolder.stage_area[i].getTag().toString()) <= succeedStage + 1) {
+            if (Integer.parseInt(viewHolder.stage_area[i].getTag().toString()) <= succeedStage+1) {
                 viewHolder.stage_lock_img[i].setVisibility(View.GONE);
                 viewHolder.stage_area[i].setBackgroundColor(Color.parseColor("#F4DFAC"));
             }
@@ -68,7 +69,6 @@ public class StageList extends BaseAdapter {
             viewHolder.stage_area[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("stagetest", "result:" + v.getTag().toString());
                     stageCount = v.getTag().toString();
                     if (Integer.parseInt(stageCount) > succeedStage + 1)
                         return;
