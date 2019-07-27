@@ -68,7 +68,7 @@ public class GamePage extends AppCompatActivity {
 
     public void Dialog() {
         dialog = new StageClearDialog(context,
-                "스테이지 완료" + "\n이동횟수:" + moveCount + "\n점수:" + checkMinimumMove(), // 내용
+                "스테이지 완료" + "\n이동횟수:" + moveCount + "\n점수:" + checkMinimumMove()+"점", // 내용
                 OKDialogListener, ResetListener); // 왼쪽 버튼 이벤트
         // 오른쪽 버튼 이벤트
 
@@ -99,14 +99,14 @@ public class GamePage extends AppCompatActivity {
     };
 //출처: http://yoo-hyeok.tistory.com/51 [유혁의 엉터리 개발]
 
-    private String checkMinimumMove() {
-        String rating;
+    public int checkMinimumMove() {
+        int rating;
         if (moveCount <= minCount)
-            rating = "10점";
+            rating = 10;
         else if (moveCount < minCount + 2)
-            rating = "5점";
+            rating = 5;
         else
-            rating = "1점";
+            rating = 1;
         return rating;
     }
 }

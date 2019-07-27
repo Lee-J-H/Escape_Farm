@@ -40,7 +40,8 @@ public class StageList extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = new ViewHolder();
         final Context context = parent.getContext();
-        succeedStage = Integer.parseInt(onCheckStage(context));
+        //succeedStage = Integer.parseInt(onCheckStage(context));
+        succeedStage = onCheckStage(context);
         convertView=null;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -59,7 +60,7 @@ public class StageList extends BaseAdapter {
         for (int i = 0; i < 3; i++) {
             viewHolder.stage_num_text[i].setText("" + (position * 3 + 1 + i));
             viewHolder.stage_area[i].setTag("" + (position * 3 + 1 + i));
-            if (Integer.parseInt(viewHolder.stage_area[i].getTag().toString()) <= succeedStage+1) {
+            if (Integer.parseInt(viewHolder.stage_area[i].getTag().toString()) <= succeedStage) {
                 viewHolder.stage_lock_img[i].setVisibility(View.GONE);
                 viewHolder.stage_area[i].setBackgroundColor(Color.parseColor("#F4DFAC"));
             }
@@ -70,7 +71,7 @@ public class StageList extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     stageCount = v.getTag().toString();
-                    if (Integer.parseInt(stageCount) > succeedStage + 1)
+                    if (Integer.parseInt(stageCount) > succeedStage)
                         return;
                     LoadDB.GetDB Data = new LoadDB.GetDB();
                     Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount);  //스테이지DB 로딩

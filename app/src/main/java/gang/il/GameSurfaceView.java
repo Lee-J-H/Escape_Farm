@@ -61,12 +61,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         // Surface가 종료될 때 호출됨
-        mThread.interrupt();
-        /*try {
+        try {
             mThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
 

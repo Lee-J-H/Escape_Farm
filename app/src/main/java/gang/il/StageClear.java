@@ -21,8 +21,9 @@ public class StageClear {
     public void clearCheck() {
         removeAnimal();
         if (finishCount == 0) { //모든 동물이 탈출했을 경우
-            if (Integer.parseInt(stageCount) > Integer.parseInt(onCheckStage(mContext))) //클리어한 스테이지가 가장 마지막으로 클리어한 스테이지인 경우
-                onClearStage(mContext, stageCount);
+            //if (Integer.parseInt(stageCount) > Integer.parseInt(onCheckStage(mContext))) //클리어한 스테이지가 가장 마지막으로 클리어한 스테이지인 경우
+            //    onClearStage(mContext, stageCount);
+            onClearStage(mContext, Integer.parseInt(stageCount), ((GamePage) mContext).checkMinimumMove());
             ((GamePage) mContext).Dialog();
         }
     }
