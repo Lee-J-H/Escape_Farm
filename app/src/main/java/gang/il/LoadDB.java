@@ -123,6 +123,7 @@ public class LoadDB {
                 objCount = jsonArray.length();
                 totalObj = new TotalObject[objCount];
             }
+            int caveNum=0;
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
                 if (jsonArray.length() == 1) {
@@ -137,6 +138,10 @@ public class LoadDB {
                         case 10:
                             totalObj[i] = new TotalObject(x, y, structure, true);
                             putInFood(structure, i); //해당 동물의 음식 속성 부여
+                            break;
+                        case 110:
+                            totalObj[i] = new TotalObject(x, y, structure, false);
+                            totalObj[i].caveNum = ++caveNum;
                             break;
                         default:
                             totalObj[i] = new TotalObject(x, y, structure, false);

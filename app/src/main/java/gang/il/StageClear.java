@@ -31,8 +31,10 @@ public class StageClear {
     private void removeAnimal() {
         objCount--;
         finishCount--;
+        int caveNum=0;
         for (int i = curObjNum; i < objCount; i++) {
             totalObj[i] = new TotalObject(totalObj[i + 1].posX, totalObj[i + 1].posY, totalObj[i + 1].getType(), totalObj[i + 1].isMoveAble()); //클리어한 동물 기준으로 객체 값을 하나씩 앞으로 땡기기
+            if (totalObj[i].getType().equals("cave")) totalObj[i].setCaveNum(++caveNum);
         }
         totalObj[objCount] = null; //마지막 인덱스값 지우기
     }

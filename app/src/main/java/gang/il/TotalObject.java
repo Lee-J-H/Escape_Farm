@@ -9,6 +9,7 @@ class TotalObject {
     float posX, posY;
     String type; // animal, -fin, trap, wall
     boolean moveAble;
+    int caveNum;
 
     public TotalObject(float posX, float posY, String type,boolean moveAble) {
         this.posX = posX;
@@ -55,6 +56,13 @@ class TotalObject {
                 return (int) Math.abs(posY - this.posY);
         }
         return 0;
+    }
+
+    public int getCaveNum() {
+        return caveNum;
+    }
+    public void setCaveNum(int caveNum) {
+        this.caveNum = caveNum;
     }
 }
 

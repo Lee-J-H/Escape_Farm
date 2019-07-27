@@ -22,13 +22,14 @@ public class Controller {
 
         String structure = totalObj[moveIndex].getType();
         if (structure.endsWith("fin")) structure = "finish";
-        if (structure.startsWith("food")) structure= "food";
+        if (structure.startsWith("food")) structure = "food";
         switch (structure) {
             case "trap":
                 totalObj[curObjNum].setMoveAble(false);
                 return 0;
             case "finish":
             case "food":
+            case "cave":
                 return 0;
             case "wall":
             case "boundary":
@@ -55,10 +56,21 @@ public class Controller {
             // 모든 객체를 검사하면서 현재 선택된 객체와의 절대 길이를 비교
             if (totalObj[i].getType().equals(totalObj[curObjNum].getType()))
                 continue; //현재 선택된 객체는 제외
-            if (totalObj[i].getLength(curPosX, curPosY) < totalObj[moveIndex].getLength(curPosX, curPosY)) {
-                if (totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals(totalObj[curObjNum].getType() + "_fin"))//선택된 객체의 피니시가 아닐 경우 제외
-                    continue;
+            if (totalObj[i].getLength(curPosX, curPosY) <= totalObj[moveIndex].getLength(curPosX, curPosY)) {
+                //if (totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals(totalObj[curObjNum].getType() + "_fin"))//선택된 객체의 피니시가 아닐 경우 제외
+                //   continue;
+                if (totalObj[i].getType().endsWith("fin")) {
+                    if (!totalObj[i].getType().equals(totalObj[curObjNum].getType() + "_fin"))//선택된 객체의 피니시가 아닐 경우 제외
+                        continue;
+                } /*else {
+                    if (totalObj[i].getPosX() == totalObj[moveIndex].getPosX() && totalObj[i].getPosY() == totalObj[moveIndex].getPosY()) //피니시와 동물이 겹쳐있는 경우 동물로 목적지 설정
+                        continue;
+                }*/
                 if (totalObj[i].getType().startsWith("food") && !totalObj[curObjNum].foods.contains(totalObj[i].getType())) //선택된 객체의 음식이 아닐 경우 제외
+                    continue;
+                if (totalObj[i].getType().equals("cave") && totalObj[i].getPosX() == totalObj[moveIndex].getPosX() && totalObj[i].getPosY() == totalObj[moveIndex].getPosY()) // 동굴과 동물이 겹쳐있는 경우 동물로 목적지 설정
+                    continue;
+                if (totalObj[i].getType().equals("trap") && totalObj[i].getPosX() == totalObj[moveIndex].getPosX() && totalObj[i].getPosY() == totalObj[moveIndex].getPosY()) // 함정과 동물이 겹쳐있는 경우 동물로 목적지 설정
                     continue;
                 switch (direction) {
                     case "left":
@@ -108,15 +120,20 @@ public class Controller {
                 totalObj[i] = new TotalObject(totalObj[i + 1].posX, totalObj[i + 1].posY, totalObj[i + 1].getType(), totalObj[i + 1].isMoveAble()); //해당 음식 기준으로 객체 값을 하나씩 앞으로 땡기기
             }
             totalObj[objCount] = null; //마지막 인덱스값 지우기
+        } else if (totalObj[moveIndex].getType().equals("cave")) { //이동지가 동굴인 경우
+            Cave Cave = new Cave();
+            if (Cave.onCave(moveIndex)) {
+                move();
+                moveCount--;
+            }
+        } else if (totalObj[moveIndex].getType().endsWith("fin")) { //이동지가 피니시인 경우
+            StageClear StageClear = new StageClear(mContext);
+            StageClear.clearCheck();
         }
 
         if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우
             moveCount++; //이동 횟수 증가
             ((GamePage) mContext).setMoveCount(); //뷰의 이동횟수 갱신
-        }
-        if (totalObj[moveIndex].getType().endsWith("fin")) { //이동지가 피니시인 경우
-            StageClear StageClear = new StageClear(mContext);
-            StageClear.clearCheck();
         }
     }
 }

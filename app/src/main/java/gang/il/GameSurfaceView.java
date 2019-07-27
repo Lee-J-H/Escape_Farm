@@ -117,7 +117,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
     class ImageThread extends Thread {
-        Bitmap animal_1, animal_2, animal_3, animal_4, animal_5, ground, wall_down, wall_right, finish_1, finish_2, finish_3, finish_4, finish_5, trap, Back, warp, carrot, bone;
+        Bitmap animal_1, animal_2, animal_3, animal_4, animal_5, ground, wall_down, wall_right, finish_1, finish_2, finish_3, finish_4, finish_5, trap, Back, warp, carrot, bone, cave;
 
         private ImageThread() {
             WindowManager manager = (WindowManager)
@@ -165,6 +165,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             carrot = Bitmap.createScaledBitmap(carrot, (int) spaceX, (int) spaceY, true);
             bone = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.bone);
             bone = Bitmap.createScaledBitmap(bone, (int) spaceX, (int) spaceY, true);
+            cave = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.cave);
+            cave = Bitmap.createScaledBitmap(cave, (int) spaceX, (int) spaceY, true);
 
 
 
@@ -225,6 +227,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     mCanvas.drawBitmap(carrot, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
                 if(totalObj[i].getType().equals("food_bone"))
                     mCanvas.drawBitmap(bone, spaceX * totalObj[i].getPosX()/2 + blankX, spaceY * totalObj[i].getPosY()/2 + blankY, null);
+                if (totalObj[i].getType().equals("cave"))
+                    mCanvas.drawBitmap(cave, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
             }
         }
 
