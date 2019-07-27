@@ -20,7 +20,6 @@ public class MainPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainPage.this,StagePage.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
