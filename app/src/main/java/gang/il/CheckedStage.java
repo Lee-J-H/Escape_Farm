@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 public class CheckedStage extends Activity {
-    static String[] stageText;
+    static String[] stageText; //스테이지 클리어 점수 저장 변수
     public static void onClearStage(Context context, int stage, int rating) {  //스테이지 완료시 저장
         StringBuilder stageTextBuf = new StringBuilder();
         if(stage < stageText.length) {  //현재 저장된 마지막 스테이지 이전의 스테이지들을 완료한 경우
