@@ -8,7 +8,6 @@ import static gang.il.Valiable.curObjNum;
 import static gang.il.Valiable.direction;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.objCount;
-import static gang.il.Valiable.stageSize;
 import static gang.il.Valiable.totalObj;
 
 public class Controller {
@@ -57,15 +56,8 @@ public class Controller {
             if (totalObj[i].getType().equals(totalObj[curObjNum].getType()))
                 continue; //현재 선택된 객체는 제외
             if (totalObj[i].getLength(curPosX, curPosY) <= totalObj[moveIndex].getLength(curPosX, curPosY)) {
-                //if (totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals(totalObj[curObjNum].getType() + "_fin"))//선택된 객체의 피니시가 아닐 경우 제외
-                //   continue;
-                if (totalObj[i].getType().endsWith("fin")) {
-                    if (!totalObj[i].getType().equals(totalObj[curObjNum].getType() + "_fin"))//선택된 객체의 피니시가 아닐 경우 제외
-                        continue;
-                } /*else {
-                    if (totalObj[i].getPosX() == totalObj[moveIndex].getPosX() && totalObj[i].getPosY() == totalObj[moveIndex].getPosY()) //피니시와 동물이 겹쳐있는 경우 동물로 목적지 설정
-                        continue;
-                }*/
+                if (totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals(totalObj[curObjNum].getType() + "_fin"))//선택된 객체의 피니시가 아닐 경우 제외
+                   continue;
                 if (totalObj[i].getType().startsWith("food") && !totalObj[curObjNum].foods.contains(totalObj[i].getType())) //선택된 객체의 음식이 아닐 경우 제외
                     continue;
                 if (totalObj[i].getType().equals("cave") && totalObj[i].getPosX() == totalObj[moveIndex].getPosX() && totalObj[i].getPosY() == totalObj[moveIndex].getPosY()) // 동굴과 동물이 겹쳐있는 경우 동물로 목적지 설정
@@ -129,6 +121,7 @@ public class Controller {
         } else if (totalObj[moveIndex].getType().endsWith("fin")) { //이동지가 피니시인 경우
             StageClear StageClear = new StageClear(mContext);
             StageClear.clearCheck();
+
         }
 
         if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우

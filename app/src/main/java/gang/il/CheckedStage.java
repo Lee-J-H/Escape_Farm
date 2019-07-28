@@ -35,11 +35,7 @@ public class CheckedStage extends Activity {
         SharedPreferences mode = context.getSharedPreferences("stageTest", MODE_PRIVATE);
         SharedPreferences.Editor editor = mode.edit();
         String stage = mode.getString("stage", "0");
-        //String stageTest1 = stage;
         stageText = stage.split(",");
-        /*for(int i=0; i<stageText.length; i++){
-            Log.d("stageTest","result"+i+":"+stageText[i]);
-        }*/
         return stageText.length;
     }//http://devstory.ibksplatform.com/2017/12/android-sharedpreferences.html
 }
