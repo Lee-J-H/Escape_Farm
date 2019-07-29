@@ -40,7 +40,6 @@ public class StageList extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = new ViewHolder();
         final Context context = parent.getContext();
-        //succeedStage = Integer.parseInt(onCheckStage(context));
         succeedStage = onCheckStage(context);
         convertView=null;
         if (convertView == null) {

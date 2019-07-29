@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import static gang.il.StagePage.mhandler;
 import static gang.il.Valiable.LOAD_FINISH;
 import static gang.il.Valiable.STAGE_RESET;
-import static gang.il.Valiable.finishCount;
+import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.onReset;
@@ -119,7 +119,8 @@ public class LoadDB {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
             if (jsonArray.length() != 1) {
-                finishCount = 0;
+                //finishCount = 0;
+                finishObj.clear();
                 objCount = jsonArray.length();
                 totalObj = new TotalObject[objCount];
             }
@@ -147,7 +148,8 @@ public class LoadDB {
                             totalObj[i] = new TotalObject(x, y, structure, false);
                             break;
                     }
-                    if (totalObj[i].getType().endsWith("_fin")) finishCount++; //총 finish 개수 저장
+                    //if (totalObj[i].getType().endsWith("_fin")) finishCount++; //총 finish 개수 저장
+                    if (totalObj[i].getType().endsWith("_fin")) finishObj.add(totalObj[i].getType().substring(0,totalObj[i].getType().indexOf("_"))); //finish 있는 동물 저장
                     if (i == 1) stageSize = x / 2;
                     else if (i == jsonArray.length() - 1) {
                         if (onReset)
