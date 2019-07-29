@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.35" /> <!--버튼 위 여백-->
+            android:layout_weight="0.3" /> <!--버튼 위 여백-->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -33,11 +33,29 @@
                 android:layout_weight="0.2"/> <!--버튼 좌측 여백-->
 
             <Button
-                android:id="@+id/stage_btn"
+                android:id="@+id/classic_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="클래식 모드"
                 android:layout_weight="0.6"/>  <!--클래식모드버튼-->
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"/> <!--버튼 좌측 여백-->
+
+            <Button
+                android:id="@+id/blind_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="블라인드 모드"
+                android:layout_weight="0.6"/>  <!--블라인드모드버튼-->
         </LinearLayout>
     </LinearLayout>
 
