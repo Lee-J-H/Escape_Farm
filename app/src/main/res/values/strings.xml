@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Escape_Farm</string>
+    <string name="Tutorial_text_1">동물을 화살표 방향으로 슬라이드하세요.</string>
+    <string name="Tutorial_text_2">동물이 끝에 다다르면 멈춥니다.</string>
+    <string name="Tutorial_text_3">다시 슬라이드 하여 동물을 이동시키세요.</string>
+    <string name="Tutorial_text_4">동물이 중간에 벽을 만나면 멈춥니다.</string>
+    <string name="Tutorial_text_5">슬라이드 하여 동물을 이동시키세요.</string>
+    <string name="Tutorial_text_6">해당 탈출구에 도착하면 탈출하게 됩니다.</string>
 </resources>

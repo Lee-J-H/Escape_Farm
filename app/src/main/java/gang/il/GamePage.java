@@ -14,6 +14,7 @@ import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.onReset;
 import static gang.il.Valiable.stageCount;
+import static gang.il.Valiable.tutorialNum;
 
 public class GamePage extends AppCompatActivity {
     StageClearDialog dialog;
@@ -25,6 +26,7 @@ public class GamePage extends AppCompatActivity {
         super.onBackPressed();
         moveCount = 0;
         stageCount = "0";
+        tutorialNum=1;
         finish();
     }
 
@@ -46,6 +48,7 @@ public class GamePage extends AppCompatActivity {
             }
         });
         resetBtn.setOnClickListener(ResetListener);
+        tutorialNum=1;
     }
 
     public void setMoveCount() {
@@ -62,6 +65,7 @@ public class GamePage extends AppCompatActivity {
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
         moveCount = 0;
+        tutorialNum=1;
         finish();
     }
 
@@ -90,6 +94,7 @@ public class GamePage extends AppCompatActivity {
         public void onClick(View v) {
             onReset=true;
             moveCount=0;
+            tutorialNum=1;
             setMoveCount();
             LoadDB.GetDB Data = new LoadDB.GetDB();
             Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount);  //스테이지 재로딩

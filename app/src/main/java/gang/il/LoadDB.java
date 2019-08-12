@@ -24,7 +24,9 @@ import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.onReset;
 import static gang.il.Valiable.stageCount;
-import static gang.il.Valiable.stageSize;
+
+import static gang.il.Valiable.stageSize_x;
+import static gang.il.Valiable.stageSize_y;
 import static gang.il.Valiable.totalObj;
 
 public class LoadDB {
@@ -119,7 +121,6 @@ public class LoadDB {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
             if (jsonArray.length() != 1) {
-                //finishCount = 0;
                 finishObj.clear();
                 objCount = jsonArray.length();
                 totalObj = new TotalObject[objCount];
@@ -148,9 +149,11 @@ public class LoadDB {
                             totalObj[i] = new TotalObject(x, y, structure, false);
                             break;
                     }
-                    //if (totalObj[i].getType().endsWith("_fin")) finishCount++; //총 finish 개수 저장
                     if (totalObj[i].getType().endsWith("_fin")) finishObj.add(totalObj[i].getType().substring(0,totalObj[i].getType().indexOf("_"))); //finish 있는 동물 저장
-                    if (i == 1) stageSize = x / 2;
+                    if (i == 1) {
+                        stageSize_x = x / 2;
+                        stageSize_y = y / 2;
+                    }
                     else if (i == jsonArray.length() - 1) {
                         if (onReset)
                             onReset = false;
@@ -165,7 +168,7 @@ public class LoadDB {
         }
     }
 
-    public static void putInFood(String animalName, int animalIndex) { //음식 테스트중
+    public static void putInFood(String animalName, int animalIndex) {
         switch (animalName) {
             case "dog":
                 totalObj[animalIndex].foods.add("food_bone");
