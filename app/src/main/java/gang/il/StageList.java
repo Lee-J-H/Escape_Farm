@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import static gang.il.CheckedStage.onCheckStage;
+import static gang.il.Valiable.clrDialogBtn;
 import static gang.il.Valiable.stageCount;
 
 public class StageList extends BaseAdapter {
@@ -72,6 +73,7 @@ public class StageList extends BaseAdapter {
                     stageCount = v.getTag().toString();
                     if (Integer.parseInt(stageCount) > succeedStage)
                         return;
+                    clrDialogBtn="stageClk";
                     LoadDB.GetDB Data = new LoadDB.GetDB();
                     Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount);  //스테이지DB 로딩
                 }

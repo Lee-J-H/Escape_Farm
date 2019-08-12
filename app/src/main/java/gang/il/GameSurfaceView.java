@@ -129,7 +129,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
     class ImageThread extends Thread {
-        Bitmap animal_1, animal_2, animal_3, animal_4, animal_5, ground, wall_down, wall_right, finish_1, finish_2, finish_3, finish_4, finish_5, trap, Back, warp, carrot, bone, cave, blackScreen, mask_animal, mask_result;
+        Bitmap animal_1, animal_2, animal_3, animal_4, animal_5, ground, wall_down, wall_right, finish_1, finish_2, finish_3, finish_4, finish_5, trap, Back, warp, carrot, bone, cave, blackScreen, mask_animal, mask_result, mask;
 
         private ImageThread() {
             WindowManager manager = (WindowManager)
@@ -179,9 +179,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             bone = Bitmap.createScaledBitmap(bone, (int) spaceX, (int) spaceY, true);
             cave = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.cave);
             cave = Bitmap.createScaledBitmap(cave, (int) spaceX, (int) spaceY, true);
-            blackScreen = Bitmap.createScaledBitmap(wall_down, (int) spaceX * stageSize_x, (int) spaceY * stageSize_y, true);
             mask_animal = BitmapFactory.decodeResource(getResources(), R.drawable.mask_animal);
-            mask_result = Bitmap.createBitmap(blackScreen.getWidth(), blackScreen.getHeight(), Bitmap.Config.ARGB_8888);
         }
 
         private void doDraw() {
@@ -311,9 +309,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
 
         private void blindDraw() {
-            Bitmap mask = null;
+            blackScreen = Bitmap.createScaledBitmap(wall_down, (int) spaceX * stageSize_x, (int) spaceY * stageSize_y, true);
+            mask_result = Bitmap.createBitmap(blackScreen.getWidth(), blackScreen.getHeight(), Bitmap.Config.ARGB_8888);
             // 전경 이미지와 동일 크기의 mutable 이미지 생성, 전경 이미지의 바탕으로 사용됨
-            Bitmap result = Bitmap.createBitmap(blackScreen.getWidth(), blackScreen.getHeight(), Bitmap.Config.ARGB_8888);
+            //Bitmap result = Bitmap.createBitmap(blackScreen.getWidth(), blackScreen.getHeight(), Bitmap.Config.ARGB_8888);
             // 동적으로 마스킹 이미지를 생성하고 그리는 예
             // 전경 이미지와 동일한 크기의 알파 마스크 이미지를 생성하고 흰색을 채워 투명영역 설정함
             mask = Bitmap.createBitmap(blackScreen.getWidth(), blackScreen.getHeight(), Bitmap.Config.ARGB_8888);
@@ -336,14 +335,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     continue;
                 canvasForMask.drawCircle(spaceX * (totalObj[i].getPosX() - 1) / 2, spaceY * (totalObj[i].getPosY() - 1) / 2, spaceX * 3 / 4.0f, paint1);//흰색으로 그려주는 곳은 투명하게 되어 배경이 보이게 될 영역이다
             }
-            Canvas c = new Canvas(result);
+            Canvas c = new Canvas(mask_result);
             c.drawBitmap(blackScreen, 0, 0, null); // 전경의 바탕 위에 이미지에 전경 이미지 그림
             Paint paint2 = new Paint();
             paint2.setFilterBitmap(false);
             paint2.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
             c.drawBitmap(mask, 0, 0, paint2); // 전경 이미지 위에 마스크 이미지 그림
             paint2.setXfermode(null);
-            mCanvas.drawBitmap(result, blankX + spaceX, blankY + spaceY, null); // 배경 위에 완성된 전경 이미지를 그림
+            mCanvas.drawBitmap(mask_result, blankX + spaceX, blankY + spaceY, null); // 배경 위에 완성된 전경 이미지를 그림
         }
 
         public void run() {
