@@ -8,7 +8,9 @@ import static gang.il.Valiable.curObjNum;
 import static gang.il.Valiable.direction;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.objCount;
+import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.totalObj;
+import static gang.il.Valiable.tutorialNum;
 
 public class Controller {
     Context mContext;
@@ -127,6 +129,9 @@ public class Controller {
         if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우
             moveCount++; //이동 횟수 증가
             ((GamePage) mContext).setMoveCount(); //뷰의 이동횟수 갱신
+            if(stageCount.equals("1")){ //튜토리얼 진행
+                if(tutorialNum <3)tutorialNum++;
+            }
         }
     }
 }
