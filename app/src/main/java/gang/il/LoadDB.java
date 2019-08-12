@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import static gang.il.StagePage.mhandler;
 import static gang.il.Valiable.LOAD_FINISH;
 import static gang.il.Valiable.STAGE_RESET;
+import static gang.il.Valiable.clrDialogBtn;
 import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.objCount;
-import static gang.il.Valiable.onReset;
 import static gang.il.Valiable.stageCount;
 
 import static gang.il.Valiable.stageSize_x;
@@ -63,7 +63,6 @@ public class LoadDB {
         @Override
         protected String doInBackground(String... params) {
             String serverURL = params[0];
-
             String postParameters = "Stage=" + params[1];
 
             try {
@@ -130,7 +129,7 @@ public class LoadDB {
                 JSONObject item = jsonArray.getJSONObject(i);
                 if (jsonArray.length() == 1) {
                     minCount = item.getInt("Count");
-                    mhandler.sendEmptyMessage(LOAD_FINISH);
+                    if(clrDialogBtn.equals("stageClk"))mhandler.sendEmptyMessage(LOAD_FINISH);
                 } else {
                     String structure = item.getString("Structure");
                     int x = item.getInt("posX");
@@ -155,9 +154,9 @@ public class LoadDB {
                         stageSize_y = y / 2;
                     }
                     else if (i == jsonArray.length() - 1) {
-                        if (onReset)
-                            onReset = false;
-                        else {
+                        //if (onReset)
+                            //onReset = false;
+                        if(!clrDialogBtn.equals("reset")) {
                             LoadDB.GetDB Data = new LoadDB.GetDB();
                             Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", stageCount); // 최소 횟수 로딩
                         }

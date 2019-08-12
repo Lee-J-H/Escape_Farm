@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.moveCount;
-import static gang.il.Valiable.onReset;
+import static gang.il.Valiable.clrDialogBtn;
 import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.tutorialNum;
 
@@ -27,6 +27,8 @@ public class GamePage extends AppCompatActivity {
         moveCount = 0;
         stageCount = "0";
         tutorialNum=1;
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -85,14 +87,20 @@ public class GamePage extends AppCompatActivity {
     //다이얼로그 클릭이벤트
     private View.OnClickListener OKDialogListener = new View.OnClickListener() {
         public void onClick(View v) {
-            backStage();
+            clrDialogBtn = "next";
+            stageCount = String.valueOf(Integer.parseInt(stageCount)+1);
+            LoadDB.GetDB Data = new LoadDB.GetDB();
+            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount);  //스테이지DB 로딩
+            moveCount=0;
+            setMoveCount();
+            setStageCount();
             dialog.dismiss();
         }
     };
     private View.OnClickListener ResetListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            onReset=true;
+            clrDialogBtn = "reset";
             moveCount=0;
             tutorialNum=1;
             setMoveCount();
