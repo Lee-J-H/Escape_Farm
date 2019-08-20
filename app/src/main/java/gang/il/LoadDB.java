@@ -3,6 +3,7 @@ package gang.il;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -134,6 +135,9 @@ public class LoadDB {
                 break;
             case "clr_reset":
                 getClearedCount();
+                break;
+            case "record":
+                Toast.makeText(mContext,"recordSucceed",Toast.LENGTH_SHORT).show();
                 break;
             default:
                 getStageObj();
