@@ -22,6 +22,7 @@ import static gang.il.Valiable.LOAD_FINISH;
 import static gang.il.Valiable.LOAD_STAGE_COUNT;
 import static gang.il.Valiable.STAGE_RESET;
 import static gang.il.Valiable.finishObj;
+import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.min_count_ser;
 import static gang.il.Valiable.objCount;
@@ -66,7 +67,7 @@ public class LoadDB {
         @Override
         protected String doInBackground(String... params) {
             String serverURL = params[0];
-            String postParameters = "Stage=" + params[1];
+            String postParameters = "Stage=" + params[1] +"&gameMode="+params[3];
             stage_min = params[2];
 
             try {
@@ -131,7 +132,7 @@ public class LoadDB {
                 break;
             case "next_stage":
                 getMinimumCount();
-                Data.execute("http://106.10.57.117/EscapeFarm/getClearedStageMin.php", String.valueOf(Integer.valueOf(stageCount)+1), "clr_reset"); // 최소 횟수 로딩
+                Data.execute("http://106.10.57.117/EscapeFarm/getClearedStageMin.php", String.valueOf(Integer.valueOf(stageCount)+1), "clr_reset", gameMode); // 최소 횟수 로딩
                 break;
             case "clr_reset":
                 getClearedCount();
@@ -142,11 +143,11 @@ public class LoadDB {
             default:
                 getStageObj();
                 if(stage_min.equals("game_start_min"))
-                    Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", stageCount, "game_start"); // 최소 횟수 로딩
+                    Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", stageCount, "game_start", gameMode); // 최소 횟수 로딩
                 else if(stage_min.equals("next_stage_min"))
-                    Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", stageCount, "next_stage"); // 최소 횟수 로딩
+                    Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", stageCount, "next_stage", gameMode); // 최소 횟수 로딩
                 else if(stage_min.equals("clr_reset_min"))
-                    Data.execute("http://106.10.57.117/EscapeFarm/getClearedStageMin.php", String.valueOf(Integer.valueOf(stageCount)+1), "clr_reset"); // 최소 횟수 로딩
+                    Data.execute("http://106.10.57.117/EscapeFarm/getClearedStageMin.php", String.valueOf(Integer.valueOf(stageCount)+1), "clr_reset", gameMode); // 최소 횟수 로딩
                 break;
         }
     }

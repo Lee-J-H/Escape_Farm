@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.stageCount;
@@ -88,7 +89,7 @@ public class GamePage extends AppCompatActivity {
         public void onClick(View v) {
             stageCount = String.valueOf(Integer.parseInt(stageCount)+1);
             LoadDB.GetDB Data = new LoadDB.GetDB();
-            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "next_stage_min");  //스테이지DB 로딩
+            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "next_stage_min", gameMode);  //스테이지DB 로딩
             moveCount=0;
             setMoveCount();
             setStageCount();
@@ -102,7 +103,7 @@ public class GamePage extends AppCompatActivity {
             tutorialNum=1;
             setMoveCount();
             LoadDB.GetDB Data = new LoadDB.GetDB();
-            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "clr_reset_min");  //스테이지 재로딩
+            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "clr_reset_min", gameMode);  //스테이지 재로딩
             if(dialog!=null)
                 dialog.dismiss();
         }
@@ -114,7 +115,7 @@ public class GamePage extends AppCompatActivity {
             tutorialNum=1;
             setMoveCount();
             LoadDB.GetDB Data = new LoadDB.GetDB();
-            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "non_clr_reset");  //스테이지 재로딩
+            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "non_clr_reset", gameMode);  //스테이지 재로딩
             if(dialog!=null)
                 dialog.dismiss();
         }

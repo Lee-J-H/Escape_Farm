@@ -46,7 +46,7 @@ public class RecordDB {
         @Override
         protected String doInBackground(String... params) {
             String serverURL = params[0];
-            String postParameters = "Stage=" + params[1]+"&min_count="+params[2];
+            String postParameters = "Stage=" + params[1]+"&min_count="+params[2] + "&gameMode="+params[3];
 
             try {
 
@@ -99,7 +99,6 @@ public class RecordDB {
 
     public static void showResult() {
         try {
-                Toast.makeText(mContext,"recordSucceed",Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
         }
     }
