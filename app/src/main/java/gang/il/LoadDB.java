@@ -18,10 +18,11 @@ import java.util.ArrayList;
 
 import static gang.il.StagePage.mhandler;
 import static gang.il.Valiable.LOAD_FINISH;
+import static gang.il.Valiable.LOAD_STAGE_COUNT;
 import static gang.il.Valiable.STAGE_RESET;
-import static gang.il.Valiable.clrDialogBtn;
 import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.minCount;
+import static gang.il.Valiable.min_count_ser;
 import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.stageCount;
 
@@ -32,6 +33,7 @@ import static gang.il.Valiable.totalObj;
 public class LoadDB {
     public static Context mContext;
     public static String mJsonString;
+    public static String stage_min;
 
     public LoadDB(Context context) {
         mContext = context;
@@ -64,6 +66,7 @@ public class LoadDB {
         protected String doInBackground(String... params) {
             String serverURL = params[0];
             String postParameters = "Stage=" + params[1];
+            stage_min = params[2];
 
             try {
 
@@ -115,57 +118,96 @@ public class LoadDB {
     }
 
     public static void showResult() {
+        LoadDB.GetDB Data = new LoadDB.GetDB();
+        switch (stage_min) {
+            case "game_start":
+                getMinimumCount();
+                mhandler.sendEmptyMessage(LOAD_FINISH);
+                break;
+            case "min_count":
+                getClearedCount();
+                mhandler.sendEmptyMessage(LOAD_STAGE_COUNT);
+                break;
+            case "next_stage":
+                getMinimumCount();
+                Data.execute("http://106.10.57.117/EscapeFarm/getClearedStageMin.php", String.valueOf(Integer.valueOf(stageCount)+1), "clr_reset"); // 최소 횟수 로딩
+                break;
+            case "clr_reset":
+                getClearedCount();
+                break;
+            default:
+                getStageObj();
+                if(stage_min.equals("game_start_min"))
+                    Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", stageCount, "game_start"); // 최소 횟수 로딩
+                else if(stage_min.equals("next_stage_min"))
+                    Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", stageCount, "next_stage"); // 최소 횟수 로딩
+                else if(stage_min.equals("clr_reset_min"))
+                    Data.execute("http://106.10.57.117/EscapeFarm/getClearedStageMin.php", String.valueOf(Integer.valueOf(stageCount)+1), "clr_reset"); // 최소 횟수 로딩
+                break;
+        }
+    }
 
+    public static void getStageObj() {
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
-            if (jsonArray.length() != 1) {
-                finishObj.clear();
-                objCount = jsonArray.length();
-                totalObj = new TotalObject[objCount];
-            }
-            int caveNum=0;
+            finishObj.clear();
+            objCount = jsonArray.length();
+            totalObj = new TotalObject[objCount];
+            int caveNum = 0;
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
-                if (jsonArray.length() == 1) {
-                    minCount = item.getInt("Count");
-                    if(clrDialogBtn.equals("stageClk"))mhandler.sendEmptyMessage(LOAD_FINISH);
-                } else {
-                    String structure = item.getString("Structure");
-                    int x = item.getInt("posX");
-                    int y = item.getInt("posY");
-                    int sort = item.getInt("sort_num");
-                    switch (sort) {
-                        case 10:
-                            totalObj[i] = new TotalObject(x, y, structure, true);
-                            putInFood(structure, i); //해당 동물의 음식 속성 부여
-                            break;
-                        case 110:
-                            totalObj[i] = new TotalObject(x, y, structure, false);
-                            totalObj[i].caveNum = ++caveNum;
-                            break;
-                        default:
-                            totalObj[i] = new TotalObject(x, y, structure, false);
-                            break;
-                    }
-                    if (totalObj[i].getType().endsWith("_fin")) finishObj.add(totalObj[i].getType().substring(0,totalObj[i].getType().indexOf("_"))); //finish 있는 동물 저장
-                    if (i == 1) {
-                        stageSize_x = x / 2;
-                        stageSize_y = y / 2;
-                    }
-                    else if (i == jsonArray.length() - 1) {
-                        //if (onReset)
-                            //onReset = false;
-                        if(!clrDialogBtn.equals("reset")) {
-                            LoadDB.GetDB Data = new LoadDB.GetDB();
-                            Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", stageCount); // 최소 횟수 로딩
-                        }
-                    }
+                String structure = item.getString("Structure");
+                int x = item.getInt("posX");
+                int y = item.getInt("posY");
+                int sort = item.getInt("sort_num");
+                switch (sort) {
+                    case 10:
+                        totalObj[i] = new TotalObject(x, y, structure, true);
+                        putInFood(structure, i); //해당 동물의 음식 속성 부여
+                        break;
+                    case 110:
+                        totalObj[i] = new TotalObject(x, y, structure, false);
+                        totalObj[i].caveNum = ++caveNum;
+                        break;
+                    default:
+                        totalObj[i] = new TotalObject(x, y, structure, false);
+                        break;
+                }
+                if (totalObj[i].getType().endsWith("_fin"))
+                    finishObj.add(totalObj[i].getType().substring(0, totalObj[i].getType().indexOf("_"))); //finish 있는 동물 저장
+                if (i == 1) {
+                    stageSize_x = x / 2;
+                    stageSize_y = y / 2;
                 }
             }
         } catch (JSONException e) {
         }
     }
+
+    public static void getMinimumCount() {
+        try {
+            JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            JSONObject item = jsonArray.getJSONObject(0);
+            minCount = item.getInt("Count");
+        } catch (JSONException e) {
+        }
+    }
+
+    public static void getClearedCount() {
+        try {
+            min_count_ser.clear();
+            JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject item = jsonArray.getJSONObject(i);
+                min_count_ser.add(item.getInt("Count"));
+            }
+        } catch (JSONException e) {
+        }
+    }
+
 
     public static void putInFood(String animalName, int animalIndex) {
         switch (animalName) {
