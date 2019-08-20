@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.moveCount;
-import static gang.il.Valiable.clrDialogBtn;
 import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.tutorialNum;
 
@@ -74,8 +73,8 @@ public class GamePage extends AppCompatActivity {
 
     public void Dialog() {
         dialog = new StageClearDialog(context,
-                "스테이지 완료" + "\n이동횟수:" + moveCount + "\n점수:" + checkMinimumMove()+"점", // 내용
-                OKDialogListener, ResetListener); // 왼쪽 버튼 이벤트
+                "스테이지 완료" + "\n이동횟수:" + moveCount + "\n점수:", // 내용
+                OKDialogListener, clr_ResetListener); // 왼쪽 버튼 이벤트
         // 오른쪽 버튼 이벤트
 
         //요청 이 다이어로그를 종료할 수 있게 지정함
@@ -87,25 +86,35 @@ public class GamePage extends AppCompatActivity {
     //다이얼로그 클릭이벤트
     private View.OnClickListener OKDialogListener = new View.OnClickListener() {
         public void onClick(View v) {
-            clrDialogBtn = "next";
             stageCount = String.valueOf(Integer.parseInt(stageCount)+1);
             LoadDB.GetDB Data = new LoadDB.GetDB();
-            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount);  //스테이지DB 로딩
+            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "next_stage_min");  //스테이지DB 로딩
             moveCount=0;
             setMoveCount();
             setStageCount();
             dialog.dismiss();
         }
     };
-    private View.OnClickListener ResetListener = new View.OnClickListener() {
+    private View.OnClickListener clr_ResetListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            clrDialogBtn = "reset";
             moveCount=0;
             tutorialNum=1;
             setMoveCount();
             LoadDB.GetDB Data = new LoadDB.GetDB();
-            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount);  //스테이지 재로딩
+            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "clr_reset_min");  //스테이지 재로딩
+            if(dialog!=null)
+                dialog.dismiss();
+        }
+    };
+    private View.OnClickListener ResetListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            moveCount=0;
+            tutorialNum=1;
+            setMoveCount();
+            LoadDB.GetDB Data = new LoadDB.GetDB();
+            Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "non_clr_reset");  //스테이지 재로딩
             if(dialog!=null)
                 dialog.dismiss();
         }

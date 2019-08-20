@@ -108,6 +108,15 @@ public class Controller {
                 break;
         }
 
+        if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우
+            moveCount++; //이동 횟수 증가
+            ((GamePage) mContext).setMoveCount(); //뷰의 이동횟수 갱신
+            if(stageCount.equals("1")){ //튜토리얼 진행
+                if(tutorialNum <3)tutorialNum++;
+            }
+        }
+
+
         if (totalObj[moveIndex].type.startsWith("food")) { //이동지가 음식일 경우
             objCount--;
             for (int i = moveIndex; i < objCount; i++) {
@@ -124,14 +133,6 @@ public class Controller {
             StageClear StageClear = new StageClear(mContext);
             StageClear.clearCheck();
 
-        }
-
-        if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우
-            moveCount++; //이동 횟수 증가
-            ((GamePage) mContext).setMoveCount(); //뷰의 이동횟수 갱신
-            if(stageCount.equals("1")){ //튜토리얼 진행
-                if(tutorialNum <3)tutorialNum++;
-            }
         }
     }
 }

@@ -17,10 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import static gang.il.Valiable.CLEAR_STAGE;
+import static gang.il.Valiable.LOAD_STAGE_COUNT;
 import static gang.il.Valiable.STAGE_RESET;
 import static gang.il.Valiable.StagePage;
 import static gang.il.Valiable.LOAD_FINISH;
-import static gang.il.Valiable.stageCount;
+import static gang.il.Valiable.MainPage;
 
 public class StagePage extends AppCompatActivity {
     Context mContext = this;
@@ -44,6 +45,10 @@ public class StagePage extends AppCompatActivity {
                 case LOAD_FINISH:
                     Intent intent = new Intent(StagePage, GamePage.class);
                     StagePage.startActivityForResult(intent, CLEAR_STAGE);
+                    break;
+                case LOAD_STAGE_COUNT:
+                    intent = new Intent(MainPage,StagePage.class);
+                    MainPage.startActivity(intent);
                     break;
             }
         }

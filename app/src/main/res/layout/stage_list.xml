@@ -41,6 +41,40 @@
                 android:textStyle="bold" />
             <!--                //android:onClick="onStageClick"-->
 
+           <LinearLayout
+               android:id="@+id/min_lay_1"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_weight="0.4"
+               android:visibility="gone">
+
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_weight="0.2" />
+
+               <TextView
+                   android:id="@+id/my_min_1"
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:textStyle="bold"
+                   android:textSize="20dp"
+                   android:text="0"/>
+
+               <TextView
+                   android:id="@+id/min_1"
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:textStyle="bold"
+                   android:textSize="20dp"
+                   android:text="/0"/>
+
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_weight="0.2" />
+           </LinearLayout>
+
             <ImageView
                 android:id="@+id/lock_1"
                 android:layout_width="match_parent"
@@ -77,6 +111,39 @@
                 android:textStyle="bold" />
             <!--                //android:onClick="onStageClick"-->
 
+            <LinearLayout
+                android:id="@+id/min_lay_2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2" />
+
+                <TextView
+                    android:id="@+id/my_min_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:text="0"/>
+
+                <TextView
+                    android:id="@+id/min_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:text="/0"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -125,6 +192,40 @@
                 android:textSize="30dp"
                 android:textStyle="bold" />
             <!--                //android:onClick="onStageClick"-->
+
+            <LinearLayout
+                android:id="@+id/min_lay_3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2" />
+
+                <TextView
+                    android:id="@+id/my_min_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:text="0"/>
+
+                <TextView
+                    android:id="@+id/min_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:text="/0"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
