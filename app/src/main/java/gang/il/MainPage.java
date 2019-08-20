@@ -44,6 +44,6 @@ public class MainPage extends AppCompatActivity {
         StageDB.selectDB();
         stageCount=String.valueOf(StageDB.getClearedStage());
         LoadDB.GetDB Data = new LoadDB.GetDB();
-        Data.execute("http://106.10.57.117/EscapeFarm/getClearedStageMin.php", String.valueOf(Integer.valueOf(stageCount)+1), "min_count");  //클리어 된 스테이지들의 최소 회수 로딩
+        Data.execute("http://106.10.57.117/EscapeFarm/getClearedStageMin.php", String.valueOf(Integer.valueOf(stageCount)+1), "min_count", gameMode);  //클리어 된 스테이지들의 최소 회수 로딩
     }
 }

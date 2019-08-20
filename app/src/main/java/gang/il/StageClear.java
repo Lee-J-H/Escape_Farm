@@ -5,6 +5,7 @@ import android.util.Log;
 
 import static gang.il.Valiable.curObjNum;
 import static gang.il.Valiable.finishObj;
+import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.objCount;
@@ -26,7 +27,7 @@ public class StageClear {
             if (StageDB.getClearedStage() < Integer.parseInt(stageCount)) {  // 클리어하지 않은 스테이지를 클리어한 경우 최소횟수 저장
                 if(!stageCount.equals("1") && moveCount < minCount){ //서버에 저장된 최소횟수보다 적을 경우 기록 경신
                     RecordDB.SetDB Data = new RecordDB.SetDB();
-                    Data.execute("http://106.10.57.117/EscapeFarm/recordCount.php", stageCount, String.valueOf(moveCount));
+                    Data.execute("http://106.10.57.117/EscapeFarm/recordCount.php", stageCount, String.valueOf(moveCount), gameMode);
                 }
                 StageDB.insertDB(moveCount);
             }
@@ -34,7 +35,7 @@ public class StageClear {
                 if (StageDB.getMinimumCount(Integer.valueOf(stageCount) - 1) > moveCount) { //저장된 최소횟수보다 적은 횟수로 클리어한 경우 최소횟수 업데이트
                     if(moveCount < minCount){
                         RecordDB.SetDB Data = new RecordDB.SetDB();
-                        Data.execute("http://106.10.57.117/EscapeFarm/recordCount.php", stageCount, String.valueOf(moveCount));
+                        Data.execute("http://106.10.57.117/EscapeFarm/recordCount.php", stageCount, String.valueOf(moveCount), gameMode);
                     } //서버에 저장된 최소횟수보다 적을 경우 기록 경신
                     StageDB.recordMinCount(moveCount);
                 }

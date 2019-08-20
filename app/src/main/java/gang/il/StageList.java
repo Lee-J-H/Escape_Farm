@@ -89,7 +89,7 @@ public class StageList extends BaseAdapter {
                     if (Integer.parseInt(stageCount) - 1 > succeedStage)
                         return;
                     LoadDB.GetDB Data = new LoadDB.GetDB();
-                    Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "game_start_min");  //스테이지DB 로딩
+                    Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "game_start_min", gameMode);  //스테이지DB 로딩
                 }
             });
 
