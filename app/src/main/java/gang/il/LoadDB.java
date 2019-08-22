@@ -171,7 +171,7 @@ public class LoadDB {
                         totalObj[i] = new TotalObject(x, y, structure, true);
                         putInFood(structure, i); //해당 동물의 음식 속성 부여
                         break;
-                    case 110:
+                    case 3:
                         totalObj[i] = new TotalObject(x, y, structure, false);
                         totalObj[i].caveNum = ++caveNum;
                         break;
@@ -219,14 +219,17 @@ public class LoadDB {
             case "dog":
                 totalObj[animalIndex].foods.add("food_bone");
                 break;
-            case "horse":
-                totalObj[animalIndex].foods.add("food_carrot");
+            case "squirrel":
+                totalObj[animalIndex].foods.add("food_acorn");
                 break;
-            case "mouse":
-                totalObj[animalIndex].foods.add("food_cheese");
+            case "panda":
+                totalObj[animalIndex].foods.add("food_bamboo");
                 break;
             case "rabbit":
                 totalObj[animalIndex].foods.add("food_carrot");
+                break;
+            case "tiger":
+                totalObj[animalIndex].foods.add("food_meat");
                 break;
         }
     }

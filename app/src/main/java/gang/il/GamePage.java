@@ -8,10 +8,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.minCount;
+import static gang.il.Valiable.min_count_ser;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.tutorialNum;
@@ -19,7 +22,7 @@ import static gang.il.Valiable.tutorialNum;
 public class GamePage extends AppCompatActivity {
     StageClearDialog dialog;
     Context context = this;
-    Button backBtn, resetBtn;
+    ImageView backBtn, resetBtn;
 
     @Override
     public void onBackPressed() {
@@ -41,8 +44,8 @@ public class GamePage extends AppCompatActivity {
     }
 
     public void init() {
-        backBtn = (Button) findViewById(R.id.back);
-        resetBtn = (Button) findViewById(R.id.reset);
+        backBtn = (ImageView) findViewById(R.id.back);
+        resetBtn = (ImageView) findViewById(R.id.reset);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +53,7 @@ public class GamePage extends AppCompatActivity {
             }
         });
         resetBtn.setOnClickListener(ResetListener);
+        setMinCount();
         tutorialNum=1;
     }
 
@@ -61,6 +65,10 @@ public class GamePage extends AppCompatActivity {
     public void setStageCount() {
         TextView stageText = findViewById(R.id.stageCount);
         stageText.setText("스테이지: " + stageCount);
+    }
+    public void setMinCount() {
+        TextView min_text = findViewById(R.id.tv_min_count);
+        min_text.setText("최소횟수: " + min_count_ser.get(Integer.parseInt(stageCount)-1));
     }
 
     public void backStage() {
@@ -93,6 +101,7 @@ public class GamePage extends AppCompatActivity {
             moveCount=0;
             setMoveCount();
             setStageCount();
+            setMinCount();
             dialog.dismiss();
         }
     };

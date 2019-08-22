@@ -32,8 +32,6 @@ public class Tutorial {
         arrow = Bitmap.createScaledBitmap(arrow, (int) spaceX, (int) spaceY*3/2, true);
         messageBoard = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ground);
         messageBoard = Bitmap.createScaledBitmap(messageBoard, (int)width-10, (int) height/5, true);
-        back = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.backimg);
-        back = Bitmap.createScaledBitmap(back, (int) width, (int) height, true);
     }
 
     public void drawMessage(int startX, int startY) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -86,7 +87,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 firstPoint.y = event.getY();
                 for (int i = 0; i < objCount; i++)
                     if (!totalObj[i].getType().equals("none") && (int) (firstPoint.x - blankX) / spaceX == totalObj[i].getPosX() / 2 && (int) (firstPoint.y - blankY) / spaceY == totalObj[i].getPosY() / 2) { //빈칸이 아니고 동물이 있는 땅을 눌렀을 때
-                        if (!totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals("trap") && !totalObj[i].getType().startsWith("warp")) {
+                        if (!totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals("trap") && !totalObj[i].getType().equals("cave")) {
                             animal_clk = true;
                             curObjNum = i;
                             break;
@@ -129,7 +130,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
     class ImageThread extends Thread {
-        Bitmap animal_1, animal_2, animal_3, animal_4, animal_5, ground, wall_down, wall_right, finish_1, finish_2, finish_3, finish_4, finish_5, trap, Back, warp, carrot, bone, cave, blackScreen, mask_animal, mask_result, mask;
+        Bitmap dog, squirrel, rabbit, panda, tiger, ground, wall_down, wall_right, dog_fin, squirrel_fin, rabbit_fin, panda_fin, tiger_fin, acorn, bamboo, meat, trap, carrot, bone, cave, blackScreen, mask_animal, mask_result, mask;
 
         private ImageThread() {
             WindowManager manager = (WindowManager)
@@ -141,44 +142,46 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             Height = sizePoint.y;
             spaceX = (int) Width / 10;
             spaceY = (int) Height / 20;
-            animal_1 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.animal_1);
-            animal_1 = Bitmap.createScaledBitmap(animal_1, (int) spaceX, (int) spaceY, true);
-            animal_2 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.animal_2);
-            animal_2 = Bitmap.createScaledBitmap(animal_2, (int) spaceX, (int) spaceY, true);
-            animal_3 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.animal_3);
-            animal_3 = Bitmap.createScaledBitmap(animal_3, (int) spaceX, (int) spaceY, true);
-            animal_4 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.animal_4);
-            animal_4 = Bitmap.createScaledBitmap(animal_4, (int) spaceX, (int) spaceY, true);
-            animal_5 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.animal_5);
-            animal_5 = Bitmap.createScaledBitmap(animal_5, (int) spaceX, (int) spaceY, true);
+            dog = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.dog);
+            dog = Bitmap.createScaledBitmap(dog, (int) spaceX, (int) spaceY, true);
+            squirrel = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.squirrel);
+            squirrel = Bitmap.createScaledBitmap(squirrel, (int) spaceX, (int) spaceY, true);
+            rabbit = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.rabbit);
+            rabbit = Bitmap.createScaledBitmap(rabbit, (int) spaceX, (int) spaceY, true);
+            panda = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.panda);
+            panda = Bitmap.createScaledBitmap(panda, (int) spaceX, (int) spaceY, true);
+            tiger = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.tiger);
+            tiger = Bitmap.createScaledBitmap(tiger, (int) spaceX, (int) spaceY, true);
             ground = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ground);
             ground = Bitmap.createScaledBitmap(ground, (int) spaceX, (int) spaceY, true);
             wall_right = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall);
             wall_right = Bitmap.createScaledBitmap(wall_right, (int) spaceX / 10, (int) spaceY, true);
             wall_down = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall);
             wall_down = Bitmap.createScaledBitmap(wall_down, (int) spaceX, (int) spaceY / 10, true);
-            finish_1 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.finish_1);
-            finish_1 = Bitmap.createScaledBitmap(finish_1, (int) spaceX, (int) spaceY, true);
-            finish_2 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.finish_2);
-            finish_2 = Bitmap.createScaledBitmap(finish_2, (int) spaceX, (int) spaceY, true);
-            finish_3 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.finish_3);
-            finish_3 = Bitmap.createScaledBitmap(finish_3, (int) spaceX, (int) spaceY, true);
-            finish_4 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.finish_4);
-            finish_4 = Bitmap.createScaledBitmap(finish_4, (int) spaceX, (int) spaceY, true);
-            finish_5 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.finish_5);
-            finish_5 = Bitmap.createScaledBitmap(finish_5, (int) spaceX, (int) spaceY, true);
+            dog_fin = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.dog_fin);
+            dog_fin = Bitmap.createScaledBitmap(dog_fin, (int) spaceX, (int) spaceY, true);
+            squirrel_fin = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.squirrel_fin);
+            squirrel_fin = Bitmap.createScaledBitmap(squirrel_fin, (int) spaceX, (int) spaceY, true);
+            rabbit_fin = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.rabbit_fin);
+            rabbit_fin = Bitmap.createScaledBitmap(rabbit_fin, (int) spaceX, (int) spaceY, true);
+            panda_fin = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.panda_fin);
+            panda_fin = Bitmap.createScaledBitmap(panda_fin, (int) spaceX, (int) spaceY, true);
+            tiger_fin = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.tiger_fin);
+            tiger_fin = Bitmap.createScaledBitmap(tiger_fin, (int) spaceX, (int) spaceY, true);
             trap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.trap);
             trap = Bitmap.createScaledBitmap(trap, (int) spaceX, (int) spaceY, true);
-            Back = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.backimg);
-            Back = Bitmap.createScaledBitmap(Back, (int) Width, (int) Height, true);
-            warp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.warp_1);
-            warp = Bitmap.createScaledBitmap(warp, (int) spaceX, (int) spaceY, true);
             carrot = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.carrot);
             carrot = Bitmap.createScaledBitmap(carrot, (int) spaceX, (int) spaceY, true);
             bone = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.bone);
             bone = Bitmap.createScaledBitmap(bone, (int) spaceX, (int) spaceY, true);
             cave = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.cave);
             cave = Bitmap.createScaledBitmap(cave, (int) spaceX, (int) spaceY, true);
+            meat = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.meat);
+            meat = Bitmap.createScaledBitmap(cave, (int) spaceX, (int) spaceY, true);
+            acorn = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.acorn);
+            acorn = Bitmap.createScaledBitmap(cave, (int) spaceX, (int) spaceY, true);
+            bamboo = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.bamboo);
+            bamboo = Bitmap.createScaledBitmap(cave, (int) spaceX, (int) spaceY, true);
             mask_animal = BitmapFactory.decodeResource(getResources(), R.drawable.mask_animal);
         }
 
@@ -229,33 +232,39 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     }
                 }
                 if (totalObj[i].getType().equals("dog"))
-                    mCanvas.drawBitmap(animal_1, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("cat"))
-                    mCanvas.drawBitmap(animal_2, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                    mCanvas.drawBitmap(dog, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                if (totalObj[i].getType().equals("squirrel"))
+                    mCanvas.drawBitmap(squirrel, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
                 if (totalObj[i].getType().equals("rabbit"))
-                    mCanvas.drawBitmap(animal_3, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("horse"))
-                    mCanvas.drawBitmap(animal_4, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("mouse"))
-                    mCanvas.drawBitmap(animal_5, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                    mCanvas.drawBitmap(rabbit, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                if (totalObj[i].getType().equals("panda"))
+                    mCanvas.drawBitmap(panda, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                if (totalObj[i].getType().equals("tiger"))
+                    mCanvas.drawBitmap(tiger, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
                 if (totalObj[i].getType().equals("dog_fin")) {
                     if(stageCount.equals("1"))
-                        mCanvas.drawBitmap(finish_1, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, tutorialPaint);
-                    else mCanvas.drawBitmap(finish_1, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        mCanvas.drawBitmap(dog_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, tutorialPaint);
+                    else mCanvas.drawBitmap(dog_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
                 }
-                if (totalObj[i].getType().equals("cat_fin"))
-                    mCanvas.drawBitmap(finish_2, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                if (totalObj[i].getType().equals("squirrel_fin"))
+                    mCanvas.drawBitmap(squirrel_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
                 if (totalObj[i].getType().equals("rabbit_fin"))
-                    mCanvas.drawBitmap(finish_3, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("horse_fin"))
-                    mCanvas.drawBitmap(finish_4, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("mouse_fin"))
-                    mCanvas.drawBitmap(animal_5, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                    mCanvas.drawBitmap(rabbit_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                if (totalObj[i].getType().equals("panda_fin"))
+                    mCanvas.drawBitmap(panda_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                if (totalObj[i].getType().equals("tiger_fin"))
+                    mCanvas.drawBitmap(tiger_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
                 if (totalObj[i].getType().equals("trap"))
                     mCanvas.drawBitmap(trap, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
                 if (totalObj[i].getType().equals("food_carrot"))
                     mCanvas.drawBitmap(carrot, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
                 if (totalObj[i].getType().equals("food_bone"))
+                    mCanvas.drawBitmap(bone, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                if (totalObj[i].getType().equals("food_bamboo"))
+                    mCanvas.drawBitmap(bamboo, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                if (totalObj[i].getType().equals("food_acorn"))
+                    mCanvas.drawBitmap(bone, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                if (totalObj[i].getType().equals("food_meat"))
                     mCanvas.drawBitmap(bone, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
                 if (totalObj[i].getType().equals("cave"))
                     mCanvas.drawBitmap(cave, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
@@ -296,15 +305,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             int finishWidgetNum = 0;
             for (int i = 0; i < finishObj.size(); i++) {
                 if (finishObj.get(i).equals("dog"))
-                    mCanvas.drawBitmap(animal_1, (finishWidgetNum++) * blankX, blankY * 7 / 10, null);
-                if (finishObj.get(i).equals("cat"))
-                    mCanvas.drawBitmap(animal_2, (finishWidgetNum++) * blankX, blankY * 7 / 10, null);
+                    mCanvas.drawBitmap(dog, (finishWidgetNum++) * blankX, blankY * 6 / 10, null);
+                if (finishObj.get(i).equals("squirrel"))
+                    mCanvas.drawBitmap(squirrel, (finishWidgetNum++) * blankX, blankY * 6 / 10, null);
                 if (finishObj.get(i).equals("rabbit"))
-                    mCanvas.drawBitmap(animal_3, (finishWidgetNum++) * blankX, blankY * 7 / 10, null);
-                if (finishObj.get(i).equals("horse"))
-                    mCanvas.drawBitmap(animal_4, (finishWidgetNum++) * blankX, blankY * 7 / 10, null);
-                if (finishObj.get(i).equals("mouse"))
-                    mCanvas.drawBitmap(animal_5, (finishWidgetNum++) * blankX, blankY * 7 / 10, null);
+                    mCanvas.drawBitmap(rabbit, (finishWidgetNum++) * blankX, blankY * 6 / 10, null);
+                if (finishObj.get(i).equals("panda"))
+                    mCanvas.drawBitmap(panda, (finishWidgetNum++) * blankX, blankY * 6 / 10, null);
+                if (finishObj.get(i).equals("tiger"))
+                    mCanvas.drawBitmap(tiger, (finishWidgetNum++) * blankX, blankY * 6 / 10, null);
             }
         }
 
@@ -350,7 +359,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 mCanvas = mHolder.lockCanvas();
                 try {
                     synchronized (mHolder) {
-                        mCanvas.drawBitmap(Back, 0, 0, null);
+                        Paint mPaint = new Paint();
+                        mPaint.setColor(0xFFFFFf00);
+                        mCanvas.drawRect(0,0,Width,Height,mPaint);
                         doDraw();
                         if (gameMode.equals("blind")) blindDraw();
                         drawAnimalWidget();
