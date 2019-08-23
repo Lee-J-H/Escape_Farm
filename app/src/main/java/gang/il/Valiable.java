@@ -1,6 +1,7 @@
 package gang.il;
 
 import android.app.Activity;
+import android.content.Context;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,10 @@ public class Valiable {
     public static final int LOAD_FINISH = 2;
     public static final int STAGE_RESET = 3;
     public static final int LOAD_STAGE_COUNT = 4;
+    public static final int Faild_internet = 5;
     public static Activity StagePage, MainPage;
     public static ArrayList finishObj = new ArrayList();
     public static ArrayList min_count_ser = new ArrayList();
+    public static StageClearDialog dialog;
+    public static Context mContext;
 }

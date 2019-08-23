@@ -50,11 +50,11 @@ public class StageDBHelper extends SQLiteOpenHelper {
 
     public void selectDB() {
         db = getReadableDatabase();
-        if (gameMode.equals("classic"))
+       /* if (gameMode.equals("classic"))
             Table_Name = "Classic";
         else
-            Table_Name = "Blind";
-        //Table_Name="Classic";
+            Table_Name = "Blind";*/
+        Table_Name="Classic";
 
         int countNum = 0;
         Cursor c = db.rawQuery("select Min_Count from " + Table_Name, null);

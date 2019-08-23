@@ -18,6 +18,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
+import static gang.il.LoadingImg.progressDialog;
+import static gang.il.LoadingImg.progressOFF;
 import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.objCount;
@@ -72,6 +74,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         // Surface가 종료될 때 호출됨
         try {
             mThread.join();
+            Log.d("backBtnTest","result:callThisFunction");
+            if(progressDialog != null)
+                progressOFF();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

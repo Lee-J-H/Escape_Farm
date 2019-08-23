@@ -11,9 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import static gang.il.LoadingImg.progressON;
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.min_count_ser;
 import static gang.il.Valiable.stageCount;
+import static gang.il.Valiable.StagePage;
 
 public class StageList extends BaseAdapter {
     int succeedStage;
@@ -88,6 +90,7 @@ public class StageList extends BaseAdapter {
                     stageCount = v.getTag().toString();
                     if (Integer.parseInt(stageCount) - 1 > succeedStage)
                         return;
+                    progressON(StagePage, null);
                     LoadDB.GetDB Data = new LoadDB.GetDB();
                     Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "game_start_min", gameMode);  //스테이지DB 로딩
                 }
