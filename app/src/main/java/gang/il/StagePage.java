@@ -16,20 +16,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import static gang.il.LoadDB.failedInternet;
 import static gang.il.Valiable.CLEAR_STAGE;
+import static gang.il.Valiable.Faild_internet;
 import static gang.il.Valiable.LOAD_STAGE_COUNT;
 import static gang.il.Valiable.STAGE_RESET;
 import static gang.il.Valiable.StagePage;
 import static gang.il.Valiable.LOAD_FINISH;
 import static gang.il.Valiable.MainPage;
+import static gang.il.Valiable.mContext;
 
 public class StagePage extends AppCompatActivity {
-    Context mContext = this;
     ListView stageList;
     StageList stageListAdapter = new StageList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mContext=this;
         StagePage = this;
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);//제목 없음
         super.onCreate(savedInstanceState);
@@ -50,6 +53,9 @@ public class StagePage extends AppCompatActivity {
                     intent = new Intent(MainPage,StagePage.class);
                     MainPage.startActivity(intent);
                     break;
+                case Faild_internet:
+                    failedInternet(mContext);
+                    break;
             }
         }
     };
@@ -58,6 +64,7 @@ public class StagePage extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == CLEAR_STAGE) {
             if (resultCode == RESULT_OK) {
+                mContext=this;
                 stageListAdapter.notifyDataSetChanged();
             }
         }

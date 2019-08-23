@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+import static gang.il.LoadingImg.progressDialog;
+import static gang.il.LoadingImg.progressON;
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.MainPage;
+import static gang.il.Valiable.mContext;
 
 public class MainPage extends AppCompatActivity {
-    Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mContext=this;
@@ -40,6 +42,7 @@ public class MainPage extends AppCompatActivity {
         });
     }
     public void init(){
+        progressON(MainPage,null);
         StageDBHelper StageDB = new StageDBHelper(mContext);
         StageDB.selectDB();
         stageCount=String.valueOf(StageDB.getClearedStage());

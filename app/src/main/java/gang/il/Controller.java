@@ -45,9 +45,7 @@ public class Controller {
         int moveIndex, movePoint; //가장 가까운 장애물의 인덱스
         float curPosX = totalObj[curObjNum].getPosX(), curPosY = totalObj[curObjNum].getPosY(); // 현재 위치에 대한 x,y 좌표의 값을 저장
         float oriPosX = curPosX, oriPosY = curPosY;//기존 좌표 저장
-
         if (!totalObj[curObjNum].isMoveAble()) return; //트랩에 걸렸을때
-
         if (direction.equals("left") || direction.equals("up")) // 방향성에 따른 증가 감소 변화
             moveIndex = 0;
         else
@@ -61,8 +59,6 @@ public class Controller {
                 if (totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals(totalObj[curObjNum].getType() + "_fin"))//선택된 객체의 피니시가 아닐 경우 제외
                    continue;
                 if (totalObj[i].getType().startsWith("food") && !totalObj[curObjNum].foods.contains(totalObj[i].getType())) //선택된 객체의 음식이 아닐 경우 제외
-                    continue;
-                if (totalObj[i].getType().equals("cave") && totalObj[i].getPosX() == totalObj[moveIndex].getPosX() && totalObj[i].getPosY() == totalObj[moveIndex].getPosY()) // 동굴과 동물이 겹쳐있는 경우 동물로 목적지 설정
                     continue;
                 if (totalObj[i].getType().equals("trap") && totalObj[i].getPosX() == totalObj[moveIndex].getPosX() && totalObj[i].getPosY() == totalObj[moveIndex].getPosY()) // 함정과 동물이 겹쳐있는 경우 동물로 목적지 설정
                     continue;
