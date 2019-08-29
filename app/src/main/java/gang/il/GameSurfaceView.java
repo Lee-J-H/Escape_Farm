@@ -74,7 +74,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         // Surface가 종료될 때 호출됨
         try {
             mThread.join();
-            Log.d("backBtnTest","result:callThisFunction");
             if(progressDialog != null)
                 progressOFF();
         } catch (InterruptedException e) {
@@ -159,9 +158,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             tiger = Bitmap.createScaledBitmap(tiger, (int) spaceX, (int) spaceY, true);
             ground = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ground);
             ground = Bitmap.createScaledBitmap(ground, (int) spaceX, (int) spaceY, true);
-            wall_right = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall);
+            wall_right = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall_right);
             wall_right = Bitmap.createScaledBitmap(wall_right, (int) spaceX / 10, (int) spaceY, true);
-            wall_down = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall);
+            wall_down = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall_down);
             wall_down = Bitmap.createScaledBitmap(wall_down, (int) spaceX, (int) spaceY / 10, true);
             dog_fin = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.dog_fin);
             dog_fin = Bitmap.createScaledBitmap(dog_fin, (int) spaceX, (int) spaceY, true);
