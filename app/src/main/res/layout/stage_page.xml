@@ -6,17 +6,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context=".StagePage">
+    tools:context=".StagePage"
+    android:background="@drawable/ground">
 
+    <TextView
+        android:id="@+id/gameMode"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:layout_gravity="center"
+        android:textSize="70dp"
+        android:text="Classic"/>
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.06"
+        android:text="Back"
+        android:gravity="center"
+        android:background="@drawable/button"/>
     <TextView
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="0.1"/>
-    <ListView
+    android:layout_weight="0.05"/>
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7"
+        android:id="@+id/viewPager"/>
+
+    <!--<ListView
         android:id="@+id/stage_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.9">
-    </ListView>
+    </ListView>-->
 
 </LinearLayout>

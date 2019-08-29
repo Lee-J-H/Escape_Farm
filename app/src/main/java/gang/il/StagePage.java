@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,8 +28,11 @@ import static gang.il.Valiable.MainPage;
 import static gang.il.Valiable.mContext;
 
 public class StagePage extends AppCompatActivity {
-    ListView stageList;
-    StageList stageListAdapter = new StageList();
+    //ListView stageList;
+    //StageList stageListAdapter = new StageList();
+    private ViewPager viewPager ;
+    private StagePagerAdapter pagerAdapter ;
+    private int pageNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +41,14 @@ public class StagePage extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);//제목 없음
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stage_page);
-        stageList = findViewById(R.id.stage_list);
-        stageList.setAdapter(stageListAdapter);
+        StageDBHelper StageDB = new StageDBHelper(mContext);
+        StageDB.selectDB();
+        pageNum = StageDB.getClearedStage()/20;
+        viewPager = (ViewPager) findViewById(R.id.viewPager) ;
+        pagerAdapter = new StagePagerAdapter(this) ;
+        viewPager.setAdapter(pagerAdapter) ;
+        viewPager.setCurrentItem(pageNum);
+
     }
 
     final static Handler mhandler = new Handler() {
@@ -65,7 +75,7 @@ public class StagePage extends AppCompatActivity {
         if (requestCode == CLEAR_STAGE) {
             if (resultCode == RESULT_OK) {
                 mContext=this;
-                stageListAdapter.notifyDataSetChanged();
+                //stageListAdapter.notifyDataSetChanged();
             }
         }
     }
