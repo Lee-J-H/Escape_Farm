@@ -16,6 +16,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import static gang.il.LoadDB.failedInternet;
 import static gang.il.Valiable.CLEAR_STAGE;
@@ -25,13 +26,14 @@ import static gang.il.Valiable.STAGE_RESET;
 import static gang.il.Valiable.StagePage;
 import static gang.il.Valiable.LOAD_FINISH;
 import static gang.il.Valiable.MainPage;
+import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.mContext;
 
 public class StagePage extends AppCompatActivity {
-    //ListView stageList;
-    //StageList stageListAdapter = new StageList();
+
     private ViewPager viewPager ;
     private StagePagerAdapter pagerAdapter ;
+    private TextView backBtn, gameModeTxt;
     private int pageNum;
 
     @Override
@@ -44,10 +46,20 @@ public class StagePage extends AppCompatActivity {
         StageDBHelper StageDB = new StageDBHelper(mContext);
         StageDB.selectDB();
         pageNum = StageDB.getClearedStage()/20;
+        backBtn = (TextView) findViewById(R.id.back_btn);
+        gameModeTxt = (TextView) findViewById(R.id.gameMode);
+        gameModeTxt.setText(gameMode);
         viewPager = (ViewPager) findViewById(R.id.viewPager) ;
         pagerAdapter = new StagePagerAdapter(this) ;
         viewPager.setAdapter(pagerAdapter) ;
         viewPager.setCurrentItem(pageNum);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 

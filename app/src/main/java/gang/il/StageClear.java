@@ -46,6 +46,7 @@ public class StageClear {
 
     private void removeAnimal() {
         objCount--;
+        ((GamePage) mContext).finWidget(totalObj[curObjNum].getType());
         finishObj.remove(totalObj[curObjNum].getType());
         int caveNum = 0;
         for (int i = curObjNum; i < objCount; i++) {

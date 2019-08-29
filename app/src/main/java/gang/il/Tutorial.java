@@ -30,13 +30,13 @@ public class Tutorial {
         spaceY = height/20;
         arrow = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.arrow);
         arrow = Bitmap.createScaledBitmap(arrow, (int) spaceX, (int) spaceY*3/2, true);
-        messageBoard = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ground);
-        messageBoard = Bitmap.createScaledBitmap(messageBoard, (int)width-10, (int) height/5, true);
+        messageBoard = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.messageboard);
+        messageBoard = Bitmap.createScaledBitmap(messageBoard, (int)width-10, (int) height/7, true);
     }
 
     public void drawMessage(int startX, int startY) {
         mCanvas.drawBitmap(messageBoard, startX, startY, null);
-        mPaint.setTextSize(50);
+        mPaint.setTextSize(35);
         switch (tutorialNum){
             case 1:
                 tutorialMessage1 = mContext.getResources().getString(R.string.Tutorial_text_1);
@@ -51,8 +51,8 @@ public class Tutorial {
                 tutorialMessage2 = mContext.getResources().getString(R.string.Tutorial_text_6);
                 break;
         }
-        mCanvas.drawText(tutorialMessage1, startX+10, startY+spaceY, mPaint);
-        mCanvas.drawText(tutorialMessage2, startX+10, startY+spaceY+100, mPaint);
+        mCanvas.drawText(tutorialMessage1, startX+spaceX, startY+spaceY+spaceY/2, mPaint);
+        mCanvas.drawText(tutorialMessage2, startX+spaceX, startY+spaceY*2, mPaint);
     }
 
     public void drawArrow(int startX, int startY) {
