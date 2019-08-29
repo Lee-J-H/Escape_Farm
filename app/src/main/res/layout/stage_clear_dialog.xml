@@ -9,83 +9,95 @@
         android:id="@+id/dialog_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/dialog_2" /><!--다이얼로그 뒷배경-->
+        android:src="@drawable/dialog_2"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"/><!--다이얼로그 뒷배경-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="1">
-
         <TextView
-            android:id="@+id/blank1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2" /> <!--다이얼로그 맨위 여백-->
-
-        <LinearLayout
-            android:id="@+id/blank_layout"
+            android:id="@+id/clr_stage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.52"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
+            android:layout_weight="0.15"
+            android:text="stage:0"
+            android:textSize="20dp"
+            android:textColor="@android:color/holo_orange_dark"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:text="클리어"
+            android:textStyle="bold"
+            android:textSize="50dp"
+            android:textColor="@android:color/background_light"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/clr_move"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.15"
+            android:textColor="@android:color/holo_orange_light"
+            android:layout_marginStart="5dp"
+            android:textSize="15dp"
+            android:text="이동횟수:0"/>
+        <TextView
+            android:id="@+id/clr_min"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.15"
+            android:textColor="@android:color/holo_orange_light"
+            android:layout_marginStart="5dp"
+            android:textSize="15dp"
+            android:text="최소횟수:0"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.25"
+            android:orientation="horizontal">
             <TextView
-                android:id="@+id/blank2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25" /> <!--다이얼로그 왼쪽 여백-->
-
-            <TextView
-                android:id="@+id/dialog_text"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.7"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/btn_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
+                android:layout_weight="0.05"/>
+            <ImageView
+                android:id="@+id/menu_icon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.28"
+                android:src="@drawable/menu_icon"
+                android:adjustViewBounds="true"/>
             <TextView
-                android:id="@+id/blank3"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.12" /> <!--yes버튼 왼쪽 여백-->
-            <ImageButton
-                android:id="@+id/dialog_left_btn"
+                android:layout_height="match_parent"
+                android:layout_weight="0.05"/>
+            <ImageView
+                android:id="@+id/next_icon"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/dialog_yes" />
+                android:layout_height="match_parent"
+                android:layout_weight="0.28"
+                android:src="@drawable/next_icon"
+                android:adjustViewBounds="true"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.05"/>
+            <ImageView
+                android:id="@+id/retry_icon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.28"
+                android:src="@drawable/retry_icon"
+                android:adjustViewBounds="true"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.05"/>
 
-            <ImageButton
-                android:id="@+id/dialog_right_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/dialog_no" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/blank4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.03" />
     </LinearLayout>
 </FrameLayout>
