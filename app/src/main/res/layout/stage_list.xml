@@ -34,9 +34,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="1"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/godomaum" />
             <TextView
                 android:id="@+id/min_1"
                 android:layout_width="wrap_content"
@@ -46,7 +47,8 @@
                 android:gravity="center"
                 android:visibility="gone"
                 android:text="0/0"
-                android:textSize="20dp" />
+                android:textSize="30dp"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -70,9 +72,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="2"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_2"
                 android:layout_width="wrap_content"
@@ -81,8 +84,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -106,9 +110,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="3"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_3"
                 android:layout_width="wrap_content"
@@ -117,8 +122,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -142,9 +148,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="4"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_4"
                 android:layout_width="wrap_content"
@@ -153,8 +160,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
     </LinearLayout>
     <TextView
@@ -191,9 +199,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="5"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_5"
                 android:layout_width="wrap_content"
@@ -203,7 +212,8 @@
                 android:gravity="center"
                 android:visibility="gone"
                 android:text="0/0"
-                android:textSize="20dp" />
+                android:textSize="30dp"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -227,9 +237,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="6"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_6"
                 android:layout_width="wrap_content"
@@ -238,8 +249,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -263,9 +275,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="7"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_7"
                 android:layout_width="wrap_content"
@@ -274,8 +287,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -299,9 +313,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="8"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_8"
                 android:layout_width="wrap_content"
@@ -310,8 +325,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
     </LinearLayout>
     <TextView
@@ -348,9 +364,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="9"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_9"
                 android:layout_width="wrap_content"
@@ -360,7 +377,8 @@
                 android:gravity="center"
                 android:visibility="gone"
                 android:text="0/0"
-                android:textSize="20dp" />
+                android:textSize="30dp"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -384,9 +402,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="10"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_10"
                 android:layout_width="wrap_content"
@@ -395,8 +414,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -420,9 +440,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="11"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_11"
                 android:layout_width="wrap_content"
@@ -431,8 +452,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -456,9 +478,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="12"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_12"
                 android:layout_width="wrap_content"
@@ -467,8 +490,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
     </LinearLayout>
     <TextView
@@ -505,9 +529,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="13"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_13"
                 android:layout_width="wrap_content"
@@ -517,7 +542,8 @@
                 android:gravity="center"
                 android:visibility="gone"
                 android:text="0/0"
-                android:textSize="20dp" />
+                android:textSize="30dp"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -541,9 +567,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="14"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_14"
                 android:layout_width="wrap_content"
@@ -552,8 +579,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -577,9 +605,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="15"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_15"
                 android:layout_width="wrap_content"
@@ -588,8 +617,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -613,9 +643,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="16"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_16"
                 android:layout_width="wrap_content"
@@ -624,8 +655,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
     </LinearLayout>
     <TextView
@@ -662,9 +694,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="17"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_17"
                 android:layout_width="wrap_content"
@@ -674,7 +707,8 @@
                 android:gravity="center"
                 android:visibility="gone"
                 android:text="0/0"
-                android:textSize="20dp" />
+                android:textSize="30dp"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -698,9 +732,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="18"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_18"
                 android:layout_width="wrap_content"
@@ -709,8 +744,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -734,9 +770,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="19"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_19"
                 android:layout_width="wrap_content"
@@ -745,8 +782,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
@@ -770,9 +808,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="20"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
             <TextView
                 android:id="@+id/min_20"
                 android:layout_width="wrap_content"
@@ -781,8 +820,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="0/0"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:fontFamily="@font/godomaum"/>
         </RelativeLayout>
     </LinearLayout>
     <TextView
@@ -796,5 +836,7 @@
         android:textStyle="bold"
         android:layout_gravity="center"
         android:text="1/5"
-        android:textSize="30dp"/>
+        android:textSize="45dp"
+        android:textColor="@android:color/holo_orange_dark"
+        android:fontFamily="@font/godomaum"/>
 </LinearLayout>

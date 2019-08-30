@@ -85,52 +85,6 @@ public class StagePagerAdapter extends PagerAdapter {
                     }
                 });
 
-
-            /*
-
-            for (int i = 0; i < 4; i++) {
-                int textViewId = mContext.getResources().getIdentifier("num_" + (i + 1), "id", "gang.il");
-                int layoutId = mContext.getResources().getIdentifier("stage_" + (i + 1), "id", "gang.il");
-                int imageViewId = mContext.getResources().getIdentifier("lock_" + (i + 1), "id", "gang.il");
-                int min_count_area_id = mContext.getResources().getIdentifier("min_lay_" + (i + 1), "id", "gang.il");
-                int my_min_count_id = mContext.getResources().getIdentifier("my_min_" + (i + 1), "id", "gang.il");
-                int min_count_id = mContext.getResources().getIdentifier("min_" + (i + 1), "id", "gang.il");
-                viewHolder.stage_num_text[i] = (TextView) view.findViewById(textViewId);
-                viewHolder.stage_area[i] = (LinearLayout) view.findViewById(layoutId);
-                viewHolder.stage_lock_img[i] = (ImageView) view.findViewById(imageViewId);
-                viewHolder.min_count_area[i] = (LinearLayout) view.findViewById(min_count_area_id);
-                viewHolder.my_min_count[i] = (TextView) view.findViewById(my_min_count_id);
-                viewHolder.min_count[i] = (TextView) view.findViewById(min_count_id);
-            }
-        }
-        for (int i = 0; i < 4; i++) {
-            viewHolder.stage_num_text[i].setText("" + (position * 4 + 1 + i));
-            viewHolder.stage_area[i].setTag("" + (position * 4 + 1 + i));
-            if (Integer.parseInt(viewHolder.stage_area[i].getTag().toString()) - 1 <= succeedStage) {
-                viewHolder.stage_lock_img[i].setVisibility(View.GONE);
-                viewHolder.stage_area[i].setForeground(null);
-                StageDB.selectDB();
-                viewHolder.min_count_area[i].setVisibility(View.VISIBLE);
-                viewHolder.min_count[i].setText("/"+min_count_ser.get(position*4+i));
-                if (succeedStage >= (position * 4 + 1 + i)) {
-                    viewHolder.my_min_count[i].setText(String.valueOf(StageDB.getMinimumCount(i)));
-                }
-            }
-        }
-
-        for (int i = 0; i < 4; i++)
-            viewHolder.stage_area[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    stageCount = v.getTag().toString();
-                    if (Integer.parseInt(stageCount) - 1 > succeedStage)
-                        return;
-                    progressON(StagePage, null);
-                    LoadDB.GetDB Data = new LoadDB.GetDB();
-                    Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "game_start_min", gameMode);  //스테이지DB 로딩
-                }
-            });*/
-
         // 뷰페이저에 추가.
         container.addView(view) ;
 
@@ -155,12 +109,6 @@ public class StagePagerAdapter extends PagerAdapter {
     }
 
     private class ViewHolder {
-        /*private TextView[] stage_num_text = new TextView[4];
-        private LinearLayout[] stage_area = new LinearLayout[4];
-        private ImageView[] stage_lock_img = new ImageView[4];
-        private LinearLayout[] min_count_area = new LinearLayout[4];
-        private TextView[] my_min_count = new TextView[4];
-        private TextView[] min_txt = new TextView[4];*/
         private TextView[] minCount = new TextView[20];
         private TextView[] stageCount = new TextView[20];
         private ImageView[] buttonImg = new ImageView[20];

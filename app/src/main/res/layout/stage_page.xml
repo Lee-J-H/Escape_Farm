@@ -15,16 +15,21 @@
         android:layout_height="0dp"
         android:layout_weight="0.2"
         android:layout_gravity="center"
-        android:textSize="70dp"
-        android:text="Classic"/>
+        android:textSize="100dp"
+        android:text="Classic"
+        android:textColor="@android:color/holo_orange_dark"
+        android:fontFamily="@font/godomaum"/>
     <TextView
         android:id="@+id/back_btn"
         android:layout_width="50dp"
         android:layout_height="0dp"
         android:layout_weight="0.06"
+        android:textSize="30dp"
         android:text="Back"
         android:gravity="center"
-        android:background="@drawable/button"/>
+        android:background="@drawable/button"
+        android:fontFamily="@font/godomaum"
+        android:textColor="@android:color/holo_orange_dark"/>
     <TextView
     android:layout_width="match_parent"
     android:layout_height="0dp"
@@ -35,12 +40,5 @@
         android:layout_height="0dp"
         android:layout_weight="0.7"
         android:id="@+id/viewPager"/>
-
-    <!--<ListView
-        android:id="@+id/stage_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.9">
-    </ListView>-->
 
 </LinearLayout>
