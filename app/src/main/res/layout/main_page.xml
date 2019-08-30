@@ -40,6 +40,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="클래식 모드"
+                android:textSize="50dp"
+                android:fontFamily="@font/misaeng"
                 android:layout_weight="0.6"/>  <!--클래식모드버튼-->
         </LinearLayout>
         <LinearLayout
@@ -58,6 +60,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="블라인드 모드"
+                android:textSize="50dp"
+                android:fontFamily="@font/misaeng"
                 android:layout_weight="0.6"/>  <!--블라인드모드버튼-->
         </LinearLayout>
     </LinearLayout>

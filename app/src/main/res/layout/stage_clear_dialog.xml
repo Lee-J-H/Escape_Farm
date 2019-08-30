@@ -23,17 +23,20 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.15"
+            android:fontFamily="@font/misaeng"
             android:text="stage:0"
-            android:textSize="20dp"
+            android:textSize="30dp"
             android:textColor="@android:color/holo_orange_dark"
+
             android:gravity="center"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.3"
+            android:fontFamily="@font/misaeng"
             android:text="클리어"
             android:textStyle="bold"
-            android:textSize="50dp"
+            android:textSize="60dp"
             android:textColor="@android:color/background_light"
             android:gravity="center"
             />
@@ -42,18 +45,20 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.15"
+            android:fontFamily="@font/misaeng"
             android:textColor="@android:color/holo_orange_light"
             android:layout_marginStart="5dp"
-            android:textSize="15dp"
+            android:textSize="25dp"
             android:text="이동횟수:0"/>
         <TextView
             android:id="@+id/clr_min"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.15"
+            android:fontFamily="@font/misaeng"
             android:textColor="@android:color/holo_orange_light"
             android:layout_marginStart="5dp"
-            android:textSize="15dp"
+            android:textSize="25dp"
             android:text="최소횟수:0"/>
         <LinearLayout
             android:layout_width="match_parent"
