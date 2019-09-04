@@ -38,10 +38,7 @@ public class Tutorial {
     public void drawMessage(int startX, int startY) {
         mCanvas.drawBitmap(messageBoard, startX, startY, null);
         mPaint.setTextSize(45);
-        //Typeface typeface = mContext.getResources().getFont(R.font.godomaum);
-        //Typeface font = Typeface.createFromAsset(mContext.getAssets(), "godomaum.ttf");
-        //mPaint.setTypeface(font);
-        //출처: https://aroundck.tistory.com/292 [돼지왕 왕돼지 놀이터]
+
         switch (tutorialNum){
             case 1:
                 tutorialMessage1 = mContext.getResources().getString(R.string.Tutorial_text_1);

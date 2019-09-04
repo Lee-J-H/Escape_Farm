@@ -1,22 +1,17 @@
 package gang.il;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import static gang.il.LoadingImg.progressON;
+import static gang.il.Valiable.CLEAR_STAGE;
 import static gang.il.Valiable.StagePage;
-import static gang.il.Valiable.gameMode;
-import static gang.il.Valiable.min_count_ser;
 import static gang.il.Valiable.stageCount;
 
 public class StagePagerAdapter extends PagerAdapter {
@@ -38,8 +33,7 @@ public class StagePagerAdapter extends PagerAdapter {
         View view = null ;
         StagePagerAdapter.ViewHolder viewHolder = new StagePagerAdapter.ViewHolder();
         StageDBHelper StageDB = new StageDBHelper(mContext);
-        StageDB.selectDB();
-        succeedStage = StageDB.getClearedStage();
+        succeedStage = StageDB.clearStageNum();
 
         if (mContext != null) {
             // LayoutInflater를 통해 "/res/layout/page.xml"을 뷰로 생성.
@@ -63,27 +57,27 @@ public class StagePagerAdapter extends PagerAdapter {
                 viewHolder.buttonImg[i].setTag("" + (position * 20 + 1 + i));
                 if (Integer.parseInt(viewHolder.buttonImg[i].getTag().toString()) - 1 <= succeedStage) {
                     viewHolder.buttonImg[i].setImageDrawable(mContext.getResources().getDrawable(R.drawable.button));
-                    StageDB.selectDB();
                     viewHolder.stageCount[i].setVisibility(View.VISIBLE);
                     viewHolder.minCount[i].setVisibility(View.VISIBLE);
-                    viewHolder.minCount[i].setText("0/"+min_count_ser.get(position*20+i));
+                    viewHolder.minCount[i].setText("0/"+StageDB.getMinCount(position*20+1+i));
                     if (succeedStage >= (position * 20 + 1 + i)) {
-                        viewHolder.minCount[i].setText(String.valueOf(StageDB.getMinimumCount(i)) + "/" + min_count_ser.get(position*20+i));
+                        viewHolder.minCount[i].setText(StageDB.getMyMinCount(position*20+i+1) + "/" + StageDB.getMinCount(position*20+i+1));
                     }
                 }
             }
-            for (int i = 0; i < 20; i++)
-                viewHolder.buttonImg[i].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        stageCount = v.getTag().toString();
-                        if (Integer.parseInt(stageCount) - 1 > succeedStage)
-                            return;
-                        progressON(StagePage, null);
-                        LoadDB.GetDB Data = new LoadDB.GetDB();
-                        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "game_start_min", gameMode);  //스테이지DB 로딩
-                    }
-                });
+        for (int i = 0; i < 20; i++)
+            viewHolder.buttonImg[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    stageCount = v.getTag().toString();
+                    if (Integer.parseInt(stageCount) - 1 > succeedStage)
+                        return;
+                    StageDBHelper StageDB = new StageDBHelper(mContext);
+                    StageDB.getStageObj();
+                    Intent intent = new Intent(StagePage, GamePage.class);
+                    StagePage.startActivityForResult(intent, CLEAR_STAGE);
+                }
+            });
 
         // 뷰페이저에 추가.
         container.addView(view) ;
@@ -106,6 +100,12 @@ public class StagePagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return (view == (View)object);
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
+        //return super.getItemPosition(object);
     }
 
     private class ViewHolder {

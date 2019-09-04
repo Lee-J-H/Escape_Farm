@@ -23,22 +23,13 @@ public class StageClear {
         removeAnimal();
         if (finishObj.size() == 0) {  //모든 동물이 탈출했을 경우
             StageDBHelper StageDB = new StageDBHelper(mContext);
-            StageDB.selectDB();
-            if (StageDB.getClearedStage() < Integer.parseInt(stageCount)) {  // 클리어하지 않은 스테이지를 클리어한 경우 최소횟수 저장
-                if(!stageCount.equals("1") && moveCount < minCount){ //서버에 저장된 최소횟수보다 적을 경우 기록 경신
-                    RecordDB.SetDB Data = new RecordDB.SetDB();
-                    Data.execute("http://106.10.57.117/EscapeFarm/recordCount.php", stageCount, String.valueOf(moveCount), gameMode);
-                }
-                StageDB.insertDB(moveCount);
+            if(StageDB.clearStageNum() < Integer.parseInt(stageCount)) { //클리어하지 않은 스테이지를 클리어한 경우 최소횟수 저장
+                StageDB.recordCount(moveCount);
             }
             else {
-                if (StageDB.getMinimumCount(Integer.valueOf(stageCount) - 1) > moveCount) { //저장된 최소횟수보다 적은 횟수로 클리어한 경우 최소횟수 업데이트
-                    if(moveCount < minCount){
-                        RecordDB.SetDB Data = new RecordDB.SetDB();
-                        Data.execute("http://106.10.57.117/EscapeFarm/recordCount.php", stageCount, String.valueOf(moveCount), gameMode);
-                    } //서버에 저장된 최소횟수보다 적을 경우 기록 경신
-                    StageDB.recordMinCount(moveCount);
-                }
+                if(StageDB.getMyMinCount(Integer.parseInt(stageCount))!=0 && StageDB.getMyMinCount(Integer.parseInt(stageCount)) > moveCount){ //저장된 최소횟수보다 적은 횟수로 클리어한 경우 최소횟수 업데이트
+
+                }StageDB.recordCount(moveCount);
             }
             ((GamePage) mContext).Dialog();
         }

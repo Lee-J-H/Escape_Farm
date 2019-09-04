@@ -12,12 +12,9 @@ public class Valiable {
     public static String direction, stageCount, gameMode; //이동 방향
     public static final int CLEAR_STAGE = 1;
     public static final int LOAD_FINISH = 2;
-    public static final int STAGE_RESET = 3;
-    public static final int LOAD_STAGE_COUNT = 4;
-    public static final int Faild_internet = 5;
-    public static Activity StagePage, MainPage;
+    public static final int Failed_internet = 3;
+    public static Activity StagePage, MainPage, StartPage;
     public static ArrayList finishObj = new ArrayList();
-    public static ArrayList min_count_ser = new ArrayList();
     public static StageClearDialog dialog;
     public static Context mContext;
 }

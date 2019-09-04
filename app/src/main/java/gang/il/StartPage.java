@@ -1,13 +1,17 @@
 package gang.il;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import static gang.il.LoadingImg.progressON;
+import static gang.il.Valiable.StartPage;
+
+
 
 public class StartPage extends AppCompatActivity {
     Thread w;
@@ -16,6 +20,8 @@ public class StartPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        StartPage = this;
+        context = this;
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);//제목 없음
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_page);
@@ -24,9 +30,10 @@ public class StartPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 running = false;
-                Intent intent = new Intent(StartPage.this,MainPage.class);
-                startActivity(intent);
-                finish();
+                LoadDB loadDB = new LoadDB(context);
+                LoadDB.GetDB Data = new LoadDB.GetDB();
+                progressON(StartPage,null);
+                Data.execute("http://106.10.57.117/EscapeFarm/checkversion.php", "version","check");  //DB 버전 체크
             }
         });
     }
