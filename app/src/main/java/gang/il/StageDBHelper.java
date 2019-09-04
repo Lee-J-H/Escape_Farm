@@ -6,16 +6,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.gameMode;
+import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.stageCount;
+import static gang.il.Valiable.stageSize_x;
+import static gang.il.Valiable.stageSize_y;
+import static gang.il.Valiable.totalObj;
 
 public class StageDBHelper extends SQLiteOpenHelper {
     private SQLiteDatabase db;
     private static final int DATABASE_VERSION = 1;
-    private static final String Database_Name = "StageCountDB";
-    private String Table_Name = gameMode;
-    public int clearedStage;
-    public int minimum_count[];
+    private static final String Database_Name = "StageDB";
 
     public StageDBHelper(Context context) {
         super(context, Database_Name, null, DATABASE_VERSION);
@@ -23,85 +25,160 @@ public class StageDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String classic_table =
-                "CREATE TABLE " + "Classic" + "(" +
-                        "Stage INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        //"Rating INTEGER NOT NULL," +
-                        "Min_Count INTEGER NOT NULL" +
+        String nightCount =
+                "CREATE TABLE " + "NightCount" + "(" +
+                        "Stage INTEGER PRIMARY key, " +
+                        "Count INTEGER NOT NULL," +
+                        "myCount INTEGER" +
                         ");";
-        String blind_table =
-                "CREATE TABLE " + "Blind" + "(" +
-                        "Stage INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        //"Rating INTEGER NOT NULL," +
-                        "Min_Count INTEGER NOT NULL" +
+        String nightStage =
+                "CREATE TABLE " + "NightStage" + "(" +
+                        "Stage INTEGER, " +
+                        "Structure varchar(255) not null, " +
+                        "posX INTEGER not null, " +
+                        "posY INTEGER not null, " +
+                        "sort_num INTEGER NOT NULL," +
+                        "foreign key(Stage) references NightCount(Stage) on update cascade on delete cascade" +
                         ");";
-        db.execSQL(classic_table);
-        db.execSQL(blind_table);
-
+        String dayCount =
+                "CREATE TABLE " + "DayCount" + "(" +
+                        "Stage INTEGER PRIMARY key, " +
+                        "Count INTEGER NOT NULL," +
+                        "myCount INTEGER" +
+                        ");";
+        String dayStage =
+                "CREATE TABLE " + "DayStage" + "(" +
+                        "Stage INTEGER, " +
+                        "Structure varchar(255) not null, " +
+                        "posX INTEGER not null, " +
+                        "posY INTEGER not null, " +
+                        "sort_num INTEGER NOT NULL," +
+                        "foreign key(Stage) references DayCount(Stage) on update cascade on delete cascade" +
+                        ");";
+        db.execSQL(nightCount);
+        db.execSQL(nightStage);
+        db.execSQL(dayCount);
+        db.execSQL(dayStage);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String DROP_TABLE =
-                "DROP TABLE IF EXISTS " + Table_Name;
-        db.execSQL(DROP_TABLE);
+        String dropDayStage =
+                "DROP TABLE IF EXISTS dayStage";
+        String dropNightStage =
+                "DROP TABLE IF EXISTS nightStage";
+        String dropDayCount =
+                "DROP TABLE IF EXISTS dayCount";
+        String dropNightCount =
+                "DROP TABLE IF EXISTS nightCount";
+        db.execSQL(dropDayCount);
+        db.execSQL(dropNightCount);
+        db.execSQL(dropDayStage);
+        db.execSQL(dropNightStage);
         onCreate(db);
     }
 
-    public void selectDB() {
+    public void getStageObj() {
         db = getReadableDatabase();
-        if (gameMode.equals("classic"))
-            Table_Name = "Classic";
-        else
-            Table_Name = "Blind";
-        Table_Name="Classic";
-
-        int countNum = 0;
-        Cursor c = db.rawQuery("select Min_Count from " + Table_Name, null);
+        Cursor c = db.rawQuery("select Structure, posX, posY, sort_num from " + gameMode + "Stage where Stage="+stageCount +" order by sort_num asc;", null);
         if (c.getCount() == 0) {
-            clearedStage=0;
             return;
         }
-        clearedStage = c.getCount();
-        minimum_count = new int[clearedStage];
+        finishObj.clear();
+        objCount = c.getCount();
+        totalObj = new TotalObject[objCount];
+        int caveNum = 0;
+        int count=0;
         while (c.moveToNext()) {
-            minimum_count[countNum++] = c.getInt(0);
-            //Log.d(tag,"id:"+id+",name:"+name);
+            String structure = c.getString(0);
+            int x = c.getInt(1);
+            int y = c.getInt(2);
+            int sort = c.getInt(3);
+            if (count == 1) {
+                stageSize_x = x / 2;
+                stageSize_y = y / 2;
+            }
+            switch (sort) {
+                case 10:
+                    totalObj[count] = new TotalObject(x, y, structure, true);
+                    putInFood(structure, count); //해당 동물의 음식 속성 부여
+                    break;
+                case 3:
+                    totalObj[count] = new TotalObject(x, y, structure, false);
+                    totalObj[count].caveNum = ++caveNum;
+                    break;
+                default:
+                    totalObj[count] = new TotalObject(x, y, structure, false);
+                    break;
+            }
+            if (totalObj[count].getType().endsWith("_fin"))
+                finishObj.add(totalObj[count].getType().substring(0, totalObj[count].getType().indexOf("_"))); //finish 있는 동물 저장
+            count++;
         }
-        countNum = 0;
         db.close();
     }
-
-    public int getClearedStage() {
-        return clearedStage;
+    public int getMyMinCount(int stageNum){
+        int myMinCount = 0;
+        db = getReadableDatabase();
+        Cursor c = db.rawQuery("select myCount from "+gameMode+"Count where Stage ="+stageNum, null);
+        if(c != null){
+            c.moveToFirst();
+            myMinCount = c.getInt(0);
+        }
+        return myMinCount;
     }
-
-    public int getMinimumCount(int index) {
-        return minimum_count[index];
+    public int getMinCount(int stageNum){
+        int minCount = 0;
+        db = getReadableDatabase();
+        Cursor c = db.rawQuery("select Count from "+gameMode+ "Count where Stage ="+stageNum, null);
+        c.moveToFirst();
+        minCount = c.getInt(0);
+        return minCount;
     }
-
-    public void recordMinCount(int min) {
+    public void recordCount(int minCount){
         db = getWritableDatabase();
-        if (gameMode.equals("classic"))
-            Table_Name = "Classic";
-        else
-            Table_Name = "Blind";
-        db.execSQL("update " + Table_Name + " set min_Count="+min+" where Stage="+ stageCount + ";");
+        db.execSQL("update "+gameMode+"Count set myCount="+minCount+" where Stage="+stageCount+";");
         db.close();
-        //Log.d(tag, "insert 성공~!");
     }
 
+    public int clearStageNum(){
+        int count =0;
+        db = getReadableDatabase();
+        Cursor c = db.rawQuery("select Stage from "+gameMode+"Count where myCount is not null;", null);
+        //Cursor c = db.rawQuery("select Stage from dayCount where myCount is not null;", null);
+        if(c!=null)
+            count = c.getCount();
+        return count;
+    }
 
-    public void insertDB(int Min_Count) {
+    public void initObjDB(String mode,int stage, int sortNum,TotalObject... obj){
         db = getWritableDatabase();
-        if (gameMode.equals("classic"))
-            Table_Name = "Classic";
-        else
-            Table_Name = "Blind";
-
-        db.execSQL("insert into " + Table_Name + " (Stage, Min_Count) values('" + stageCount + "', " + Min_Count + ");");
+        db.execSQL("insert into "+mode+"Stage(Stage, Structure, posX, posY, sort_num) values("+stage+",'"+obj[0].getType()+"',"+obj[0].getPosX()+","+obj[0].getPosY()+","+sortNum+");");
         db.close();
-        //Log.d(tag, "insert 성공~!");
-    } //출처: https://bitsoul.tistory.com/118?category=623707 [Happy Programmer~]
-    // 출처: https://sisiblog.tistory.com/175 [고슴이]
+    }
+    public void initCountDB(String mode, int minCount, int stage){
+        db = getWritableDatabase();
+        db.execSQL("insert into "+mode+"Count(Stage,Count, myCount) values("+stage+","+minCount+",null);");
+        db.close();
+    }
+
+    private static void putInFood(String animalName, int animalIndex) {
+        switch (animalName) {
+            case "dog":
+                totalObj[animalIndex].foods.add("food_bone");
+                break;
+            case "squirrel":
+                totalObj[animalIndex].foods.add("food_acorn");
+                break;
+            case "panda":
+                totalObj[animalIndex].foods.add("food_bamboo");
+                break;
+            case "rabbit":
+                totalObj[animalIndex].foods.add("food_carrot");
+                break;
+            case "tiger":
+                totalObj[animalIndex].foods.add("food_meat");
+                break;
+        }
+    }
 }

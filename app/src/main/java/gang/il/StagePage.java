@@ -1,9 +1,6 @@
 package gang.il;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -13,19 +10,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import static gang.il.LoadDB.failedInternet;
+import static gang.il.LoadingImg.progressDialog;
+import static gang.il.LoadingImg.progressOFF;
 import static gang.il.Valiable.CLEAR_STAGE;
-import static gang.il.Valiable.Faild_internet;
-import static gang.il.Valiable.LOAD_STAGE_COUNT;
-import static gang.il.Valiable.STAGE_RESET;
+import static gang.il.Valiable.Failed_internet;
 import static gang.il.Valiable.StagePage;
 import static gang.il.Valiable.LOAD_FINISH;
-import static gang.il.Valiable.MainPage;
+import static gang.il.Valiable.StartPage;
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.mContext;
 
@@ -44,8 +38,7 @@ public class StagePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stage_page);
         StageDBHelper StageDB = new StageDBHelper(mContext);
-        StageDB.selectDB();
-        pageNum = StageDB.getClearedStage()/20;
+        pageNum = StageDB.clearStageNum()/20; //마지막으로 클리어한 페이지 기준으로 보기
         backBtn = (TextView) findViewById(R.id.back_btn);
         gameModeTxt = (TextView) findViewById(R.id.gameMode);
         gameModeTxt.setText(gameMode);
@@ -68,14 +61,13 @@ public class StagePage extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case LOAD_FINISH:
-                    Intent intent = new Intent(StagePage, GamePage.class);
-                    StagePage.startActivityForResult(intent, CLEAR_STAGE);
+                    if(progressDialog.isShowing())
+                        progressOFF();
+                    Intent intent = new Intent(StartPage, MainPage.class);
+                    StartPage.startActivity(intent);
+                    StartPage.finish();
                     break;
-                case LOAD_STAGE_COUNT:
-                    intent = new Intent(MainPage,StagePage.class);
-                    MainPage.startActivity(intent);
-                    break;
-                case Faild_internet:
+                case Failed_internet:
                     failedInternet(mContext);
                     break;
             }
@@ -87,7 +79,7 @@ public class StagePage extends AppCompatActivity {
         if (requestCode == CLEAR_STAGE) {
             if (resultCode == RESULT_OK) {
                 mContext=this;
-                //stageListAdapter.notifyDataSetChanged();
+                pagerAdapter.notifyDataSetChanged();
             }
         }
     }

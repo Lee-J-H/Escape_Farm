@@ -5,43 +5,32 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 import static gang.il.LoadingImg.progressDialog;
 import static gang.il.LoadingImg.progressOFF;
 import static gang.il.StagePage.mhandler;
-import static gang.il.Valiable.Faild_internet;
+import static gang.il.Valiable.Failed_internet;
 import static gang.il.Valiable.LOAD_FINISH;
-import static gang.il.Valiable.LOAD_STAGE_COUNT;
-import static gang.il.Valiable.STAGE_RESET;
-import static gang.il.Valiable.finishObj;
-import static gang.il.Valiable.gameMode;
-import static gang.il.Valiable.minCount;
-import static gang.il.Valiable.min_count_ser;
-import static gang.il.Valiable.objCount;
-import static gang.il.Valiable.stageCount;
-
-import static gang.il.Valiable.stageSize_x;
-import static gang.il.Valiable.stageSize_y;
 import static gang.il.Valiable.totalObj;
 import static gang.il.Valiable.dialog;
+import static gang.il.Version.readVersion;
+import static gang.il.Version.writeVersion;
 
 public class LoadDB {
     public static Context mContext;
     public static String mJsonString;
-    public static String stage_min;
+    public static String loadMode;
+    public static String loadType;
+
 
     public LoadDB(Context context) {
         mContext = context;
@@ -62,7 +51,7 @@ public class LoadDB {
             super.onPostExecute(result);
             if (result == null) {
                 Log.d("failed", "result:failed_internet");
-                mhandler.sendEmptyMessage(Faild_internet);
+                mhandler.sendEmptyMessage(Failed_internet);
             } else {
                 mJsonString = result;
                 showResult();
@@ -73,8 +62,9 @@ public class LoadDB {
         @Override
         protected String doInBackground(String... params) {
             String serverURL = params[0];
-            String postParameters = "Stage=" + params[1] + "&gameMode=" + params[3];
-            stage_min = params[2];
+            String postParameters = "&gameMode=" + params[1];
+            loadMode = params[1];
+            loadType = params[2];
 
             try {
 
@@ -133,24 +123,6 @@ public class LoadDB {
             public void onClick(View v) {
                 if (progressDialog.isShowing()) progressOFF();
                 dialog.dismiss();
-
-                /*switch (stage_min) {
-                    case "game_start_min":
-                        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "game_start_min", gameMode);  //스테이지DB 로딩
-                        break;
-                    case "min_count":
-                        Data.execute("http://106.10.57.117/EscapeFarm/getClearedStageMin.php", String.valueOf(Integer.valueOf(stageCount) + 1), "min_count", gameMode);  //클리어 된 스테이지들의 최소 회수 로딩
-                        break;
-                    case "next_stage_min":
-                        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "next_stage_min", gameMode);  //스테이지DB 로딩
-                        break;
-                    case "clr_reset_min":
-                        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "clr_reset_min", gameMode);  //스테이지 재로딩
-                        break;
-                    case "non_clr_reset":
-                        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", stageCount, "non_clr_reset", gameMode);  //스테이지 재로딩
-                        break;
-                }*/
             }
         };
         dialog = new StageClearDialog(mContext,
@@ -162,98 +134,78 @@ public class LoadDB {
     }
 
     private static void showResult() {
-        LoadDB.GetDB Data = new LoadDB.GetDB();
-        switch (stage_min) {
-            case "game_start":
-                getMinimumCount();
-                mhandler.sendEmptyMessage(LOAD_FINISH);
-                break;
-            case "min_count":
-                getClearedCount();
-                mhandler.sendEmptyMessage(LOAD_STAGE_COUNT);
-                break;
-            case "next_stage":
-                getMinimumCount();
-                Data.execute("http://106.10.57.117/EscapeFarm/getClearedStageMin.php", String.valueOf(Integer.valueOf(stageCount) + 1), "clr_reset", gameMode); // 최소 횟수 로딩
-                break;
-            case "clr_reset":
-                getClearedCount();
-                if(progressDialog!=null)
-                    progressOFF();
-                break;
-            case "record":
-                Toast.makeText(mContext, "recordSucceed", Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                getStageObj();
-                if(progressDialog!=null)
-                    progressOFF();
-                if (stage_min.equals("game_start_min"))
-                    Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", stageCount, "game_start", gameMode); // 최소 횟수 로딩
-                else if (stage_min.equals("next_stage_min"))
-                    Data.execute("http://106.10.57.117/EscapeFarm/getminimum.php", stageCount, "next_stage", gameMode); // 최소 횟수 로딩
-                else if (stage_min.equals("clr_reset_min"))
-                    Data.execute("http://106.10.57.117/EscapeFarm/getClearedStageMin.php", String.valueOf(Integer.valueOf(stageCount) + 1), "clr_reset", gameMode); // 최소 횟수 로딩
-                break;
-        }
+        if(loadType.equals("minCount"))getMinCount(loadMode);
+        else if(loadType.equals("check"))
+            checkVersion();
+        else getStage(loadMode);
     }
 
-    private static void getStageObj() {
+    private static void checkVersion(){
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
-            finishObj.clear();
-            objCount = jsonArray.length();
-            totalObj = new TotalObject[objCount];
-            int caveNum = 0;
+            LoadDB.GetDB Data = new LoadDB.GetDB();
+            JSONObject item = jsonArray.getJSONObject(0);
+            String version = item.getString("Count");
+            if(!readVersion(mContext).equals(version)) {
+                Data.execute("http://106.10.57.117/EscapeFarm/minimumcount.php", "day", "minCount");  //서버에서 주간모드 최소횟수 로딩
+                writeVersion(mContext,version);
+            }
+            else mhandler.sendEmptyMessage(LOAD_FINISH);
+        } catch (JSONException e) {
+        }
+    }
+
+    private static void getMinCount(String mode){
+        try {
+            StageDBHelper stageDB = new StageDBHelper(mContext);
+            JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray("result");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
-                String structure = item.getString("Structure");
-                int x = item.getInt("posX");
-                int y = item.getInt("posY");
-                int sort = item.getInt("sort_num");
-                switch (sort) {
-                    case 10:
-                        totalObj[i] = new TotalObject(x, y, structure, true);
-                        putInFood(structure, i); //해당 동물의 음식 속성 부여
-                        break;
-                    case 3:
-                        totalObj[i] = new TotalObject(x, y, structure, false);
-                        totalObj[i].caveNum = ++caveNum;
-                        break;
-                    default:
-                        totalObj[i] = new TotalObject(x, y, structure, false);
-                        break;
-                }
-                if (totalObj[i].getType().endsWith("_fin"))
-                    finishObj.add(totalObj[i].getType().substring(0, totalObj[i].getType().indexOf("_"))); //finish 있는 동물 저장
-                if (i == 1) {
-                    stageSize_x = x / 2;
-                    stageSize_y = y / 2;
+                int stage = item.getInt("Stage");
+                int Count = item.getInt("Count");
+                stageDB.initCountDB(mode,Count,stage);  //처음 한번만 실행되도록 처리해야됨
+
+                if(i == jsonArray.length() -1){ //주간모드 마지막 스테이지 로드 후 야간모드 로드 시작
+                    if(mode.equals("day")) {
+
+                        LoadDB.GetDB Data = new LoadDB.GetDB();
+                        Data.execute("http://106.10.57.117/EscapeFarm/minimumcount.php", "night", "minCount");  //서버에서 스테이지 정보(최소횟수) 로딩
+                    }
+                    else{
+                        LoadDB.GetDB Data = new LoadDB.GetDB();
+                        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", "day", "gameObj");  //서버에서 스테이지 정보 로딩
+                    }
                 }
             }
         } catch (JSONException e) {
         }
     }
-
-    private static void getMinimumCount() {
+    private static void getStage(String mode){
         try {
+            StageDBHelper stageDB = new StageDBHelper(mContext);
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
-            JSONObject item = jsonArray.getJSONObject(0);
-            minCount = item.getInt("Count");
-        } catch (JSONException e) {
-        }
-    }
-
-    private static void getClearedCount() {
-        try {
-            min_count_ser.clear();
-            JSONObject jsonObject = new JSONObject(mJsonString);
-            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            TotalObject[] obj = new TotalObject[1];
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
-                min_count_ser.add(item.getInt("Count"));
+                int stage = item.getInt("Stage");
+                int posX = item.getInt("posX");
+                int posY = item.getInt("posY");
+                int sortNum = item.getInt("sort_num");
+                String structure = item.getString("Structure");
+                obj[0] = new TotalObject(posX,posY,structure,false);
+                stageDB.initObjDB(mode, stage,sortNum, obj[0]); //처음 한번만 실행되도록 처리해야됨
+
+                if(i == jsonArray.length() -1){ //주간모드 마지막 스테이지 로드 후 야간모드 로드 시작
+                    if(mode.equals("day")) {
+                        LoadDB.GetDB Data = new LoadDB.GetDB();
+                        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", "night", "gameObj");  //서버에서 스테이지 정보(최소횟수) 로딩
+                    }
+                    else mhandler.sendEmptyMessage(LOAD_FINISH); //모든 스테이지 정보 로딩 완료
+                }
+
             }
         } catch (JSONException e) {
         }
