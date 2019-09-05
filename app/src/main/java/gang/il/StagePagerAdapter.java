@@ -18,6 +18,7 @@ public class StagePagerAdapter extends PagerAdapter {
     int succeedStage;
     // LayoutInflater 서비스 사용을 위한 Context 참조 저장.
     private Context mContext = null ;
+    StageDBHelper StageDB;
 
     public StagePagerAdapter() {
 
@@ -32,7 +33,7 @@ public class StagePagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = null ;
         StagePagerAdapter.ViewHolder viewHolder = new StagePagerAdapter.ViewHolder();
-        StageDBHelper StageDB = new StageDBHelper(mContext);
+        StageDB = new StageDBHelper(mContext);
         succeedStage = StageDB.clearStageNum();
 
         if (mContext != null) {
@@ -55,6 +56,7 @@ public class StagePagerAdapter extends PagerAdapter {
             for(int i=0; i<20; i++){
                 viewHolder.stageCount[i].setText("" + (position * 20 + 1 + i));
                 viewHolder.buttonImg[i].setTag("" + (position * 20 + 1 + i));
+                if(position*20+1+i>150) break; //마지막 스테이지 이후 막기
                 if (Integer.parseInt(viewHolder.buttonImg[i].getTag().toString()) - 1 <= succeedStage) {
                     viewHolder.buttonImg[i].setImageDrawable(mContext.getResources().getDrawable(R.drawable.button));
                     viewHolder.stageCount[i].setVisibility(View.VISIBLE);
@@ -72,7 +74,7 @@ public class StagePagerAdapter extends PagerAdapter {
                     stageCount = v.getTag().toString();
                     if (Integer.parseInt(stageCount) - 1 > succeedStage)
                         return;
-                    StageDBHelper StageDB = new StageDBHelper(mContext);
+                    //StageDBHelper StageDB = new StageDBHelper(mContext);
                     StageDB.getStageObj();
                     Intent intent = new Intent(StagePage, GamePage.class);
                     StagePage.startActivityForResult(intent, CLEAR_STAGE);
