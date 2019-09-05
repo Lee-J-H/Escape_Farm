@@ -121,7 +121,7 @@ public class GamePage extends AppCompatActivity {
 
 
     public void Dialog() {
-        dialog = new StageClearDialog(mContext, backBtnListener, // 내용
+        dialog = new StageClearDialog(mContext, "클리어",backBtnListener, // 내용
                 nextDialogListener, clr_ResetListener); // 왼쪽 버튼 이벤트
         // 오른쪽 버튼 이벤트
 

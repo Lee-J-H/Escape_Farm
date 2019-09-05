@@ -18,7 +18,6 @@ import java.net.URL;
 import static gang.il.LoadingImg.progressDialog;
 import static gang.il.LoadingImg.progressOFF;
 import static gang.il.StagePage.mhandler;
-import static gang.il.Valiable.Failed_internet;
 import static gang.il.Valiable.LOAD_FINISH;
 import static gang.il.Valiable.totalObj;
 import static gang.il.Valiable.dialog;
@@ -50,8 +49,7 @@ public class LoadDB {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if (result == null) {
-                Log.d("failed", "result:failed_internet");
-                mhandler.sendEmptyMessage(Failed_internet);
+                failedInternet(mContext);
             } else {
                 mJsonString = result;
                 showResult();
@@ -118,15 +116,12 @@ public class LoadDB {
     public static void failedInternet(Context mContext) {
 
         View.OnClickListener DialogListener = new View.OnClickListener() {
-            LoadDB.GetDB Data = new LoadDB.GetDB();
-
             public void onClick(View v) {
                 if (progressDialog.isShowing()) progressOFF();
                 dialog.dismiss();
             }
         };
-        dialog = new StageClearDialog(mContext,
-                "인터넷 연결을 확인해주세요", // 내용
+        dialog = new StageClearDialog(mContext,"인터넷 연결을\n확인해 주세요",// 내용
                 DialogListener); // 왼쪽 버튼 이벤트
         dialog.setCancelable(false);
         dialog.getWindow().setGravity(Gravity.CENTER);

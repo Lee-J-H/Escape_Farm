@@ -16,7 +16,6 @@ import static gang.il.LoadDB.failedInternet;
 import static gang.il.LoadingImg.progressDialog;
 import static gang.il.LoadingImg.progressOFF;
 import static gang.il.Valiable.CLEAR_STAGE;
-import static gang.il.Valiable.Failed_internet;
 import static gang.il.Valiable.StagePage;
 import static gang.il.Valiable.LOAD_FINISH;
 import static gang.il.Valiable.StartPage;
@@ -66,9 +65,6 @@ public class StagePage extends AppCompatActivity {
                     Intent intent = new Intent(StartPage, MainPage.class);
                     StartPage.startActivity(intent);
                     StartPage.finish();
-                    break;
-                case Failed_internet:
-                    failedInternet(mContext);
                     break;
             }
         }

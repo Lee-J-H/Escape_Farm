@@ -12,7 +12,6 @@ public class Valiable {
     public static String direction, stageCount, gameMode; //이동 방향
     public static final int CLEAR_STAGE = 1;
     public static final int LOAD_FINISH = 2;
-    public static final int Failed_internet = 3;
     public static Activity StagePage, MainPage, StartPage;
     public static ArrayList finishObj = new ArrayList();
     public static StageClearDialog dialog;
