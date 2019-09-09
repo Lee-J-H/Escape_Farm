@@ -18,8 +18,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
-import static gang.il.LoadingImg.progressDialog;
-import static gang.il.LoadingImg.progressOFF;
 import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.objCount;
@@ -34,11 +32,11 @@ import static gang.il.Valiable.tutorialNum;
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     Context mContext;
     SurfaceHolder mHolder;
-    ImageThread mThread;
+    public ImageThread mThread;
     Canvas mCanvas = null;
     float Width, Height;
     int spaceX, spaceY, blankX, blankY;
-    boolean animal_clk = false;
+    boolean animal_clk = false, running=true;
     Tutorial Tutorial;
 
     public GameSurfaceView(Context context) {
@@ -58,6 +56,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         // Surface가 만들어질 때 호출됨
+        running=true;
         mThread = new GameSurfaceView.ImageThread();
         mThread.start();
         ((GamePage) mContext).setMoveCount();
@@ -73,9 +72,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         // Surface가 종료될 때 호출됨
         try {
-            mThread.join();
-            if(progressDialog != null)
-                progressOFF();
+            running=false;
+            /*if(mThread.isAlive())*/mThread.join();
+            Log.d("surfaceDestroyed()","surfaceDestroyed()");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -134,7 +133,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
     class ImageThread extends Thread {
-        Bitmap background, dog, squirrel, rabbit, panda, tiger, ground, wall_down, wall_right, dog_fin, squirrel_fin, rabbit_fin, panda_fin, tiger_fin, acorn, bamboo, meat, trap, carrot, bone, cave, blackScreen, mask_animal, mask_result, mask;
+        Bitmap background, ground, dog, squirrel, rabbit, panda, tiger, wall_down, wall_right, dog_fin, squirrel_fin, rabbit_fin, panda_fin, tiger_fin, acorn, bamboo, meat, trap, carrot, bone, cave, blackScreen, mask_animal, mask_result, mask;
 
         private ImageThread() {
             WindowManager manager = (WindowManager)
@@ -148,6 +147,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             spaceY = (int) Height / 20;
             background = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.background);
             background = Bitmap.createScaledBitmap(background, (int)Width, (int) Height, true);
+            ground = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ground);
+            ground = Bitmap.createScaledBitmap(ground, (int) spaceX, (int) spaceY, true);
             dog = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.dog);
             dog = Bitmap.createScaledBitmap(dog, (int) spaceX, (int) spaceY, true);
             squirrel = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.squirrel);
@@ -158,8 +159,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             panda = Bitmap.createScaledBitmap(panda, (int) spaceX, (int) spaceY, true);
             tiger = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.tiger);
             tiger = Bitmap.createScaledBitmap(tiger, (int) spaceX, (int) spaceY, true);
-            ground = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ground);
-            ground = Bitmap.createScaledBitmap(ground, (int) spaceX, (int) spaceY, true);
             wall_right = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall_right);
             wall_right = Bitmap.createScaledBitmap(wall_right, (int) spaceX / 10, (int) spaceY, true);
             wall_down = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall_down);
@@ -307,7 +306,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
         }
 
-        /*private void drawAnimalWidget() {
+        private void drawAnimalWidget() {
             int finishWidgetNum = 0;
             for (int i = 0; i < finishObj.size(); i++) {
                 if (finishObj.get(i).equals("dog"))
@@ -321,7 +320,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 if (finishObj.get(i).equals("tiger"))
                     mCanvas.drawBitmap(tiger, (finishWidgetNum++) * blankX, blankY * 6 / 10, null);
             }
-        }*/
+        }
 
         private void blindDraw() {
             blackScreen = Bitmap.createScaledBitmap(wall_down, (int) spaceX * stageSize_x, (int) spaceY * stageSize_y, true);
@@ -361,13 +360,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
 
         public void run() {
-            while (true) {
+            while (running) {
                 mCanvas = mHolder.lockCanvas();
                 try {
                     synchronized (mHolder) {
                         mCanvas.drawBitmap(background,0,0, null);
                         doDraw();
-                        if (gameMode.equals("blind")) blindDraw();
+                        if (gameMode.equals("night")) blindDraw();
                         //drawAnimalWidget();
                         if (stageCount.equals("1")) {
                             Tutorial = new Tutorial(mContext, Width, Height, mCanvas);

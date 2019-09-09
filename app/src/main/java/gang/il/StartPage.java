@@ -1,6 +1,7 @@
 package gang.il;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +18,7 @@ public class StartPage extends AppCompatActivity {
     Thread w;
     boolean running = true, blink = true;
     Context context;
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,10 @@ public class StartPage extends AppCompatActivity {
         fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 running = false;
                 LoadDB loadDB = new LoadDB(context);
                 LoadDB.GetDB Data = new LoadDB.GetDB();
