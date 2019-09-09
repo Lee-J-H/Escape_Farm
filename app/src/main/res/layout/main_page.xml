@@ -42,7 +42,8 @@
                 android:text="클래식 모드"
                 android:textSize="50dp"
                 android:fontFamily="@font/misaeng"
-                android:layout_weight="0.6"/>  <!--클래식모드버튼-->
+                android:layout_weight="0.6"
+                android:background="@drawable/main_btn"/>  <!--클래식모드버튼-->
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -62,7 +63,8 @@
                 android:text="블라인드 모드"
                 android:textSize="50dp"
                 android:fontFamily="@font/misaeng"
-                android:layout_weight="0.6"/>  <!--블라인드모드버튼-->
+                android:layout_weight="0.6"
+                android:background="@drawable/main_btn"/>  <!--블라인드모드버튼-->
         </LinearLayout>
     </LinearLayout>
 

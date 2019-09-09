@@ -77,6 +77,22 @@ public class StageDBHelper extends SQLiteOpenHelper {
         db.execSQL(dropNightStage);
         onCreate(db);
     }
+    public void init(){
+        db = getWritableDatabase();
+        String dropDayStage =
+                "DROP TABLE IF EXISTS DayStage";
+        String dropNightStage =
+                "DROP TABLE IF EXISTS NightStage";
+        String dropDayCount =
+                "DROP TABLE IF EXISTS DayCount";
+        String dropNightCount =
+                "DROP TABLE IF EXISTS NightCount";
+        db.execSQL(dropDayCount);
+        db.execSQL(dropNightCount);
+        db.execSQL(dropDayStage);
+        db.execSQL(dropNightStage);
+        onCreate(db);
+    }
 
     public void getStageObj() {
         db = getReadableDatabase();
@@ -125,6 +141,7 @@ public class StageDBHelper extends SQLiteOpenHelper {
             c.moveToFirst();
             myMinCount = c.getInt(0);
         }
+        db.close();
         return myMinCount;
     }
     public int getMinCount(int stageNum){
@@ -133,6 +150,7 @@ public class StageDBHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("select Count from "+gameMode+ "Count where Stage ="+stageNum, null);
         c.moveToFirst();
         minCount = c.getInt(0);
+        db.close();
         return minCount;
     }
     public void recordCount(int minCount){
@@ -148,6 +166,7 @@ public class StageDBHelper extends SQLiteOpenHelper {
         //Cursor c = db.rawQuery("select Stage from dayCount where myCount is not null;", null);
         if(c!=null)
             count = c.getCount();
+        db.close();
         return count;
     }
 

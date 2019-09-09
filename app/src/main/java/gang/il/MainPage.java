@@ -2,6 +2,7 @@ package gang.il;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import static gang.il.Valiable.MainPage;
 import static gang.il.Valiable.mContext;
 
 public class MainPage extends AppCompatActivity {
+    private long mLastClickTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mContext=this;
@@ -42,6 +44,10 @@ public class MainPage extends AppCompatActivity {
         });
     }
     public void init(){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
         Intent intent = new Intent(MainPage, StagePage.class);
         MainPage.startActivity(intent);
     }

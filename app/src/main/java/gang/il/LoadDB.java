@@ -143,6 +143,8 @@ public class LoadDB {
             JSONObject item = jsonArray.getJSONObject(0);
             String version = item.getString("Count");
             if(!readVersion(mContext).equals(version)) {
+                StageDBHelper stageDB = new StageDBHelper(mContext);
+                stageDB.init();
                 Data.execute("http://106.10.57.117/EscapeFarm/minimumcount.php", "day", "minCount");  //서버에서 주간모드 최소횟수 로딩
                 writeVersion(mContext,version);
             }

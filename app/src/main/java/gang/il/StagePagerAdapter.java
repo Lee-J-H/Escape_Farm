@@ -2,6 +2,7 @@ package gang.il;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ public class StagePagerAdapter extends PagerAdapter {
     // LayoutInflater 서비스 사용을 위한 Context 참조 저장.
     private Context mContext = null ;
     StageDBHelper StageDB;
+    private long mLastClickTime = 0;
 
     public StagePagerAdapter() {
 
@@ -71,6 +73,10 @@ public class StagePagerAdapter extends PagerAdapter {
             viewHolder.buttonImg[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     stageCount = v.getTag().toString();
                     if (Integer.parseInt(stageCount) - 1 > succeedStage)
                         return;
@@ -78,6 +84,7 @@ public class StagePagerAdapter extends PagerAdapter {
                     StageDB.getStageObj();
                     Intent intent = new Intent(StagePage, GamePage.class);
                     StagePage.startActivityForResult(intent, CLEAR_STAGE);
+                    StagePage.finish();
                 }
             });
 

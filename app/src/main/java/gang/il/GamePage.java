@@ -2,6 +2,7 @@ package gang.il;
 
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +12,10 @@ import android.view.Window;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.mContext;
+import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.tutorialNum;
@@ -23,11 +26,14 @@ public class GamePage extends AppCompatActivity {
     ImageView backBtn, resetBtn;
     ImageView[] animalWidget = new ImageView[5];
     StageDBHelper StageDB;
+    GameSurfaceView gameSurfaceView;
+    private long mLastClickTime = 0;
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
         backStage();
+        Log.d("onBackPressed()","onBackPressed()");
     }
 
     @Override
@@ -44,10 +50,18 @@ public class GamePage extends AppCompatActivity {
     public void init() {
         backBtn = (ImageView) findViewById(R.id.back);
         resetBtn = (ImageView) findViewById(R.id.reset);
+        gameSurfaceView = (GameSurfaceView) findViewById(R.id.GameSurfaceView);
         backBtn.setOnClickListener(backBtnListener);
         resetBtn.setOnClickListener(ResetListener);
         setMinCount();
         tutorialNum = 1;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("onPause()","onPause()");
+
     }
 
     public void setMoveCount() {
@@ -63,15 +77,26 @@ public class GamePage extends AppCompatActivity {
     public void setMinCount() {
         TextView min_text = findViewById(R.id.tv_min_count);
         min_text.setText("최소횟수: " + StageDB.getMinCount(Integer.valueOf(stageCount)));
+        minCount = StageDB.getMinCount(Integer.valueOf(stageCount));
     }
 
     public void backStage() {
-        Intent intent = new Intent();
-        setResult(RESULT_OK, intent);
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         moveCount = 0;
         tutorialNum = 1;
         stageCount = "0";
+        //Log.d("callingTest","result:backStage");
+
+        //Intent intent = new Intent();
+        Intent intent = new Intent(this, StagePage.class);
+        startActivity(intent);
         finish();
+        //gameSurfaceView.setVisibility(View.INVISIBLE);
+        //setResult(RESULT_OK, intent);
     }
 
     public void animalWidget() {
@@ -136,7 +161,7 @@ public class GamePage extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             backStage();
-        }
+                    }
     };
 
     //다이얼로그 클릭이벤트
