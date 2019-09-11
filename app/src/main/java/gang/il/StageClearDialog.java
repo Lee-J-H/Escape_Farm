@@ -70,7 +70,7 @@ public class StageClearDialog extends Dialog {
             clrMin.setVisibility(View.GONE);
             menuIcon.setVisibility(View.INVISIBLE);
             nextIcon.setVisibility(View.INVISIBLE);
-            retryIcon.setImageResource(R.drawable.dialog_yes);
+            retryIcon.setImageResource(R.drawable.yes_1);
             params = (LinearLayout.LayoutParams) retryIcon.getLayoutParams();
             retryIcon.setLayoutParams(params);
             clrText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 40f);

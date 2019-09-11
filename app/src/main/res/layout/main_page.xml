@@ -39,11 +39,11 @@
                 android:id="@+id/classic_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="클래식 모드"
+                android:text="낮에 탈출하기"
                 android:textSize="50dp"
                 android:fontFamily="@font/misaeng"
                 android:layout_weight="0.6"
-                android:background="@drawable/main_btn"/>  <!--클래식모드버튼-->
+                android:background="@drawable/main_btn"/>  <!--주간모드버튼-->
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -60,11 +60,11 @@
                 android:id="@+id/blind_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="블라인드 모드"
+                android:text="밤에 탈출하기"
                 android:textSize="50dp"
                 android:fontFamily="@font/misaeng"
                 android:layout_weight="0.6"
-                android:background="@drawable/main_btn"/>  <!--블라인드모드버튼-->
+                android:background="@drawable/main_btn"/>  <!--야간모드버튼-->
         </LinearLayout>
     </LinearLayout>
 

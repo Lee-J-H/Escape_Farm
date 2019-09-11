@@ -36,9 +36,8 @@ public class StageDBHelper extends SQLiteOpenHelper {
                         "Stage INTEGER, " +
                         "Structure varchar(255) not null, " +
                         "posX INTEGER not null, " +
-                        "posY INTEGER not null, " +
-                        "sort_num INTEGER NOT NULL," +
-                        "foreign key(Stage) references NightCount(Stage) on update cascade on delete cascade" +
+                        "posY INTEGER not null " +
+                        //"foreign key(Stage) references NightCount(Stage) on update cascade on delete cascade" +
                         ");";
         String dayCount =
                 "CREATE TABLE " + "DayCount" + "(" +
@@ -51,9 +50,8 @@ public class StageDBHelper extends SQLiteOpenHelper {
                         "Stage INTEGER, " +
                         "Structure varchar(255) not null, " +
                         "posX INTEGER not null, " +
-                        "posY INTEGER not null, " +
-                        "sort_num INTEGER NOT NULL," +
-                        "foreign key(Stage) references DayCount(Stage) on update cascade on delete cascade" +
+                        "posY INTEGER not null " +
+                       // "foreign key(Stage) references DayCount(Stage) on update cascade on delete cascade" +
                         ");";
         db.execSQL(nightCount);
         db.execSQL(nightStage);
@@ -96,7 +94,7 @@ public class StageDBHelper extends SQLiteOpenHelper {
 
     public void getStageObj() {
         db = getReadableDatabase();
-        Cursor c = db.rawQuery("select Structure, posX, posY, sort_num from " + gameMode + "Stage where Stage="+stageCount +" order by sort_num asc;", null);
+        Cursor c = db.rawQuery("select Structure, posX, posY from " + gameMode + "Stage where Stage="+stageCount +";", null);
         if (c.getCount() == 0) {
             return;
         }
@@ -109,17 +107,20 @@ public class StageDBHelper extends SQLiteOpenHelper {
             String structure = c.getString(0);
             int x = c.getInt(1);
             int y = c.getInt(2);
-            int sort = c.getInt(3);
             if (count == 1) {
                 stageSize_x = x / 2;
                 stageSize_y = y / 2;
             }
-            switch (sort) {
-                case 10:
+            switch (structure) {
+                case "dog":
+                case "squirrel":
+                case "rabbit":
+                case "panda":
+                case "tiger":
                     totalObj[count] = new TotalObject(x, y, structure, true);
                     putInFood(structure, count); //해당 동물의 음식 속성 부여
                     break;
-                case 3:
+                case "cave":
                     totalObj[count] = new TotalObject(x, y, structure, false);
                     totalObj[count].caveNum = ++caveNum;
                     break;
@@ -170,9 +171,9 @@ public class StageDBHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public void initObjDB(String mode,int stage, int sortNum,TotalObject... obj){
+    public void initObjDB(String mode,int stage,TotalObject... obj){
         db = getWritableDatabase();
-        db.execSQL("insert into "+mode+"Stage(Stage, Structure, posX, posY, sort_num) values("+stage+",'"+obj[0].getType()+"',"+obj[0].getPosX()+","+obj[0].getPosY()+","+sortNum+");");
+        db.execSQL("insert into "+mode+"Stage(Stage, Structure, posX, posY) values("+stage+",'"+obj[0].getType()+"',"+obj[0].getPosX()+","+obj[0].getPosY()+");");
         db.close();
     }
     public void initCountDB(String mode, int minCount, int stage){

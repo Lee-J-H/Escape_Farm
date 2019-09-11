@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
@@ -32,7 +33,7 @@ import static gang.il.Valiable.tutorialNum;
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     Context mContext;
     SurfaceHolder mHolder;
-    public ImageThread mThread;
+    public static ImageThread mThread;
     Canvas mCanvas = null;
     float Width, Height;
     int spaceX, spaceY, blankX, blankY;
@@ -133,7 +134,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
     class ImageThread extends Thread {
-        Bitmap background, ground, dog, squirrel, rabbit, panda, tiger, wall_down, wall_right, dog_fin, squirrel_fin, rabbit_fin, panda_fin, tiger_fin, acorn, bamboo, meat, trap, carrot, bone, cave, blackScreen, mask_animal, mask_result, mask;
+        Bitmap ground, dog, squirrel, rabbit, panda, tiger, wall_down, wall_right, dog_fin, squirrel_fin, rabbit_fin, panda_fin, tiger_fin, acorn, bamboo, meat, trap, carrot, bone, cave, blackScreen, mask_animal, mask_result, mask;
 
         private ImageThread() {
             WindowManager manager = (WindowManager)
@@ -145,8 +146,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             Height = sizePoint.y;
             spaceX = (int) Width / 10;
             spaceY = (int) Height / 20;
-            background = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.background);
-            background = Bitmap.createScaledBitmap(background, (int)Width, (int) Height, true);
             ground = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ground);
             ground = Bitmap.createScaledBitmap(ground, (int) spaceX, (int) spaceY, true);
             dog = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.dog);
@@ -159,9 +158,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             panda = Bitmap.createScaledBitmap(panda, (int) spaceX, (int) spaceY, true);
             tiger = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.tiger);
             tiger = Bitmap.createScaledBitmap(tiger, (int) spaceX, (int) spaceY, true);
-            wall_right = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall_right);
+            wall_right = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall);
             wall_right = Bitmap.createScaledBitmap(wall_right, (int) spaceX / 10, (int) spaceY, true);
-            wall_down = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall_down);
+            wall_down = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.wall);
             wall_down = Bitmap.createScaledBitmap(wall_down, (int) spaceX, (int) spaceY / 10, true);
             dog_fin = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.dog_fin);
             dog_fin = Bitmap.createScaledBitmap(dog_fin, (int) spaceX, (int) spaceY, true);
@@ -182,11 +181,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             cave = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.cave);
             cave = Bitmap.createScaledBitmap(cave, (int) spaceX, (int) spaceY, true);
             meat = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.meat);
-            meat = Bitmap.createScaledBitmap(cave, (int) spaceX, (int) spaceY, true);
+            meat = Bitmap.createScaledBitmap(meat, (int) spaceX, (int) spaceY, true);
             acorn = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.acorn);
-            acorn = Bitmap.createScaledBitmap(cave, (int) spaceX, (int) spaceY, true);
+            acorn = Bitmap.createScaledBitmap(acorn, (int) spaceX, (int) spaceY, true);
             bamboo = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.bamboo);
-            bamboo = Bitmap.createScaledBitmap(cave, (int) spaceX, (int) spaceY, true);
+            bamboo = Bitmap.createScaledBitmap(bamboo, (int) spaceX, (int) spaceY, true);
             mask_animal = BitmapFactory.decodeResource(getResources(), R.drawable.mask_animal);
         }
 
@@ -195,8 +194,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 case 4:
                     blankX = spaceX * 2;
                     break;
+                case 5:
+                    blankX = spaceX * 3/2;
+                    break;
                 case 6:
                     blankX = spaceX * 1;
+                    break;
+                case 7:
+                    blankX = spaceX/2;
                     break;
                 case 8:
                     blankX = spaceX * 0;
@@ -204,18 +209,27 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
             switch (stageSize_y) {
                 case 4:
-                    blankY = spaceY * 9;
+                    blankY = spaceY * 3;
+                    break;
+                case 5:
+                    blankY = spaceY * 5/2;
                     break;
                 case 6:
-                    blankY = spaceY * 8;
+                    blankY = spaceY * 2;
+                    break;
+                case 7:
+                    blankY = spaceY * 3/2;
                     break;
                 case 8:
-                    blankY = spaceY * 7;
+                    blankY = spaceY * 1;
+                    break;
+                case 9:
+                    blankY = spaceY * 1/2;
                     break;
             }
             Paint tutorialPaint = new Paint();
-            tutorialPaint.setAlpha(80);
             if (stageCount.equals("1")) {
+                tutorialPaint.setAlpha(80);
                 focusOn(tutorialPaint);
             } else {
                 for (int i = 0; i < stageSize_x; i++)
@@ -268,9 +282,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 if (totalObj[i].getType().equals("food_bamboo"))
                     mCanvas.drawBitmap(bamboo, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
                 if (totalObj[i].getType().equals("food_acorn"))
-                    mCanvas.drawBitmap(bone, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                    mCanvas.drawBitmap(acorn, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
                 if (totalObj[i].getType().equals("food_meat"))
-                    mCanvas.drawBitmap(bone, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                    mCanvas.drawBitmap(meat, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
                 if (totalObj[i].getType().equals("cave"))
                     mCanvas.drawBitmap(cave, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
             }
@@ -303,22 +317,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                                 mCanvas.drawBitmap(ground, (spaceX * (i + 1)) + blankX, (spaceY * (j + 1)) + blankY, tutorialPaint);
                         }
                     break;
-            }
-        }
-
-        private void drawAnimalWidget() {
-            int finishWidgetNum = 0;
-            for (int i = 0; i < finishObj.size(); i++) {
-                if (finishObj.get(i).equals("dog"))
-                    mCanvas.drawBitmap(dog, (finishWidgetNum++) * blankX, blankY * 6 / 10, null);
-                if (finishObj.get(i).equals("squirrel"))
-                    mCanvas.drawBitmap(squirrel, (finishWidgetNum++) * blankX, blankY * 6 / 10, null);
-                if (finishObj.get(i).equals("rabbit"))
-                    mCanvas.drawBitmap(rabbit, (finishWidgetNum++) * blankX, blankY * 6 / 10, null);
-                if (finishObj.get(i).equals("panda"))
-                    mCanvas.drawBitmap(panda, (finishWidgetNum++) * blankX, blankY * 6 / 10, null);
-                if (finishObj.get(i).equals("tiger"))
-                    mCanvas.drawBitmap(tiger, (finishWidgetNum++) * blankX, blankY * 6 / 10, null);
             }
         }
 
@@ -364,10 +362,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 mCanvas = mHolder.lockCanvas();
                 try {
                     synchronized (mHolder) {
-                        mCanvas.drawBitmap(background,0,0, null);
                         doDraw();
                         if (gameMode.equals("night")) blindDraw();
-                        //drawAnimalWidget();
                         if (stageCount.equals("1")) {
                             Tutorial = new Tutorial(mContext, Width, Height, mCanvas);
                             Tutorial.drawMessage(0, blankY + (spaceY * 6));

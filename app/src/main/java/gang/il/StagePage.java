@@ -42,7 +42,8 @@ public class StagePage extends AppCompatActivity {
         pageNum = StageDB.clearStageNum()/20; //마지막으로 클리어한 페이지 기준으로 보기
         backBtn = (TextView) findViewById(R.id.back_btn);
         gameModeTxt = (TextView) findViewById(R.id.gameMode);
-        gameModeTxt.setText(gameMode);
+        if(gameMode.equals("day")) gameModeTxt.setText("낮");
+        else gameModeTxt.setText("밤");
         viewPager = (ViewPager) findViewById(R.id.viewPager) ;
         pagerAdapter = new StagePagerAdapter(this) ;
         viewPager.setAdapter(pagerAdapter) ;
@@ -76,15 +77,8 @@ public class StagePage extends AppCompatActivity {
         }
     };
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == CLEAR_STAGE) {
-            if (resultCode == RESULT_OK) {
-                mContext=this;
-                pagerAdapter.notifyDataSetChanged();
-            }
-        }
+    public void setStage(){
+        pagerAdapter.notifyDataSetChanged();
     }
 
     @Override
