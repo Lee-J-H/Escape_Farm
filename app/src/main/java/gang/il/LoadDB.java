@@ -19,20 +19,19 @@ import static gang.il.LoadingImg.progressDialog;
 import static gang.il.LoadingImg.progressOFF;
 import static gang.il.StagePage.mhandler;
 import static gang.il.Valiable.LOAD_FINISH;
-import static gang.il.Valiable.totalObj;
 import static gang.il.Valiable.dialog;
 import static gang.il.Version.readVersion;
 import static gang.il.Version.writeVersion;
 
 public class LoadDB {
-    public static Context mContext;
+    public static Context loadDBContext;
     public static String mJsonString;
     public static String loadMode;
     public static String loadType;
 
 
     public LoadDB(Context context) {
-        mContext = context;
+        loadDBContext = context;
     }
 
     public static class GetDB extends AsyncTask<String, Void, String> {
@@ -49,7 +48,7 @@ public class LoadDB {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if (result == null) {
-                failedInternet(mContext);
+                failedInternet(loadDBContext);
             } else {
                 mJsonString = result;
                 showResult();
@@ -142,11 +141,11 @@ public class LoadDB {
             LoadDB.GetDB Data = new LoadDB.GetDB();
             JSONObject item = jsonArray.getJSONObject(0);
             String version = item.getString("Count");
-            if(!readVersion(mContext).equals(version)) {
-                StageDBHelper stageDB = new StageDBHelper(mContext);
+            if(!readVersion(loadDBContext).equals(version)) {
+                StageDBHelper stageDB = new StageDBHelper(loadDBContext);
                 stageDB.init();
                 Data.execute("http://106.10.57.117/EscapeFarm/minimumcount.php", "day", "minCount");  //서버에서 주간모드 최소횟수 로딩
-                writeVersion(mContext,version);
+                writeVersion(loadDBContext,version);
             }
             else mhandler.sendEmptyMessage(LOAD_FINISH);
         } catch (JSONException e) {
@@ -155,7 +154,7 @@ public class LoadDB {
 
     private static void getMinCount(String mode){
         try {
-            StageDBHelper stageDB = new StageDBHelper(mContext);
+            StageDBHelper stageDB = new StageDBHelper(loadDBContext);
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -181,7 +180,7 @@ public class LoadDB {
     }
     private static void getStage(String mode){
         try {
-            StageDBHelper stageDB = new StageDBHelper(mContext);
+            StageDBHelper stageDB = new StageDBHelper(loadDBContext);
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
             TotalObject[] obj = new TotalObject[1];
@@ -190,10 +189,9 @@ public class LoadDB {
                 int stage = item.getInt("Stage");
                 int posX = item.getInt("posX");
                 int posY = item.getInt("posY");
-                int sortNum = item.getInt("sort_num");
                 String structure = item.getString("Structure");
                 obj[0] = new TotalObject(posX,posY,structure,false);
-                stageDB.initObjDB(mode, stage,sortNum, obj[0]); //처음 한번만 실행되도록 처리해야됨
+                stageDB.initObjDB(mode, stage, obj[0]); //처음 한번만 실행되도록 처리해야됨
 
                 if(i == jsonArray.length() -1){ //주간모드 마지막 스테이지 로드 후 야간모드 로드 시작
                     if(mode.equals("day")) {
@@ -205,27 +203,6 @@ public class LoadDB {
 
             }
         } catch (JSONException e) {
-        }
-    }
-
-
-    private static void putInFood(String animalName, int animalIndex) {
-        switch (animalName) {
-            case "dog":
-                totalObj[animalIndex].foods.add("food_bone");
-                break;
-            case "squirrel":
-                totalObj[animalIndex].foods.add("food_acorn");
-                break;
-            case "panda":
-                totalObj[animalIndex].foods.add("food_bamboo");
-                break;
-            case "rabbit":
-                totalObj[animalIndex].foods.add("food_carrot");
-                break;
-            case "tiger":
-                totalObj[animalIndex].foods.add("food_meat");
-                break;
         }
     }
 }

@@ -13,8 +13,7 @@ public class Valiable {
     public static final int CLEAR_STAGE = 1;
     public static final int LOAD_FINISH = 2;
     public static final int GAME_FINISH = 3;
-    public static boolean isFinish = false, pressBack = false;
-    public static Activity StagePage, MainPage, StartPage, GamePage;
+    public static Activity StagePage, MainPage, StartPage;
     public static ArrayList finishObj = new ArrayList();
     public static StageClearDialog dialog;
     public static Context mContext;

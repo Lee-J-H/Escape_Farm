@@ -1,7 +1,8 @@
 package gang.il;
 
 
-import android.content.Intent;
+import android.content.Context;
+import android.graphics.PixelFormat;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static gang.il.GameSurfaceView.mThread;
 import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.mContext;
 import static gang.il.Valiable.minCount;
@@ -28,6 +30,7 @@ public class GamePage extends AppCompatActivity {
     StageDBHelper StageDB;
     GameSurfaceView gameSurfaceView;
     private long mLastClickTime = 0;
+    Context GameContext;
 
     @Override
     public void onBackPressed() {
@@ -38,8 +41,8 @@ public class GamePage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mContext = this;
-        StageDB = new StageDBHelper(mContext);
+        GameContext = this;
+        StageDB = new StageDBHelper(GameContext);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);//제목 없음
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_page);
@@ -50,11 +53,13 @@ public class GamePage extends AppCompatActivity {
     public void init() {
         backBtn = (ImageView) findViewById(R.id.back);
         resetBtn = (ImageView) findViewById(R.id.reset);
-        gameSurfaceView = (GameSurfaceView) findViewById(R.id.GameSurfaceView);
+        gameSurfaceView = (GameSurfaceView) findViewById(R.id.GameSurfaceView) ;
         backBtn.setOnClickListener(backBtnListener);
         resetBtn.setOnClickListener(ResetListener);
         setMinCount();
         tutorialNum = 1;
+        gameSurfaceView.setZOrderOnTop(true);
+        gameSurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888); //출처 https://mparchive.tistory.com/103  (surfaceVIew 배경 투명화)
     }
 
     @Override
@@ -81,22 +86,16 @@ public class GamePage extends AppCompatActivity {
     }
 
     public void backStage() {
+        //if(mThread.isAlive())mThread.interrupt();
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-
         moveCount = 0;
         tutorialNum = 1;
         stageCount = "0";
-        //Log.d("callingTest","result:backStage");
-
-        //Intent intent = new Intent();
-        Intent intent = new Intent(this, StagePage.class);
-        startActivity(intent);
-        finish();
         //gameSurfaceView.setVisibility(View.INVISIBLE);
-        //setResult(RESULT_OK, intent);
+        finish();
     }
 
     public void animalWidget() {
@@ -105,11 +104,11 @@ public class GamePage extends AppCompatActivity {
         animalWidget[2] = findViewById(R.id.widget_rabbit);
         animalWidget[3] = findViewById(R.id.widget_panda);
         animalWidget[4] = findViewById(R.id.widget_tiger);
-        animalWidget[0].setImageDrawable(mContext.getResources().getDrawable(R.drawable.dog));
-        animalWidget[1].setImageDrawable(mContext.getResources().getDrawable(R.drawable.squirrel));
-        animalWidget[2].setImageDrawable(mContext.getResources().getDrawable(R.drawable.rabbit));
-        animalWidget[3].setImageDrawable(mContext.getResources().getDrawable(R.drawable.panda));
-        animalWidget[4].setImageDrawable(mContext.getResources().getDrawable(R.drawable.tiger));
+        animalWidget[0].setImageDrawable(GameContext.getResources().getDrawable(R.drawable.dog));
+        animalWidget[1].setImageDrawable(GameContext.getResources().getDrawable(R.drawable.squirrel));
+        animalWidget[2].setImageDrawable(GameContext.getResources().getDrawable(R.drawable.rabbit));
+        animalWidget[3].setImageDrawable(GameContext.getResources().getDrawable(R.drawable.panda));
+        animalWidget[4].setImageDrawable(GameContext.getResources().getDrawable(R.drawable.tiger));
         for (int i = 0; i < finishObj.size(); i++) {
             if (finishObj.get(i).equals("dog"))
                 animalWidget[0].setVisibility(View.VISIBLE);
@@ -127,26 +126,26 @@ public class GamePage extends AppCompatActivity {
     public void finWidget(String animal) {
         switch (animal) {
             case "dog":
-                animalWidget[0].setImageDrawable(mContext.getResources().getDrawable(R.drawable.dog_widget));
+                animalWidget[0].setImageDrawable(GameContext.getResources().getDrawable(R.drawable.dog_widget));
                 break;
             case "squirrel":
-                animalWidget[1].setImageDrawable(mContext.getResources().getDrawable(R.drawable.squirrel_widget));
+                animalWidget[1].setImageDrawable(GameContext.getResources().getDrawable(R.drawable.squirrel_widget));
                 break;
             case "rabbit":
-                animalWidget[2].setImageDrawable(mContext.getResources().getDrawable(R.drawable.rabbit_widget));
+                animalWidget[2].setImageDrawable(GameContext.getResources().getDrawable(R.drawable.rabbit_widget));
                 break;
             case "panda":
-                animalWidget[3].setImageDrawable(mContext.getResources().getDrawable(R.drawable.panda_widget));
+                animalWidget[3].setImageDrawable(GameContext.getResources().getDrawable(R.drawable.panda_widget));
                 break;
             case "tiger":
-                animalWidget[4].setImageDrawable(mContext.getResources().getDrawable(R.drawable.tiger_widget));
+                animalWidget[4].setImageDrawable(GameContext.getResources().getDrawable(R.drawable.tiger_widget));
                 break;
         }
     }
 
 
     public void Dialog() {
-        dialog = new StageClearDialog(mContext, "클리어",backBtnListener, // 내용
+        dialog = new StageClearDialog(GameContext, "클리어",backBtnListener, // 내용
                 nextDialogListener, clr_ResetListener); // 왼쪽 버튼 이벤트
         // 오른쪽 버튼 이벤트
 
@@ -160,13 +159,16 @@ public class GamePage extends AppCompatActivity {
     private View.OnClickListener backBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            backStage();
+            //((StagePage) mContext).setStage();
+            onBackPressed();
                     }
     };
 
     //다이얼로그 클릭이벤트
     private View.OnClickListener nextDialogListener = new View.OnClickListener() {
         public void onClick(View v) {
+            if(mThread.isAlive())mThread.interrupt();
+            ((StagePage) mContext).setStage();
             stageCount = String.valueOf(Integer.parseInt(stageCount) + 1);
             moveCount = 0;
             setMoveCount();
@@ -182,6 +184,8 @@ public class GamePage extends AppCompatActivity {
     private View.OnClickListener clr_ResetListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if(mThread.isAlive())mThread.interrupt();
+            ((StagePage) mContext).setStage();
             moveCount = 0;
             tutorialNum = 1;
             setMoveCount();
@@ -195,6 +199,7 @@ public class GamePage extends AppCompatActivity {
     private View.OnClickListener ResetListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if(mThread.isAlive())mThread.interrupt();
             moveCount = 0;
             tutorialNum = 1;
             setMoveCount();

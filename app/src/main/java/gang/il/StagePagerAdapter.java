@@ -11,14 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import static gang.il.Valiable.CLEAR_STAGE;
 import static gang.il.Valiable.StagePage;
 import static gang.il.Valiable.stageCount;
 
 public class StagePagerAdapter extends PagerAdapter {
     int succeedStage;
     // LayoutInflater 서비스 사용을 위한 Context 참조 저장.
-    private Context mContext = null ;
+    Context stagePagerContext = null ;
     StageDBHelper StageDB;
     private long mLastClickTime = 0;
 
@@ -28,25 +27,25 @@ public class StagePagerAdapter extends PagerAdapter {
 
     // Context를 전달받아 mContext에 저장하는 생성자 추가.
     public StagePagerAdapter(Context context) {
-        mContext = context ;
+        stagePagerContext = context ;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = null ;
         StagePagerAdapter.ViewHolder viewHolder = new StagePagerAdapter.ViewHolder();
-        StageDB = new StageDBHelper(mContext);
+        StageDB = new StageDBHelper(stagePagerContext);
         succeedStage = StageDB.clearStageNum();
 
-        if (mContext != null) {
+        if (stagePagerContext != null) {
             // LayoutInflater를 통해 "/res/layout/page.xml"을 뷰로 생성.
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) stagePagerContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.stage_list, container, false);
 
             for (int i = 0; i < 20; i++) {
-                int stageCountId = mContext.getResources().getIdentifier("num_" + (i+1), "id", "gang.il");
-                int minCountId = mContext.getResources().getIdentifier("min_" + (i+1), "id", "gang.il");
-                int buttonImgId = mContext.getResources().getIdentifier("btn_" + (i+1), "id", "gang.il");
+                int stageCountId = stagePagerContext.getResources().getIdentifier("num_" + (i+1), "id", "gang.il");
+                int minCountId = stagePagerContext.getResources().getIdentifier("min_" + (i+1), "id", "gang.il");
+                int buttonImgId = stagePagerContext.getResources().getIdentifier("btn_" + (i+1), "id", "gang.il");
                 viewHolder.stageCount[i] = (TextView) view.findViewById(stageCountId);
                 viewHolder.minCount[i] = (TextView) view.findViewById(minCountId);
                 viewHolder.buttonImg[i] = (ImageView) view.findViewById(buttonImgId);
@@ -60,7 +59,7 @@ public class StagePagerAdapter extends PagerAdapter {
                 viewHolder.buttonImg[i].setTag("" + (position * 20 + 1 + i));
                 if(position*20+1+i>150) break; //마지막 스테이지 이후 막기
                 if (Integer.parseInt(viewHolder.buttonImg[i].getTag().toString()) - 1 <= succeedStage) {
-                    viewHolder.buttonImg[i].setImageDrawable(mContext.getResources().getDrawable(R.drawable.button));
+                    viewHolder.buttonImg[i].setImageDrawable(stagePagerContext.getResources().getDrawable(R.drawable.button));
                     viewHolder.stageCount[i].setVisibility(View.VISIBLE);
                     viewHolder.minCount[i].setVisibility(View.VISIBLE);
                     viewHolder.minCount[i].setText("0/"+StageDB.getMinCount(position*20+1+i));
@@ -80,11 +79,10 @@ public class StagePagerAdapter extends PagerAdapter {
                     stageCount = v.getTag().toString();
                     if (Integer.parseInt(stageCount) - 1 > succeedStage)
                         return;
-                    //StageDBHelper StageDB = new StageDBHelper(mContext);
                     StageDB.getStageObj();
                     Intent intent = new Intent(StagePage, GamePage.class);
-                    StagePage.startActivityForResult(intent, CLEAR_STAGE);
-                    StagePage.finish();
+                    StagePage.startActivity(intent);
+                    //StagePage.finish();
                 }
             });
 
