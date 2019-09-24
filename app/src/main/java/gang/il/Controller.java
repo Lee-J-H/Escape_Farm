@@ -1,8 +1,6 @@
 package gang.il;
 
 import android.content.Context;
-import android.graphics.PointF;
-import android.util.Log;
 
 import static gang.il.Valiable.curObjNum;
 import static gang.il.Valiable.direction;
@@ -106,7 +104,6 @@ public class Controller {
 
         if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우
             moveCount++; //이동 횟수 증가
-            ((GamePage) mContext).setMoveCount(); //뷰의 이동횟수 갱신
             if(stageCount.equals("1")){ //튜토리얼 진행
                 if(tutorialNum <3)tutorialNum++;
             }

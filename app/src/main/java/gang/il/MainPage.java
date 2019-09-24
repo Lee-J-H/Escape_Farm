@@ -1,19 +1,14 @@
 package gang.il;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-import static gang.il.LoadingImg.progressDialog;
-import static gang.il.LoadingImg.progressON;
 import static gang.il.Valiable.gameMode;
-import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.MainPage;
 import static gang.il.Valiable.mContext;
 

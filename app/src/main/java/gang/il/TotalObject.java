@@ -7,7 +7,7 @@ import static gang.il.Valiable.direction;
 class TotalObject {
     ArrayList<String> foods = new ArrayList<String>(); //음식 테스트중
     float posX, posY;
-    String type; // animal, -fin, trap, wall
+    String type;
     boolean moveAble;
     int caveNum;
 

@@ -1,7 +1,5 @@
 package gang.il;
 
-import android.util.Log;
-
 import static gang.il.Valiable.curObjNum;
 import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.totalObj;

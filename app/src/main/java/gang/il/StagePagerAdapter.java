@@ -82,7 +82,6 @@ public class StagePagerAdapter extends PagerAdapter {
                     StageDB.getStageObj();
                     Intent intent = new Intent(StagePage, GamePage.class);
                     StagePage.startActivity(intent);
-                    //StagePage.finish();
                 }
             });
 
