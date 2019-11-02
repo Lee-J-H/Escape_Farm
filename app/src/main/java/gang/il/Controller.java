@@ -104,6 +104,7 @@ public class Controller {
 
         if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우
             moveCount++; //이동 횟수 증가
+            ((GamePage) mContext).setMoveCount();
             if(stageCount.equals("1")){ //튜토리얼 진행
                 if(tutorialNum <3)tutorialNum++;
             }

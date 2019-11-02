@@ -39,7 +39,7 @@ public class MainPage extends AppCompatActivity {
         });
     }
     public void init(){
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 100){
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();

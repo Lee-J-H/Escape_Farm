@@ -36,7 +36,7 @@ public class StageDBHelper extends SQLiteOpenHelper {
                         "Structure varchar(255) not null, " +
                         "posX INTEGER not null, " +
                         "posY INTEGER not null " +
-                        //"foreign key(Stage) references NightCount(Stage) on update cascade on delete cascade" +
+                         //"foreign key(Stage) references NightCount(Stage) on update cascade on delete cascade" +
                         ");";
         String dayCount =
                 "CREATE TABLE " + "DayCount" + "(" +
@@ -106,10 +106,16 @@ public class StageDBHelper extends SQLiteOpenHelper {
             String structure = c.getString(0);
             int x = c.getInt(1);
             int y = c.getInt(2);
-            if (count == 1) {
+            if(structure.equals("boundary")){
+                if(x!=1&&y!=1){
+                    stageSize_x = x / 2;
+                    stageSize_y = y / 2;
+                }
+            }
+            /*if (count == 1) {
                 stageSize_x = x / 2;
                 stageSize_y = y / 2;
-            }
+            }*/
             switch (structure) {
                 case "dog":
                 case "squirrel":
@@ -172,7 +178,7 @@ public class StageDBHelper extends SQLiteOpenHelper {
 
     public void initObjDB(String mode,int stage,TotalObject... obj){
         db = getWritableDatabase();
-        db.execSQL("insert into "+mode+"Stage(Stage, Structure, posX, posY) values("+stage+",'"+obj[0].getType()+"',"+obj[0].getPosX()+","+obj[0].getPosY()+");");
+        db.execSQL("insert into "+mode+"Stage(Stage, Structure, posX, posY) values("+stage +",'"+obj[0].getType()+"',"+obj[0].getPosX()+","+obj[0].getPosY()+");");
         db.close();
     }
     public void initCountDB(String mode, int minCount, int stage){
