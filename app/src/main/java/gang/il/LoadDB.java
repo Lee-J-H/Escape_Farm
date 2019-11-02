@@ -144,8 +144,8 @@ public class LoadDB {
             if(!readVersion(loadDBContext).equals(version)) {
                 StageDBHelper stageDB = new StageDBHelper(loadDBContext);
                 stageDB.init();
-                Data.execute("http://106.10.57.117/EscapeFarm/minimumcount.php", "day", "minCount");  //서버에서 주간모드 최소횟수 로딩
-                writeVersion(loadDBContext,version);
+                Data.execute("http://34.74.154.52/escapefarm/minimumcount.php", "day", "minCount");  //서버에서 버전 확인
+                writeVersion(loadDBContext,version); //위치 변경해야됨
             }
             else mhandler.sendEmptyMessage(LOAD_FINISH);
         } catch (JSONException e) {
@@ -167,11 +167,11 @@ public class LoadDB {
                     if(mode.equals("day")) {
 
                         LoadDB.GetDB Data = new LoadDB.GetDB();
-                        Data.execute("http://106.10.57.117/EscapeFarm/minimumcount.php", "night", "minCount");  //서버에서 스테이지 정보(최소횟수) 로딩
+                        Data.execute("http://34.74.154.52/escapefarm/minimumcount.php", "night", "minCount");  //서버에서 스테이지 정보(최소횟수) 로딩
                     }
                     else{
                         LoadDB.GetDB Data = new LoadDB.GetDB();
-                        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", "day", "gameObj");  //서버에서 스테이지 정보 로딩
+                        Data.execute("http://34.74.154.52/escapefarm/getStage.php", "day", "gameObj");  //서버에서 스테이지 정보 로딩
                     }
                 }
             }
@@ -196,7 +196,7 @@ public class LoadDB {
                 if(i == jsonArray.length() -1){ //주간모드 마지막 스테이지 로드 후 야간모드 로드 시작
                     if(mode.equals("day")) {
                         LoadDB.GetDB Data = new LoadDB.GetDB();
-                        Data.execute("http://106.10.57.117/EscapeFarm/getStage.php", "night", "gameObj");  //서버에서 스테이지 정보(최소횟수) 로딩
+                        Data.execute("http://34.74.154.52/escapefarm/getStage.php", "night", "gameObj");  //서버에서 스테이지 정보(최소횟수) 로딩
                     }
                     else mhandler.sendEmptyMessage(LOAD_FINISH); //모든 스테이지 정보 로딩 완료
                 }

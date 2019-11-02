@@ -39,7 +39,7 @@ public class StartPage extends AppCompatActivity {
                 LoadDB loadDB = new LoadDB(context);
                 LoadDB.GetDB Data = new LoadDB.GetDB();
                 progressON(StartPage,null);
-                Data.execute("http://106.10.57.117/EscapeFarm/checkversion.php", "version","check");  //DB 버전 체크
+                Data.execute("http://34.74.154.52/escapefarm/checkversion.php", "version","check");  //DB 버전 체크
             }
         });
     }
