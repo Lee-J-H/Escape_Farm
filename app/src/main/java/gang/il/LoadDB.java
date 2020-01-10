@@ -28,6 +28,7 @@ public class LoadDB {
     public static String mJsonString;
     public static String loadMode;
     public static String loadType;
+    public static String version;
 
 
     public LoadDB(Context context) {
@@ -140,12 +141,12 @@ public class LoadDB {
             JSONArray jsonArray = jsonObject.getJSONArray("result");
             LoadDB.GetDB Data = new LoadDB.GetDB();
             JSONObject item = jsonArray.getJSONObject(0);
-            String version = item.getString("Count");
+            version = item.getString("Count");
             if(!readVersion(loadDBContext).equals(version)) {
                 StageDBHelper stageDB = new StageDBHelper(loadDBContext);
                 stageDB.init();
-                Data.execute("http://34.74.154.52/escapefarm/minimumcount.php", "day", "minCount");  //서버에서 버전 확인
-                writeVersion(loadDBContext,version); //위치 변경해야됨
+                Data.execute("http://34.74.154.52/escapefarm/minimumcount.php", "day", "minCount");  //버전이 다른경우 데이터 load 시작(모든 디비 삭제 작업을 처음에만 해야할듯?)
+                //writeVersion(loadDBContext,version); //위치 변경해야됨
             }
             else mhandler.sendEmptyMessage(LOAD_FINISH);
         } catch (JSONException e) {
@@ -198,7 +199,10 @@ public class LoadDB {
                         LoadDB.GetDB Data = new LoadDB.GetDB();
                         Data.execute("http://34.74.154.52/escapefarm/getStage.php", "night", "gameObj");  //서버에서 스테이지 정보(최소횟수) 로딩
                     }
-                    else mhandler.sendEmptyMessage(LOAD_FINISH); //모든 스테이지 정보 로딩 완료
+                    else {
+                        mhandler.sendEmptyMessage(LOAD_FINISH); //모든 스테이지 정보 로딩 완료
+                        writeVersion(loadDBContext,version); //모든 스테이지 정보 로딩 완료시 버전입력
+                    }
                 }
 
             }

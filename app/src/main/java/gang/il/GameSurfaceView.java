@@ -96,7 +96,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 firstPoint.y = event.getY();
                 for (int i = 0; i < objCount; i++)
                     if (!totalObj[i].getType().equals("none") && (int) (firstPoint.x - blankX) / spaceX == totalObj[i].getPosX() / 2 && (int) (firstPoint.y - blankY) / spaceY == totalObj[i].getPosY() / 2) { //빈칸이 아니고 동물이 있는 땅을 눌렀을 때
-                        if (!totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals("trap") && !totalObj[i].getType().equals("cave")) {
+                        if (!totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals("trap") && !totalObj[i].getType().equals("cave") && !totalObj[i].getType().startsWith("food") && !totalObj[i].getType().equals("wall") && !totalObj[i].getType().equals("boundary")) {
                             animal_clk = true;
                             curObjNum = i;
                             break;
@@ -127,13 +127,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     public void setDirection(double dx, double dy) {
-        if (-135 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= -45) //상 -135보다 크고 -45보다 작다
+        if (-125 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= -35) //상 -135보다 크고 -45보다 작다
             direction = "up";
-        else if (45 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= 135) // 하 45보다 크고 135보단 작다.
+        else if (35 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= 125) // 하 45보다 크고 135보단 작다.
             direction = "down";
-        else if (135 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= 180 || -180 <= Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) < -135) //좌 135보단 크고 180보단 작으며 / -180보다 크고 -135보다 작다
+        else if (125 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= 170 || -170 <= Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) < -125) //좌 135보단 크고 180보단 작으며 / -180보다 크고 -135보다 작다
             direction = "left";
-        else if (-45 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= 45) //우 -45보다 크고 0보단 작으며 / 0보다 크며 45보단 작다
+        else if (-35 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= 35) //우 -45보다 크고 0보단 작으며 / 0보다 크며 45보단 작다
             direction = "right";
     }
 

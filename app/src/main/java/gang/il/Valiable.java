@@ -2,6 +2,7 @@ package gang.il;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.SoundPool;
 
 import java.util.ArrayList;
 
@@ -17,4 +18,6 @@ public class Valiable {
     public static Context mContext;
     public static boolean drawInit;
     public static float width, height;
+    public static SoundPool soundPool;
+    public static int eatSound, trapSound, clearSound, passSound, holeSound, main_btnSound, game_btnSound, wallSound;
 }

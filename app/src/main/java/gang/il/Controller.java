@@ -4,10 +4,15 @@ import android.content.Context;
 
 import static gang.il.Valiable.curObjNum;
 import static gang.il.Valiable.direction;
+import static gang.il.Valiable.eatSound;
+import static gang.il.Valiable.holeSound;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.objCount;
+import static gang.il.Valiable.passSound;
+import static gang.il.Valiable.soundPool;
 import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.totalObj;
+import static gang.il.Valiable.trapSound;
 import static gang.il.Valiable.tutorialNum;
 
 public class Controller {
@@ -43,7 +48,10 @@ public class Controller {
         int moveIndex, movePoint; //가장 가까운 장애물의 인덱스
         float curPosX = totalObj[curObjNum].getPosX(), curPosY = totalObj[curObjNum].getPosY(); // 현재 위치에 대한 x,y 좌표의 값을 저장
         float oriPosX = curPosX, oriPosY = curPosY;//기존 좌표 저장
-        if (!totalObj[curObjNum].isMoveAble()) return; //트랩에 걸렸을때
+        if (!totalObj[curObjNum].isMoveAble()){
+            soundPool.play(trapSound, 1f, 1f, 0, 0, 1f); //덫 사운드 재생
+            return; //트랩에 걸렸을때
+        }
         if (direction.equals("left") || direction.equals("up")) // 방향성에 따른 증가 감소 변화
             moveIndex = 0;
         else
@@ -112,18 +120,21 @@ public class Controller {
 
 
         if (totalObj[moveIndex].type.startsWith("food")) { //이동지가 음식일 경우
+            soundPool.play(eatSound, 1f, 1f, 0, 0, 1f); //음식 사운드 재생
             objCount--;
             for (int i = moveIndex; i < objCount; i++) {
                 totalObj[i] = new TotalObject(totalObj[i + 1].posX, totalObj[i + 1].posY, totalObj[i + 1].getType(), totalObj[i + 1].isMoveAble()); //해당 음식 기준으로 객체 값을 하나씩 앞으로 땡기기
             }
             totalObj[objCount] = null; //마지막 인덱스값 지우기
         } else if (totalObj[moveIndex].getType().equals("cave")) { //이동지가 동굴인 경우
+            soundPool.play(holeSound, 1f, 1f, 0, 0, 1f); //동굴(구멍) 사운드 재생
             Cave Cave = new Cave();
             if (Cave.onCave(moveIndex)) {
                 move();
                 moveCount--;
             }
         } else if (totalObj[moveIndex].getType().endsWith("fin")) { //이동지가 피니시인 경우
+            soundPool.play(passSound, 1f, 1f, 0, 0, 1f); //동물 통과 사운드 재생
             StageClear StageClear = new StageClear(mContext);
             StageClear.clearCheck();
 

@@ -17,8 +17,8 @@ import static gang.il.Valiable.stageCount;
 public class StageClearDialog extends Dialog {
     private String mContent;
     private LinearLayout.LayoutParams params;
-    private ImageView menuIcon,nextIcon,retryIcon;
-    private TextView clrStage,clrMin,clrMove,clrText;
+    private ImageView menuIcon, nextIcon, retryIcon;
+    private TextView clrStage, clrMin, clrMove, clrText;
 
     private View.OnClickListener menuClickListener;
     private View.OnClickListener retryClickListener;
@@ -52,7 +52,10 @@ public class StageClearDialog extends Dialog {
             clrMove.setText("이동횟수:" + moveCount);
             clrMin.setText("최소횟수:" + minCount);
             menuIcon.setVisibility(View.VISIBLE);
-            nextIcon.setVisibility(View.VISIBLE);
+            if (stageCount.equals("60")) //마지막 스테이지에는 next 버튼 없음
+                nextIcon.setVisibility(View.GONE);
+            else
+                nextIcon.setVisibility(View.VISIBLE);
             retryIcon.setVisibility(View.VISIBLE);
             clrStage.setVisibility(View.VISIBLE);
             clrMove.setVisibility(View.VISIBLE);
@@ -88,8 +91,8 @@ public class StageClearDialog extends Dialog {
         this.retryClickListener = retryListener;
     }
 
-    public StageClearDialog(Context context,String content, View.OnClickListener menuListener,
-                            View.OnClickListener nextListener,View.OnClickListener retryListener) {
+    public StageClearDialog(Context context, String content, View.OnClickListener menuListener,
+                            View.OnClickListener nextListener, View.OnClickListener retryListener) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mContent = content;
         this.menuClickListener = menuListener;
