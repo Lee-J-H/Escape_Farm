@@ -36,7 +36,6 @@ public class StageDBHelper extends SQLiteOpenHelper {
                         "Structure varchar(255) not null, " +
                         "posX INTEGER not null, " +
                         "posY INTEGER not null " +
-                         //"foreign key(Stage) references NightCount(Stage) on update cascade on delete cascade" +
                         ");";
         String dayCount =
                 "CREATE TABLE " + "DayCount" + "(" +
@@ -50,7 +49,6 @@ public class StageDBHelper extends SQLiteOpenHelper {
                         "Structure varchar(255) not null, " +
                         "posX INTEGER not null, " +
                         "posY INTEGER not null " +
-                       // "foreign key(Stage) references DayCount(Stage) on update cascade on delete cascade" +
                         ");";
         db.execSQL(nightCount);
         db.execSQL(nightStage);
@@ -112,10 +110,6 @@ public class StageDBHelper extends SQLiteOpenHelper {
                     stageSize_y = y / 2;
                 }
             }
-            /*if (count == 1) {
-                stageSize_x = x / 2;
-                stageSize_y = y / 2;
-            }*/
             switch (structure) {
                 case "dog":
                 case "squirrel":
@@ -167,12 +161,12 @@ public class StageDBHelper extends SQLiteOpenHelper {
 
     public int clearStageNum(){
         int count =0;
-        db = getReadableDatabase();
-        Cursor c = db.rawQuery("select Stage from "+gameMode+"Count where myCount is not null;", null);
-        //Cursor c = db.rawQuery("select Stage from dayCount where myCount is not null;", null);
+        /*db = getReadableDatabase();
+        Cursor c = db.rawQuery("select Stage from "+gameMode+"Count where myCount is not null;", null); //null이 아닌 개수대로 클리어 수 확인
         if(c!=null)
             count = c.getCount();
-        db.close();
+        db.close();*/
+       count = 60; //클리어 수 60으로(확인용)
         return count;
     }
 
@@ -183,11 +177,12 @@ public class StageDBHelper extends SQLiteOpenHelper {
     }
     public void initCountDB(String mode, int minCount, int stage){
         db = getWritableDatabase();
-        db.execSQL("insert into "+mode+"Count(Stage,Count, myCount) values("+stage+","+minCount+",null);");
+        //db.execSQL("insert into "+mode+"Count(Stage,Count, myCount) values("+stage+","+minCount+",null);"); //db에 스테이지 값 저장
+        db.execSQL("insert into "+mode+"Count(Stage,Count, myCount) values("+stage+","+minCount+",500);"); //전체 스테이지 확인 위해 이동회수 500으로
         db.close();
     }
 
-    private static void putInFood(String animalName, int animalIndex) {
+    public static void putInFood(String animalName, int animalIndex) {
         switch (animalName) {
             case "dog":
                 totalObj[animalIndex].foods.add("food_bone");

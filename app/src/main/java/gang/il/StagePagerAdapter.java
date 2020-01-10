@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import static gang.il.Valiable.StagePage;
+import static gang.il.Valiable.main_btnSound;
+import static gang.il.Valiable.soundPool;
 import static gang.il.Valiable.stageCount;
 
 public class StagePagerAdapter extends PagerAdapter {
@@ -52,12 +54,12 @@ public class StagePagerAdapter extends PagerAdapter {
             }
             viewHolder.pageCount = (TextView) view.findViewById(R.id.page_num);
         }
-        viewHolder.pageCount.setText((position+1)+"/5");
+        viewHolder.pageCount.setText((position+1)+"/3");
 
             for(int i=0; i<20; i++){
                 viewHolder.stageCount[i].setText("" + (position * 20 + 1 + i));
                 viewHolder.buttonImg[i].setTag("" + (position * 20 + 1 + i));
-                if(position*20+1+i>150) break; //마지막 스테이지 이후 막기
+                if(position*20+1+i>60) break; //마지막 스테이지 이후 막기
                 if (Integer.parseInt(viewHolder.buttonImg[i].getTag().toString()) - 1 <= succeedStage) {
                     viewHolder.buttonImg[i].setImageDrawable(stagePagerContext.getResources().getDrawable(R.drawable.button));
                     viewHolder.stageCount[i].setVisibility(View.VISIBLE);
@@ -80,6 +82,7 @@ public class StagePagerAdapter extends PagerAdapter {
                     if (Integer.parseInt(stageCount) - 1 > succeedStage)
                         return;
                     StageDB.getStageObj();
+                    soundPool.play(main_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
                     Intent intent = new Intent(StagePage, GamePage.class);
                     StagePage.startActivity(intent);
                 }
@@ -99,8 +102,8 @@ public class StagePagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        // 전체 페이지 수는 10개로 고정.
-        return 5;
+        // 전체 페이지 수는 3개로 고정.
+        return 3;
     }
 
     @Override

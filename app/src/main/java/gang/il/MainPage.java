@@ -1,6 +1,8 @@
 package gang.il;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +13,8 @@ import android.widget.Button;
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.MainPage;
 import static gang.il.Valiable.mContext;
+import static gang.il.Valiable.main_btnSound;
+import static gang.il.Valiable.soundPool;
 
 public class MainPage extends AppCompatActivity {
     private long mLastClickTime = 0;
@@ -21,6 +25,8 @@ public class MainPage extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);//제목 없음
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
+        soundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
+        main_btnSound = soundPool.load(this, R.raw.main_btn, 1);
         Button classic_btn =(Button)findViewById(R.id.classic_btn);
         classic_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,6 +45,7 @@ public class MainPage extends AppCompatActivity {
         });
     }
     public void init(){
+        soundPool.play(main_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
         if (SystemClock.elapsedRealtime() - mLastClickTime < 100){
             return;
         }

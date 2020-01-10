@@ -3,6 +3,8 @@ package gang.il;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,14 +18,22 @@ import android.widget.TextView;
 import static gang.il.GameSurfaceView.mThread;
 import static gang.il.GameSurfaceView.surfaceViewRunning;
 import static gang.il.GameSurfaceView.drawView;
+import static gang.il.Valiable.clearSound;
 import static gang.il.Valiable.drawInit;
+import static gang.il.Valiable.eatSound;
 import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.mContext;
 import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.moveCount;
+import static gang.il.Valiable.passSound;
+import static gang.il.Valiable.soundPool;
+import static gang.il.Valiable.main_btnSound;
+import static gang.il.Valiable.game_btnSound;
+import static gang.il.Valiable.holeSound;
 import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.totalObj;
+import static gang.il.Valiable.trapSound;
 import static gang.il.Valiable.tutorialNum;
 import static gang.il.Valiable.dialog;
 
@@ -58,6 +68,15 @@ public class GamePage extends AppCompatActivity {
         gameSurfaceView = (GameSurfaceView) findViewById(R.id.GameSurfaceView) ;
         backBtn.setOnClickListener(backBtnListener);
         resetBtn.setOnClickListener(ResetListener);
+        clearSound = soundPool.load(this, R.raw.clear, 1);
+        passSound = soundPool.load(this, R.raw.pass, 1);
+        eatSound = soundPool.load(this, R.raw.eat, 1);
+        trapSound  = soundPool.load(this, R.raw.trap, 1);
+        holeSound = soundPool.load(this, R.raw.hole, 1);
+        game_btnSound = soundPool.load(this, R.raw.game_btn, 1);
+        //wallSound = soundPool.load(this, R.raw.wall, 1);
+
+
         setMinCount();
         gameSurfaceView.setZOrderOnTop(true);
         gameSurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888); //출처 https://mparchive.tistory.com/103  (surfaceVIew 배경 투명화)
@@ -136,6 +155,7 @@ public class GamePage extends AppCompatActivity {
     }
 
     public void backStage() {
+        ((StagePage) mContext).setStage();
         drawView=false;
         //gameSurfaceView.setVisibility(View.INVISIBLE);
         Log.d("backPressTest","backStage()");
@@ -144,6 +164,8 @@ public class GamePage extends AppCompatActivity {
         }
         surfaceViewRunning = false;
         mLastClickTime = SystemClock.elapsedRealtime();
+        soundPool.play(game_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+        moveCount=0;
             finish();
     }
     public void Dialog() {
@@ -180,6 +202,7 @@ public class GamePage extends AppCompatActivity {
             setStageCount();
             setMinCount();
             surfaceViewRunning = false;
+            soundPool.play(game_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
             StageDB.getMinCount(Integer.parseInt(stageCount));
             StageDB.getStageObj();
             animalWidget();
@@ -197,6 +220,7 @@ public class GamePage extends AppCompatActivity {
             //tutorialNum = 1;
             setMoveCount();
             surfaceViewRunning = false;
+            soundPool.play(game_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
             StageDB.getMinCount(Integer.parseInt(stageCount));
             StageDB.getStageObj();
             animalWidget();
@@ -213,6 +237,7 @@ public class GamePage extends AppCompatActivity {
             //tutorialNum = 1;
             setMoveCount();
             surfaceViewRunning = false;
+            soundPool.play(game_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
             StageDB.getMinCount(Integer.parseInt(stageCount));
             StageDB.getStageObj();
             animalWidget();
