@@ -150,7 +150,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"/>
+            android:layout_weight="0.1"/>
         <ImageView
             android:id="@+id/back_btn"
             android:layout_width="0dp"
@@ -163,9 +163,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:src="@drawable/reset_btn" />
+        <ImageView
+            android:id="@+id/sound_btn_game"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:src="@drawable/sound_on" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"/>
+            android:layout_weight="0.1"/>
     </LinearLayout>
 </FrameLayout>

@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import static gang.il.LoadingImg.progressDialog;
 import static gang.il.LoadingImg.progressOFF;
+import static gang.il.Valiable.MainPage;
 import static gang.il.Valiable.StagePage;
 import static gang.il.Valiable.LOAD_FINISH;
 import static gang.il.Valiable.StartPage;
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.mContext;
 import static gang.il.Valiable.main_btnSound;
+import static gang.il.Valiable.soundPlay;
 import static gang.il.Valiable.soundPool;
 import static gang.il.Valiable.stageCount;
 
@@ -46,7 +48,9 @@ public class StagePage extends AppCompatActivity {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                soundPool.play(main_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+                if(soundPlay) soundPool.play(main_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+                Intent intent = new Intent(StagePage, MainPage.class);
+                StagePage.startActivity(intent);
                 finish();
             }
         });
@@ -90,6 +94,8 @@ public class StagePage extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(StagePage, MainPage.class);
+        StagePage.startActivity(intent);
         finish();
     }
 }

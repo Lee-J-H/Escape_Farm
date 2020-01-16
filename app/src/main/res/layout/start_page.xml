@@ -8,13 +8,13 @@
     android:orientation="vertical"
     android:weightSum="1"
     tools:context=".StartPage"
-    android:background="@drawable/background">
+    android:background="@drawable/startpage">
 
     <TextView
         android:id="@+id/main_blank1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.27" />
+        android:layout_weight="0.1" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -30,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#111111"
+        android:textSize="35dp"
         android:layout_weight="0.2"
         android:gravity="center"
         android:text="Tap to screen" />
@@ -39,12 +40,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.33" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="GaingIl"
-        android:gravity="right"/>
 
 </LinearLayout>
