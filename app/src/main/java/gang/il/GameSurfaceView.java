@@ -17,6 +17,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
+import static gang.il.Valiable.btnClick;
+import static gang.il.Valiable.btnClickType;
 import static gang.il.Valiable.drawInit;
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.objCount;
@@ -62,7 +64,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         // Surface가 만들어질 때 호출됨
-        drawView =true;
+        drawView = true;
         drawInit = false;
         surfaceViewRunning = true;
         mThread = new GameSurfaceView.ImageThread();
@@ -80,7 +82,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         // Surface가 종료될 때 호출됨
         try {
-            Log.d("backPressTest","surfaceDestroyed()");
+            Log.d("backPressTest", "surfaceDestroyed()");
             mThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -131,7 +133,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             direction = "up";
         else if (35 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= 125) // 하 45보다 크고 135보단 작다.
             direction = "down";
-        else if (125 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= 170 || -170 <= Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) < -125) //좌 135보단 크고 180보단 작으며 / -180보다 크고 -135보다 작다
+        else if (125 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= 180 || -180 <= Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) < -125) //좌 135보단 크고 180보단 작으며 / -180보다 크고 -135보다 작다
             direction = "left";
         else if (-35 < Math.toDegrees(Math.atan2(dy, dx)) && Math.toDegrees(Math.atan2(dy, dx)) <= 35) //우 -45보다 크고 0보단 작으며 / 0보다 크며 45보단 작다
             direction = "right";
@@ -205,46 +207,67 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         private void doDraw() {
             mCanvas.drawBitmap(ground, spaceX + blankX, spaceY + blankY, null);
             for (int i = 0; i < objCount; i++) {
-                if (totalObj[i].getType().equals("wall")) {
-                    if (totalObj[i].getPosX() % 2 == 0) //아래쪽 벽
-                        mCanvas.drawBitmap(wall_down, spaceX * (totalObj[i].getPosX() / 2) + blankX, spaceY * ((int) totalObj[i].getPosY() / 2 + 0.95f) + blankY, null);
-                    else //오른쪽 벽
-                        mCanvas.drawBitmap(wall_right, spaceX * ((int) totalObj[i].getPosX() / 2 + 0.95f) + blankX, (spaceY * totalObj[i].getPosY() / 2) + blankY, null);
+                if(!surfaceViewRunning)
+                    return;
+                switch (totalObj[i].getType()) {
+                    case "wall":
+                        if (totalObj[i].getPosX() % 2 == 0) //아래쪽 벽
+                            mCanvas.drawBitmap(wall_down, spaceX * (totalObj[i].getPosX() / 2) + blankX, spaceY * ((int) totalObj[i].getPosY() / 2 + 0.95f) + blankY, null);
+                        else //오른쪽 벽
+                            mCanvas.drawBitmap(wall_right, spaceX * ((int) totalObj[i].getPosX() / 2 + 0.95f) + blankX, (spaceY * totalObj[i].getPosY() / 2) + blankY, null);
+                        break;
+                    case "dog":
+                        mCanvas.drawBitmap(dog, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "squirrel":
+                        mCanvas.drawBitmap(squirrel, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "rabbit":
+                        mCanvas.drawBitmap(rabbit, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "panda":
+                        mCanvas.drawBitmap(panda, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "tiger":
+                        mCanvas.drawBitmap(tiger, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "dog_fin":
+                        mCanvas.drawBitmap(dog_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "squirrel_fin":
+                        mCanvas.drawBitmap(squirrel_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "rabbit_fin":
+                        mCanvas.drawBitmap(rabbit_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "panda_fin":
+                        mCanvas.drawBitmap(panda_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "tiger_fin":
+                        mCanvas.drawBitmap(tiger_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "trap":
+                        mCanvas.drawBitmap(trap, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "food_carrot":
+                        mCanvas.drawBitmap(carrot, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "food_bone":
+                        mCanvas.drawBitmap(bone, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "food_bamboo":
+                        mCanvas.drawBitmap(bamboo, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "food_acorn":
+                        mCanvas.drawBitmap(acorn, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "food_meat":
+                        mCanvas.drawBitmap(meat, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
+                    case "cave":
+                        mCanvas.drawBitmap(cave, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
+                        break;
                 }
-                if (totalObj[i].getType().equals("dog"))
-                    mCanvas.drawBitmap(dog, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("squirrel"))
-                    mCanvas.drawBitmap(squirrel, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("rabbit"))
-                    mCanvas.drawBitmap(rabbit, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("panda"))
-                    mCanvas.drawBitmap(panda, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("tiger"))
-                    mCanvas.drawBitmap(tiger, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("dog_fin"))
-                    mCanvas.drawBitmap(dog_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("squirrel_fin"))
-                    mCanvas.drawBitmap(squirrel_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("rabbit_fin"))
-                    mCanvas.drawBitmap(rabbit_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("panda_fin"))
-                    mCanvas.drawBitmap(panda_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("tiger_fin"))
-                    mCanvas.drawBitmap(tiger_fin, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("trap"))
-                    mCanvas.drawBitmap(trap, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("food_carrot"))
-                    mCanvas.drawBitmap(carrot, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("food_bone"))
-                    mCanvas.drawBitmap(bone, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("food_bamboo"))
-                    mCanvas.drawBitmap(bamboo, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("food_acorn"))
-                    mCanvas.drawBitmap(acorn, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("food_meat"))
-                    mCanvas.drawBitmap(meat, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
-                if (totalObj[i].getType().equals("cave"))
-                    mCanvas.drawBitmap(cave, spaceX * totalObj[i].getPosX() / 2 + blankX, spaceY * totalObj[i].getPosY() / 2 + blankY, null);
             }
         }
 
@@ -335,27 +358,25 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
         public void run() {
-                while (drawView) {
-                    mCanvas = mHolder.lockCanvas();
-                    try {
-                        synchronized (mHolder) {
-                            if (!drawInit) init();
-                            if(surfaceViewRunning){
-                                doDraw();
-                                if (gameMode.equals("night")) blindDraw();
-                                if (stageCount.equals("1")) {
-                                    Tutorial = new Tutorial(mContext, mCanvas);
-                                    Tutorial.drawArrow(blankX + spaceX, blankY + (spaceY * 2));
-                                    Tutorial.drawMessage(0, blankY + (spaceY * 5));
-                                    mCanvas.drawBitmap(Tutorial.tutorialMask(blankX, blankY), blankX + spaceX, blankY + spaceY, null);
-                                }
-                            }
+            while (drawView) {
+                mCanvas = mHolder.lockCanvas();
+                try {
+                    synchronized (mHolder) {
+                        if (!drawInit) init();
+                        doDraw();
+                        if (gameMode.equals("night")) blindDraw();
+                        if (stageCount.equals("1")) {
+                            Tutorial = new Tutorial(mContext, mCanvas);
+                            Tutorial.drawArrow(blankX + spaceX, blankY + (spaceY * 2));
+                            Tutorial.drawMessage(0, blankY + (spaceY * 5));
+                            mCanvas.drawBitmap(Tutorial.tutorialMask(blankX, blankY), blankX + spaceX, blankY + spaceY, null);
                         }
+                        if(btnClick)((GamePage)mContext).onBtnClick(btnClickType);
                     }
-                    finally {
-                        if (mCanvas == null) return;
-                        mHolder.unlockCanvasAndPost(mCanvas);
-                    }
+                } finally {
+                    if (mCanvas == null) return;
+                    mHolder.unlockCanvasAndPost(mCanvas);
+                }
             }
         }
     }

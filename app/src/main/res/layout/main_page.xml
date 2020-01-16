@@ -19,12 +19,25 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="1">
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.3" /> <!--버튼 위 여백-->
-        <LinearLayout
+            android:layout_weight="0.3"
+            android:orientation="horizontal"
+            android:weightSum="1"> <!--버튼 위 여백-->
+        <TextView
+            android:layout_width="0.dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8" />
+            <ImageView
+                android:id="@+id/sound_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:src="@drawable/sound_on"
+                />
+            </LinearLayout>
+    <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -65,6 +78,28 @@
                 android:fontFamily="@font/misaeng"
                 android:layout_weight="0.6"
                 android:background="@drawable/main_btn"/>  <!--야간모드버튼-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"/> <!--버튼 좌측 여백-->
+
+            <Button
+                android:id="@+id/gameOff_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="게임 종료"
+                android:textSize="50dp"
+                android:fontFamily="@font/misaeng"
+                android:layout_weight="0.6"
+                android:background="@drawable/main_btn"/>  <!--게임종료버튼-->
         </LinearLayout>
     </LinearLayout>
 

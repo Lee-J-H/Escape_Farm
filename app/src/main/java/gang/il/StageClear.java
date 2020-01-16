@@ -10,6 +10,7 @@ import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.objCount;
+import static gang.il.Valiable.soundPlay;
 import static gang.il.Valiable.soundPool;
 import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.totalObj;
@@ -27,14 +28,14 @@ public class StageClear {
         surfaceViewRunning=true;
         if (finishObj.size() == 0) {  //모든 동물이 탈출했을 경우
             StageDBHelper StageDB = new StageDBHelper(mContext);
-            soundPool.play(clearSound, 1f, 1f, 0, 0, 1f);
+            if(soundPlay) soundPool.play(clearSound, 1f, 1f, 0, 0, 1f);
             if (StageDB.clearStageNum() < Integer.parseInt(stageCount)) { //클리어하지 않은 스테이지를 클리어한 경우 최소횟수 저장
                 StageDB.recordCount(moveCount);
             } else {
                 if (StageDB.getMyMinCount(Integer.parseInt(stageCount)) != 0 && StageDB.getMyMinCount(Integer.parseInt(stageCount)) > moveCount) { //저장된 최소횟수보다 적은 횟수로 클리어한 경우 최소횟수 업데이트
-                    /*RecordDB recordDB = new RecordDB(mContext);
-                    RecordDB.SetDB Data = new RecordDB.SetDB();
-                    Data.execute("http://34.74.154.52/escapefarm/recordCount.php",String.valueOf(stageCount),String.valueOf(moveCount),gameMode);  //서버의 최소횟수 업데이트*/
+                    //RecordDB recordDB = new RecordDB(mContext);
+                    //RecordDB.SetDB Data = new RecordDB.SetDB();
+                    //Data.execute("http://34.74.154.52/escapefarm/recordCount.php",String.valueOf(stageCount),String.valueOf(moveCount),gameMode);  //서버의 최소횟수 업데이트
                     StageDB.recordCount(moveCount);
                 }
             }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import static gang.il.Valiable.StagePage;
 import static gang.il.Valiable.main_btnSound;
+import static gang.il.Valiable.soundPlay;
 import static gang.il.Valiable.soundPool;
 import static gang.il.Valiable.stageCount;
 
@@ -74,7 +75,7 @@ public class StagePagerAdapter extends PagerAdapter {
             viewHolder.buttonImg[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 100){
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
                         return;
                     }
                     mLastClickTime = SystemClock.elapsedRealtime();
@@ -82,7 +83,7 @@ public class StagePagerAdapter extends PagerAdapter {
                     if (Integer.parseInt(stageCount) - 1 > succeedStage)
                         return;
                     StageDB.getStageObj();
-                    soundPool.play(main_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+                    if(soundPlay) soundPool.play(main_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
                     Intent intent = new Intent(StagePage, GamePage.class);
                     StagePage.startActivity(intent);
                 }

@@ -63,9 +63,7 @@
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="ffffff" />
-                                      <entry key="backgroundLayerName" value="ic_launcher_background_farm" />
                                       <entry key="foregroundImage" value="C:\Users\coin4\Desktop\cording\escape_farm_etc\icon.png" />
-                                      <entry key="foregroundLayerName" value="ic_launcher_foreground_farm" />
                                       <entry key="outputName" value="ic_launcher_farm" />
                                     </map>
                                   </option>

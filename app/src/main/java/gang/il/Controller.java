@@ -9,11 +9,13 @@ import static gang.il.Valiable.holeSound;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.passSound;
+import static gang.il.Valiable.soundPlay;
 import static gang.il.Valiable.soundPool;
 import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.totalObj;
 import static gang.il.Valiable.trapSound;
 import static gang.il.Valiable.tutorialNum;
+import static gang.il.Valiable.wallSound;
 
 public class Controller {
     Context mContext;
@@ -47,9 +49,9 @@ public class Controller {
 
         int moveIndex, movePoint; //가장 가까운 장애물의 인덱스
         float curPosX = totalObj[curObjNum].getPosX(), curPosY = totalObj[curObjNum].getPosY(); // 현재 위치에 대한 x,y 좌표의 값을 저장
-        float oriPosX = curPosX, oriPosY = curPosY;//기존 좌표 저장
-        if (!totalObj[curObjNum].isMoveAble()){
-            soundPool.play(trapSound, 1f, 1f, 0, 0, 1f); //덫 사운드 재생
+        //float oriPosX = curPosX, oriPosY = curPosY;//기존 좌표 저장
+        if (!totalObj[curObjNum].isMoveAble()) {
+            if(soundPlay) soundPool.play(trapSound, 1f, 1f, 0, 0, 1f); //덫 사운드 재생
             return; //트랩에 걸렸을때
         }
         if (direction.equals("left") || direction.equals("up")) // 방향성에 따른 증가 감소 변화
@@ -63,7 +65,7 @@ public class Controller {
                 continue; //현재 선택된 객체는 제외
             if (totalObj[i].getLength(curPosX, curPosY) <= totalObj[moveIndex].getLength(curPosX, curPosY)) {
                 if (totalObj[i].getType().endsWith("fin") && !totalObj[i].getType().equals(totalObj[curObjNum].getType() + "_fin"))//선택된 객체의 피니시가 아닐 경우 제외
-                   continue;
+                    continue;
                 if (totalObj[i].getType().startsWith("food") && !totalObj[curObjNum].foods.contains(totalObj[i].getType())) //선택된 객체의 음식이 아닐 경우 제외
                     continue;
                 if (totalObj[i].getType().equals("trap") && totalObj[i].getPosX() == totalObj[moveIndex].getPosX() && totalObj[i].getPosY() == totalObj[moveIndex].getPosY()) // 함정과 동물이 겹쳐있는 경우 동물로 목적지 설정
@@ -93,51 +95,74 @@ public class Controller {
 
         switch (direction) {
             case "left":
-                while ((totalObj[moveIndex].getPosX() + movePoint) != curPosX)
-                    totalObj[curObjNum].setPosX(curPosX -= 0.000001f);
-                break;
+                if (totalObj[moveIndex].getPosX() + movePoint == curPosX) //이동할 좌표와 현재 좌표가 같으면 객체 이동 x
+                    return;
+                else {
+                    while ((totalObj[moveIndex].getPosX() + movePoint) != curPosX)
+                        totalObj[curObjNum].setPosX(curPosX -= 0.000001f);
+                    break;
+                }
             case "right":
-                while ((totalObj[moveIndex].getPosX() - movePoint) != curPosX)
-                    totalObj[curObjNum].setPosX(curPosX += 0.000001f);
-                break;
+                if (totalObj[moveIndex].getPosX() - movePoint == curPosX)
+                    return;
+                else {
+                    while ((totalObj[moveIndex].getPosX() - movePoint) != curPosX)
+                        totalObj[curObjNum].setPosX(curPosX += 0.000001f);
+                    break;
+                }
             case "up":
-                while ((totalObj[moveIndex].getPosY() + movePoint) != curPosY)
-                    totalObj[curObjNum].setPosY(curPosY -= 0.000001f);
-                break;
+                if (totalObj[moveIndex].getPosY() + movePoint == curPosY)
+                    return;
+                else {
+                    while ((totalObj[moveIndex].getPosY() + movePoint) != curPosY)
+                        totalObj[curObjNum].setPosY(curPosY -= 0.000001f);
+                    break;
+                }
             case "down":
-                while ((totalObj[moveIndex].getPosY() - movePoint) != curPosY)
-                    totalObj[curObjNum].setPosY(curPosY += 0.000001f);
-                break;
+                if (totalObj[moveIndex].getPosY() - movePoint == curPosY)
+                    return;
+                else {
+                    while ((totalObj[moveIndex].getPosY() - movePoint) != curPosY)
+                        totalObj[curObjNum].setPosY(curPosY += 0.000001f);
+                    break;
+                }
         }
 
-        if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우
+        moveCount++; //이동 횟수 증가
+        ((GamePage) mContext).setMoveCount();
+        if (stageCount.equals("1")) { //튜토리얼 진행
+            if (tutorialNum < 3) tutorialNum++;
+        }
+        /*if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우
             moveCount++; //이동 횟수 증가
             ((GamePage) mContext).setMoveCount();
-            if(stageCount.equals("1")){ //튜토리얼 진행
-                if(tutorialNum <3)tutorialNum++;
+            if (stageCount.equals("1")) { //튜토리얼 진행
+                if (tutorialNum < 3) tutorialNum++;
             }
-        }
+        }*/
 
 
         if (totalObj[moveIndex].type.startsWith("food")) { //이동지가 음식일 경우
-            soundPool.play(eatSound, 1f, 1f, 0, 0, 1f); //음식 사운드 재생
+            if(soundPlay) soundPool.play(eatSound, 1f, 1f, 0, 0, 1f); //음식 사운드 재생
             objCount--;
             for (int i = moveIndex; i < objCount; i++) {
                 totalObj[i] = new TotalObject(totalObj[i + 1].posX, totalObj[i + 1].posY, totalObj[i + 1].getType(), totalObj[i + 1].isMoveAble()); //해당 음식 기준으로 객체 값을 하나씩 앞으로 땡기기
             }
             totalObj[objCount] = null; //마지막 인덱스값 지우기
         } else if (totalObj[moveIndex].getType().equals("cave")) { //이동지가 동굴인 경우
-            soundPool.play(holeSound, 1f, 1f, 0, 0, 1f); //동굴(구멍) 사운드 재생
+            if(soundPlay) soundPool.play(holeSound, 1f, 1f, 0, 0, 1f); //동굴(구멍) 사운드 재생
             Cave Cave = new Cave();
             if (Cave.onCave(moveIndex)) {
                 move();
                 moveCount--;
             }
         } else if (totalObj[moveIndex].getType().endsWith("fin")) { //이동지가 피니시인 경우
-            soundPool.play(passSound, 1f, 1f, 0, 0, 1f); //동물 통과 사운드 재생
+            if(soundPlay) soundPool.play(passSound, 1f, 1f, 0, 0, 1f); //동물 통과 사운드 재생
             StageClear StageClear = new StageClear(mContext);
             StageClear.clearCheck();
-
+        }
+        else {
+            if(soundPlay) soundPool.play(wallSound, 1f, 1f, 0, 0, 1f); //그 외 이동지일 경우 부딪힘 사운드 재생
         }
     }
 }
