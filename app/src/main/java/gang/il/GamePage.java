@@ -13,18 +13,17 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import static gang.il.GameSurfaceView.surfaceViewRunning;
 import static gang.il.GameSurfaceView.drawView;
 import static gang.il.Valiable.btnClick;
 import static gang.il.Valiable.btnClickType;
 import static gang.il.Valiable.drawInit;
 import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.mContext;
+import static gang.il.Valiable.btnSound;
 import static gang.il.Valiable.minCount;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.soundPlay;
 import static gang.il.Valiable.soundPool;
-import static gang.il.Valiable.game_btnSound;
 import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.tutorialNum;
 import static gang.il.Valiable.dialog;
@@ -142,14 +141,14 @@ public class GamePage extends AppCompatActivity {
     }
 
     public void backStage() {
-        ((StagePage) mContext).setStage();
         if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
             return;
         }
-        //surfaceViewRunning = false;
-        //drawView=false;
+        //((StagePage) mContext).setStage();
+        //((StagePage) mContext).init();
+        drawView=false;
         mLastClickTime = SystemClock.elapsedRealtime();
-        if(soundPlay) soundPool.play(game_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+        if(soundPlay) soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
         moveCount=0;
             finish();
     }
@@ -182,7 +181,7 @@ public class GamePage extends AppCompatActivity {
             else{
                 soundPlay=true;
                 soundBtn.setImageDrawable(GameContext.getResources().getDrawable(R.drawable.sound_on));
-                soundPool.play(game_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+                soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
             }
         }
     };
@@ -195,8 +194,8 @@ public class GamePage extends AppCompatActivity {
                 return;
             }
             mLastClickTime = SystemClock.elapsedRealtime();
+            //if(moveCount < StageDB.getMyMinCount(Integer.parseInt(stageCount))) ((StagePage) mContext).setStage(Integer.parseInt(stageCount),moveCount);
             stageCount = String.valueOf(Integer.parseInt(stageCount) + 1);
-            ((StagePage) mContext).setStage();
             if(stageCount.equals("2")){
                 drawView=false;
                 gameSurfaceView.setVisibility(View.INVISIBLE);
@@ -217,7 +216,8 @@ public class GamePage extends AppCompatActivity {
                 return;
             }
             mLastClickTime = SystemClock.elapsedRealtime();
-            ((StagePage) mContext).setStage();
+            //((StagePage) mContext).setStage();
+            //((StagePage) mContext).init();
             //tutorialNum = 1;
             btnClickType="clr_reset";
             btnClick=true;
@@ -242,7 +242,7 @@ public class GamePage extends AppCompatActivity {
     public void onBtnClick(String type){
         moveCount = 0;
         setMoveCount();
-        if(soundPlay) soundPool.play(game_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+        if(soundPlay) soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
         {
             StageDB.getMinCount(Integer.parseInt(stageCount));
             StageDB.getStageObj();
@@ -257,78 +257,4 @@ public class GamePage extends AppCompatActivity {
         else if(type.endsWith("reset")) tutorialNum = 1;
         btnClick=false;
     }
-
-    /*
-    //다이얼로그 클릭이벤트
-    private View.OnClickListener nextDialogListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
-                return;
-            }
-            mLastClickTime = SystemClock.elapsedRealtime();
-            ((StagePage) mContext).setStage();
-            stageCount = String.valueOf(Integer.parseInt(stageCount) + 1);
-            if(stageCount.equals("2")){
-                drawView=false;
-                gameSurfaceView.setVisibility(View.INVISIBLE);
-                gameSurfaceView.setVisibility(View.VISIBLE);
-            }
-            moveCount = 0;
-            setMoveCount();
-            setStageCount();
-            setMinCount();
-            surfaceViewRunning = false;
-            StageDB.getMinCount(Integer.parseInt(stageCount));
-            StageDB.getStageObj();
-            animalWidget();
-            drawInit=false;
-            if (dialog.isShowing())
-                dialog.dismiss();
-            if(soundPlay) soundPool.play(game_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
-            surfaceViewRunning = true;
-        }
-    };
-    private View.OnClickListener clr_ResetListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
-                return;
-            }
-            mLastClickTime = SystemClock.elapsedRealtime();
-            ((StagePage) mContext).setStage();
-            moveCount = 0;
-            //tutorialNum = 1;
-            setMoveCount();
-            surfaceViewRunning = false;
-            StageDB.getMinCount(Integer.parseInt(stageCount));
-            StageDB.getStageObj();
-            animalWidget();
-            if (dialog.isShowing())
-                dialog.dismiss();
-            if(soundPlay) soundPool.play(game_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
-            surfaceViewRunning = true;
-        }
-    };
-
-    private View.OnClickListener ResetListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
-                return;
-            }
-            mLastClickTime = SystemClock.elapsedRealtime();
-            moveCount = 0;
-            //tutorialNum = 1;
-            setMoveCount();
-            surfaceViewRunning = false;
-            StageDB.getMinCount(Integer.parseInt(stageCount));
-            StageDB.getStageObj();
-            animalWidget();
-            //if (dialog.isShowing())
-            //    dialog.dismiss();
-            if(soundPlay) soundPool.play(game_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
-            surfaceViewRunning=true;
-        }
-    };  */
-//출처: http://yoo-hyeok.tistory.com/51 [유혁의 엉터리 개발]
 }

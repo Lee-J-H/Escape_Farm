@@ -3,126 +3,164 @@ package gang.il;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import static gang.il.Valiable.StagePage;
-import static gang.il.Valiable.main_btnSound;
+import static gang.il.Valiable.btnSound;
 import static gang.il.Valiable.soundPlay;
 import static gang.il.Valiable.soundPool;
 import static gang.il.Valiable.stageCount;
 
-public class StagePagerAdapter extends PagerAdapter {
-    int succeedStage;
-    // LayoutInflater 서비스 사용을 위한 Context 참조 저장.
-    Context stagePagerContext = null ;
-    StageDBHelper StageDB;
-    private long mLastClickTime = 0;
+public class StagePagerAdapter extends RecyclerView.Adapter<StagePagerAdapter.ViewHolder> {
+private long mLastClickTime = 0;
+        StageDBHelper StageDB;
+        Context context;
+private ArrayList<RecyclerItem> mData = null;
+        int succeedStage;
 
-    public StagePagerAdapter() {
+// 아이템 뷰를 저장하는 뷰홀더 클래스.
+public class ViewHolder extends RecyclerView.ViewHolder {
+    ImageView[] btnImg = new ImageView[4];
+    TextView[] stage = new TextView[4];
+    TextView[] move = new TextView[4];
 
-    }
-
-    // Context를 전달받아 mContext에 저장하는 생성자 추가.
-    public StagePagerAdapter(Context context) {
-        stagePagerContext = context ;
-    }
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        View view = null ;
-        StagePagerAdapter.ViewHolder viewHolder = new StagePagerAdapter.ViewHolder();
-        StageDB = new StageDBHelper(stagePagerContext);
-        succeedStage = StageDB.clearStageNum();
-
-        if (stagePagerContext != null) {
-            // LayoutInflater를 통해 "/res/layout/page.xml"을 뷰로 생성.
-            LayoutInflater inflater = (LayoutInflater) stagePagerContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.stage_list, container, false);
-
-            for (int i = 0; i < 20; i++) {
-                int stageCountId = stagePagerContext.getResources().getIdentifier("num_" + (i+1), "id", "gang.il");
-                int minCountId = stagePagerContext.getResources().getIdentifier("min_" + (i+1), "id", "gang.il");
-                int buttonImgId = stagePagerContext.getResources().getIdentifier("btn_" + (i+1), "id", "gang.il");
-                viewHolder.stageCount[i] = (TextView) view.findViewById(stageCountId);
-                viewHolder.minCount[i] = (TextView) view.findViewById(minCountId);
-                viewHolder.buttonImg[i] = (ImageView) view.findViewById(buttonImgId);
-            }
-            viewHolder.pageCount = (TextView) view.findViewById(R.id.page_num);
+    ViewHolder(View itemView) {
+        super(itemView);
+        // 뷰 객체에 대한 참조. (hold strong reference)
+        for(int i=0; i<4; i++){
+            int btnImgId = context.getResources().getIdentifier("btn_" + (i+1), "id", "gang.il");
+            int stageId = context.getResources().getIdentifier("num_" + (i+1), "id", "gang.il");
+            int moveId = context.getResources().getIdentifier("min_" + (i+1), "id", "gang.il");
+            btnImg[i] = itemView.findViewById(btnImgId);
+            stage[i] =  itemView.findViewById(stageId);
+            move[i] = itemView.findViewById(moveId);
         }
-        viewHolder.pageCount.setText((position+1)+"/3");
-
-            for(int i=0; i<20; i++){
-                viewHolder.stageCount[i].setText("" + (position * 20 + 1 + i));
-                viewHolder.buttonImg[i].setTag("" + (position * 20 + 1 + i));
-                if(position*20+1+i>60) break; //마지막 스테이지 이후 막기
-                if (Integer.parseInt(viewHolder.buttonImg[i].getTag().toString()) - 1 <= succeedStage) {
-                    viewHolder.buttonImg[i].setImageDrawable(stagePagerContext.getResources().getDrawable(R.drawable.button));
-                    viewHolder.stageCount[i].setVisibility(View.VISIBLE);
-                    viewHolder.minCount[i].setVisibility(View.VISIBLE);
-                    viewHolder.minCount[i].setText("0/"+StageDB.getMinCount(position*20+1+i));
-                    if (succeedStage >= (position * 20 + 1 + i)) {
-                        viewHolder.minCount[i].setText(StageDB.getMyMinCount(position*20+i+1) + "/" + StageDB.getMinCount(position*20+i+1));
-                    }
-                }
-            }
-        for (int i = 0; i < 20; i++)
-            viewHolder.buttonImg[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+        btnImg[0].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
                         return;
                     }
                     mLastClickTime = SystemClock.elapsedRealtime();
-                    stageCount = v.getTag().toString();
-                    if (Integer.parseInt(stageCount) - 1 > succeedStage)
-                        return;
-                    StageDB.getStageObj();
-                    if(soundPlay) soundPool.play(main_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
-                    Intent intent = new Intent(StagePage, GamePage.class);
-                    StagePage.startActivity(intent);
+                    RecyclerItem item = mData.get(position);
+                    stageCount = String.valueOf(item.getStageNum(0));
+                    onBtnClick();
                 }
-            });
+            }
+        });
+        btnImg[1].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    RecyclerItem item = mData.get(position);
+                    stageCount = String.valueOf(item.getStageNum(1));
+                    onBtnClick();
+                }
+            }
+        });
+        btnImg[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    RecyclerItem item = mData.get(position);
+                    stageCount = String.valueOf(item.getStageNum(2));
+                    onBtnClick();
+                }
+            }
+        });
+        btnImg[3].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    RecyclerItem item = mData.get(position);
+                    stageCount = String.valueOf(item.getStageNum(3));
+                    onBtnClick();
+                }
+            }
+        });
+    }
+}
 
-        // 뷰페이저에 추가.
-        container.addView(view) ;
-
-        return view ;
+    private void onBtnClick(){
+        if (Integer.parseInt(stageCount) > succeedStage)
+            return;
+        StageDB.getStageObj();
+        if (soundPlay)
+            soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+        Intent intent = new Intent(StagePage, GamePage.class);
+        StagePage.startActivity(intent);
     }
 
+    // 생성자에서 데이터 리스트 객체를 전달받음.
+    StagePagerAdapter(ArrayList<RecyclerItem> list, Context pContext) {
+        mData = list;
+        context=pContext;
+    }
+
+    // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        // 뷰페이저에서 삭제.
-        container.removeView((View) object);
+    public StagePagerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        //context = parent.getContext();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view = inflater.inflate(R.layout.stage_list, parent, false);
+        StagePagerAdapter.ViewHolder vh = new StagePagerAdapter.ViewHolder(view);
+
+        return vh;
     }
 
+    // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
-    public int getCount() {
-        // 전체 페이지 수는 3개로 고정.
-        return 3;
+    public void onBindViewHolder(StagePagerAdapter.ViewHolder holder, int position) {
+        RecyclerItem item = mData.get(position);
+        StageDB = new StageDBHelper(context);
+        succeedStage = StageDB.clearStageNum()+1;
+
+        for (int i = 0; i < 4; i++) {
+            holder.btnImg[i].setImageDrawable(item.getBtnImg(i));
+            holder.stage[i].setText(String.valueOf(item.getStageNum(i)));
+            holder.move[i].setText(item.getMoveNum(i));
+            if(Integer.parseInt(String.valueOf(holder.stage[i].getText())) <= succeedStage){
+                holder.stage[i].setVisibility(View.VISIBLE);
+                holder.move[i].setVisibility(View.VISIBLE);
+                //holder.btnImg[i].setImageResource(R.drawable.button);
+            }
+            else{
+                holder.stage[i].setVisibility(View.INVISIBLE);
+                holder.move[i].setVisibility(View.INVISIBLE);
+                //holder.btnImg[i].setImageResource(R.drawable.lock_button);
+            }
+        }
     }
 
+    // getItemCount() - 전체 데이터 갯수 리턴.
     @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return (view == (View)object);
-    }
-
-    @Override
-    public int getItemPosition(@NonNull Object object) {
-        return POSITION_NONE;
-        //return super.getItemPosition(object);
-    }
-
-    private class ViewHolder {
-        private TextView[] minCount = new TextView[20];
-        private TextView[] stageCount = new TextView[20];
-        private ImageView[] buttonImg = new ImageView[20];
-        private TextView pageCount;
-
+    public int getItemCount() {
+        return mData.size();
     }
 }

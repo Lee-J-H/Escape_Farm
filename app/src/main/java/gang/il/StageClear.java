@@ -8,6 +8,7 @@ import static gang.il.Valiable.clearSound;
 import static gang.il.Valiable.curObjNum;
 import static gang.il.Valiable.finishObj;
 import static gang.il.Valiable.gameMode;
+import static gang.il.Valiable.mContext;
 import static gang.il.Valiable.moveCount;
 import static gang.il.Valiable.objCount;
 import static gang.il.Valiable.soundPlay;
@@ -16,10 +17,10 @@ import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.totalObj;
 
 public class StageClear {
-    Context mContext;
+    Context stageClearContext;
 
     public StageClear(Context mContext) {
-        this.mContext = mContext;
+        this.stageClearContext = mContext;
     }
 
     public void clearCheck() {
@@ -30,22 +31,24 @@ public class StageClear {
             StageDBHelper StageDB = new StageDBHelper(mContext);
             if(soundPlay) soundPool.play(clearSound, 1f, 1f, 0, 0, 1f);
             if (StageDB.clearStageNum() < Integer.parseInt(stageCount)) { //클리어하지 않은 스테이지를 클리어한 경우 최소횟수 저장
+                ((StagePage) mContext).setStage(Integer.parseInt(stageCount),moveCount);
                 StageDB.recordCount(moveCount);
             } else {
                 if (StageDB.getMyMinCount(Integer.parseInt(stageCount)) != 0 && StageDB.getMyMinCount(Integer.parseInt(stageCount)) > moveCount) { //저장된 최소횟수보다 적은 횟수로 클리어한 경우 최소횟수 업데이트
                     //RecordDB recordDB = new RecordDB(mContext);
                     //RecordDB.SetDB Data = new RecordDB.SetDB();
                     //Data.execute("http://34.74.154.52/escapefarm/recordCount.php",String.valueOf(stageCount),String.valueOf(moveCount),gameMode);  //서버의 최소횟수 업데이트
+                    ((StagePage) mContext).setStage(Integer.parseInt(stageCount),moveCount);
                     StageDB.recordCount(moveCount);
                 }
             }
-            ((GamePage) mContext).Dialog();
+            ((GamePage) stageClearContext).Dialog();
         }
     }
 
     private boolean removeAnimal() {
         objCount--;
-        ((GamePage) mContext).finWidget(totalObj[curObjNum].getType());
+        ((GamePage) stageClearContext).finWidget(totalObj[curObjNum].getType());
         finishObj.remove(totalObj[curObjNum].getType());
         int caveNum = 0;
         for (int i = curObjNum; i < objCount; i++) {
