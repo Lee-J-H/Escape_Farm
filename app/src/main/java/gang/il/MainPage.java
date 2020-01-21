@@ -9,6 +9,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import static gang.il.GameOption.writeSoundOp;
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.MainPage;
 import static gang.il.Valiable.mContext;
@@ -60,10 +61,12 @@ public class MainPage extends AppCompatActivity {
                 if(soundPlay){
                     soundPlay=false;
                     sound_btn.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sound_off));
+                    writeSoundOp(mContext,"off");
                 }
                 else{
                     soundPlay=true;
                     sound_btn.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sound_on));
+                    writeSoundOp(mContext,"on");
                     soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
                 }
             }

@@ -13,6 +13,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static gang.il.GameOption.writeSoundOp;
 import static gang.il.GameSurfaceView.drawView;
 import static gang.il.Valiable.btnClick;
 import static gang.il.Valiable.btnClickType;
@@ -177,10 +178,12 @@ public class GamePage extends AppCompatActivity {
             if(soundPlay){
                 soundPlay=false;
                 soundBtn.setImageDrawable(GameContext.getResources().getDrawable(R.drawable.sound_off));
+                writeSoundOp(mContext,"off");
             }
             else{
                 soundPlay=true;
                 soundBtn.setImageDrawable(GameContext.getResources().getDrawable(R.drawable.sound_on));
+                writeSoundOp(mContext,"on");
                 soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
             }
         }

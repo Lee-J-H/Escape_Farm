@@ -16,7 +16,7 @@ public class Valiable {
     public static ArrayList finishObj = new ArrayList();
     public static StageClearDialog dialog;
     public static Context mContext;
-    public static boolean drawInit, soundPlay=true, btnClick=false;
+    public static boolean drawInit, soundPlay, btnClick=false;
     public static float width, height;
     public static SoundPool soundPool;
     public static int eatSound, trapSound, clearSound, passSound, holeSound, btnSound, /*game_btnSound,*/ wallSound;
