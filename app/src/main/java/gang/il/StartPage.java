@@ -15,9 +15,8 @@ import static gang.il.LoadingImg.progressON;
 import static gang.il.Valiable.StartPage;
 import static gang.il.Valiable.clearSound;
 import static gang.il.Valiable.eatSound;
-import static gang.il.Valiable.game_btnSound;
 import static gang.il.Valiable.holeSound;
-import static gang.il.Valiable.main_btnSound;
+import static gang.il.Valiable.btnSound;
 import static gang.il.Valiable.passSound;
 import static gang.il.Valiable.soundPool;
 import static gang.il.Valiable.trapSound;
@@ -88,13 +87,12 @@ public class StartPage extends AppCompatActivity {
 
     private void soundInit(){
         soundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
-        main_btnSound = soundPool.load(this, R.raw.main_btn, 1);
+        btnSound = soundPool.load(this, R.raw.main_btn, 1);
         clearSound = soundPool.load(this, R.raw.clear, 1);
         passSound = soundPool.load(this, R.raw.pass, 1);
         eatSound = soundPool.load(this, R.raw.eat, 1);
         trapSound  = soundPool.load(this, R.raw.trap, 1);
         holeSound = soundPool.load(this, R.raw.hole, 1);
-        game_btnSound = soundPool.load(this, R.raw.game_btn, 1);
         wallSound = soundPool.load(this, R.raw.wall, 1);
     }
 }

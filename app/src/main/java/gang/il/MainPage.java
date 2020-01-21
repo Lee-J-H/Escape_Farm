@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -13,7 +12,7 @@ import android.widget.ImageView;
 import static gang.il.Valiable.gameMode;
 import static gang.il.Valiable.MainPage;
 import static gang.il.Valiable.mContext;
-import static gang.il.Valiable.main_btnSound;
+import static gang.il.Valiable.btnSound;
 import static gang.il.Valiable.soundPlay;
 import static gang.il.Valiable.soundPool;
 
@@ -65,7 +64,7 @@ public class MainPage extends AppCompatActivity {
                 else{
                     soundPlay=true;
                     sound_btn.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sound_on));
-                    soundPool.play(main_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+                    soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
                 }
             }
         });
@@ -82,7 +81,7 @@ public class MainPage extends AppCompatActivity {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        if(soundPlay)soundPool.play(main_btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+        if(soundPlay)soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
         Intent intent = new Intent(MainPage, StagePage.class);
         MainPage.startActivity(intent);
         finish();

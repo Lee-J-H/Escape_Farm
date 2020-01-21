@@ -19,5 +19,5 @@ public class Valiable {
     public static boolean drawInit, soundPlay=true, btnClick=false;
     public static float width, height;
     public static SoundPool soundPool;
-    public static int eatSound, trapSound, clearSound, passSound, holeSound, main_btnSound, game_btnSound, wallSound;
+    public static int eatSound, trapSound, clearSound, passSound, holeSound, btnSound, /*game_btnSound,*/ wallSound;
 }

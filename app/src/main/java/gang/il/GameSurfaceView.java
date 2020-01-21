@@ -207,8 +207,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         private void doDraw() {
             mCanvas.drawBitmap(ground, spaceX + blankX, spaceY + blankY, null);
             for (int i = 0; i < objCount; i++) {
-                if(!surfaceViewRunning)
-                    return;
+                //if(!surfaceViewRunning)
+                //    return;
                 switch (totalObj[i].getType()) {
                     case "wall":
                         if (totalObj[i].getPosX() % 2 == 0) //아래쪽 벽
