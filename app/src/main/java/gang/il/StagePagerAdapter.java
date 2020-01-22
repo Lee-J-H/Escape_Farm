@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,12 +124,9 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
     @Override
     public StagePagerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View view = inflater.inflate(R.layout.stage_list, parent, false);
         StagePagerAdapter.ViewHolder vh = new StagePagerAdapter.ViewHolder(view);
-
         return vh;
     }
 
@@ -148,12 +144,10 @@ public class ViewHolder extends RecyclerView.ViewHolder {
             if(Integer.parseInt(String.valueOf(holder.stage[i].getText())) <= succeedStage){
                 holder.stage[i].setVisibility(View.VISIBLE);
                 holder.move[i].setVisibility(View.VISIBLE);
-                //holder.btnImg[i].setImageResource(R.drawable.button);
             }
             else{
                 holder.stage[i].setVisibility(View.INVISIBLE);
                 holder.move[i].setVisibility(View.INVISIBLE);
-                //holder.btnImg[i].setImageResource(R.drawable.lock_button);
             }
         }
     }

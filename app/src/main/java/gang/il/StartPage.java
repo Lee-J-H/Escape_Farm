@@ -43,7 +43,7 @@ public class StartPage extends AppCompatActivity {
         fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();

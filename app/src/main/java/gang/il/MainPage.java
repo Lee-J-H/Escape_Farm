@@ -80,7 +80,7 @@ public class MainPage extends AppCompatActivity {
 
 
     public void onBtnClick(){
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();

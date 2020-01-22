@@ -3,7 +3,6 @@ package gang.il;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,8 +33,6 @@ public class RecordDB {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if (result == null) {
-                Log.d("test1234", "result:faild");
-                //mhandler.sendEmptyMessage(Faild_internet);
             } else {
                 mJsonString = result;
                 showResult();
@@ -90,7 +87,6 @@ public class RecordDB {
 
             } catch (Exception e) {
                 errorString = e.toString();
-                Log.d("Failed get DB", "result:" + errorString);
                 return null;
             }
 

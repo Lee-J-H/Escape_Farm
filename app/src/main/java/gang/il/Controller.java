@@ -2,6 +2,7 @@ package gang.il;
 
 import android.content.Context;
 
+import static gang.il.StageDBHelper.putInFood;
 import static gang.il.Valiable.curObjNum;
 import static gang.il.Valiable.direction;
 import static gang.il.Valiable.eatSound;
@@ -49,7 +50,6 @@ public class Controller {
 
         int moveIndex, movePoint; //가장 가까운 장애물의 인덱스
         float curPosX = totalObj[curObjNum].getPosX(), curPosY = totalObj[curObjNum].getPosY(); // 현재 위치에 대한 x,y 좌표의 값을 저장
-        //float oriPosX = curPosX, oriPosY = curPosY;//기존 좌표 저장
         if (!totalObj[curObjNum].isMoveAble()) {
             if(soundPlay) soundPool.play(trapSound, 1f, 1f, 0, 0, 1f); //덫 사운드 재생
             return; //트랩에 걸렸을때
@@ -133,20 +133,16 @@ public class Controller {
         if (stageCount.equals("1")) { //튜토리얼 진행
             if (tutorialNum < 3) tutorialNum++;
         }
-        /*if (oriPosX != curPosX || oriPosY != curPosY) { //객체가 이동을 한 경우
-            moveCount++; //이동 횟수 증가
-            ((GamePage) mContext).setMoveCount();
-            if (stageCount.equals("1")) { //튜토리얼 진행
-                if (tutorialNum < 3) tutorialNum++;
-            }
-        }*/
-
 
         if (totalObj[moveIndex].type.startsWith("food")) { //이동지가 음식일 경우
             if(soundPlay) soundPool.play(eatSound, 1f, 1f, 0, 0, 1f); //음식 사운드 재생
             objCount--;
+            int caveNum = 0;
             for (int i = moveIndex; i < objCount; i++) {
                 totalObj[i] = new TotalObject(totalObj[i + 1].posX, totalObj[i + 1].posY, totalObj[i + 1].getType(), totalObj[i + 1].isMoveAble()); //해당 음식 기준으로 객체 값을 하나씩 앞으로 땡기기
+                if (totalObj[i].getType().equals("cave")) totalObj[i].setCaveNum(++caveNum);
+                else if(totalObj[i].getType().equals("dog") ||totalObj[i].getType().equals("squirrel") || totalObj[i].getType().equals("rabbit") || totalObj[i].getType().equals("panda") || totalObj[i].getType().equals("tiger"))
+                    putInFood(totalObj[i].getType(),i);
             }
             totalObj[objCount] = null; //마지막 인덱스값 지우기
         } else if (totalObj[moveIndex].getType().equals("cave")) { //이동지가 동굴인 경우
