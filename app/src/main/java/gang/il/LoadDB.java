@@ -106,7 +106,6 @@ public class LoadDB {
 
             } catch (Exception e) {
                 errorString = e.toString();
-                Log.d("Failed get DB", "result:" + errorString);
                 return null;
             }
 
@@ -145,8 +144,7 @@ public class LoadDB {
             if(!readVersion(loadDBContext).equals(version)) {
                 StageDBHelper stageDB = new StageDBHelper(loadDBContext);
                 stageDB.init();
-                Data.execute("http://34.74.154.52/escapefarm/minimumcount.php", "day", "minCount");  //버전이 다른경우 데이터 load 시작(모든 디비 삭제 작업을 처음에만 해야할듯?)
-                //writeVersion(loadDBContext,version); //위치 변경해야됨
+                Data.execute("http://34.74.154.52/escapefarm/minimumcount.php", "day", "minCount");  //버전이 다른경우 데이터 load 시작
             }
             else mhandler.sendEmptyMessage(LOAD_FINISH);
         } catch (JSONException e) {
@@ -162,7 +160,7 @@ public class LoadDB {
                 JSONObject item = jsonArray.getJSONObject(i);
                 int stage = item.getInt("Stage");
                 int Count = item.getInt("Count");
-                stageDB.initCountDB(mode,Count,stage);  //처음 한번만 실행되도록 처리해야됨
+                stageDB.initCountDB(mode,Count,stage);
 
                 if(i == jsonArray.length() -1){ //주간모드 마지막 스테이지 로드 후 야간모드 로드 시작
                     if(mode.equals("day")) {
@@ -192,7 +190,7 @@ public class LoadDB {
                 int posY = item.getInt("posY");
                 String structure = item.getString("Structure");
                 obj[0] = new TotalObject(posX,posY,structure,false);
-                stageDB.initObjDB(mode, stage, obj[0]); //처음 한번만 실행되도록 처리해야됨
+                stageDB.initObjDB(mode, stage, obj[0]);
 
                 if(i == jsonArray.length() -1){ //주간모드 마지막 스테이지 로드 후 야간모드 로드 시작
                     if(mode.equals("day")) {

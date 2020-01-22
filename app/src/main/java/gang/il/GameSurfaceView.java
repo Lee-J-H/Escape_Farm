@@ -10,7 +10,6 @@ import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -82,7 +81,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         // Surface가 종료될 때 호출됨
         try {
-            Log.d("backPressTest", "surfaceDestroyed()");
             mThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -207,8 +205,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         private void doDraw() {
             mCanvas.drawBitmap(ground, spaceX + blankX, spaceY + blankY, null);
             for (int i = 0; i < objCount; i++) {
-                //if(!surfaceViewRunning)
-                //    return;
                 switch (totalObj[i].getType()) {
                     case "wall":
                         if (totalObj[i].getPosX() % 2 == 0) //아래쪽 벽

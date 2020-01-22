@@ -101,7 +101,6 @@ public class StagePage extends AppCompatActivity {
                 if (count++ <= succeedStage) {
                     imgData[i][j] = StageContext.getResources().getDrawable(R.drawable.button);
                     moveData[i][j] = StageDB.getMyMinCount(staData[i][j]) + "/" + StageDB.getMinCount(staData[i][j]);
-                    //Log.d("stageTest    ","staData:"+staData[i][j] +"      moveData[i][j]:"+moveData[i][j]);
                 } else {
                     moveData[i][j] = "0/" + StageDB.getMinCount(staData[i][j]);
                     imgData[i][j] = StageContext.getResources().getDrawable(R.drawable.lock_button);
@@ -120,7 +119,6 @@ public class StagePage extends AppCompatActivity {
         if(num!=3)imgData[position][num+1] = StageContext.getResources().getDrawable(R.drawable.button);
         else imgData[position+1][0] = StageContext.getResources().getDrawable(R.drawable.button);
         mAdapter.notifyDataSetChanged();
-        Log.d("setStageTest","position:"+position+"     num:"+num + "     moveData:"+moveData[position][num]);
     }
 
     public void addItem(Drawable[] btnImg, int[] stage, String[] move) {

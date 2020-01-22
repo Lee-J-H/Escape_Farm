@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import static gang.il.GameOption.readSoundOp;
 import static gang.il.LoadingImg.progressON;
 import static gang.il.Valiable.StartPage;
 import static gang.il.Valiable.clearSound;
@@ -18,6 +19,7 @@ import static gang.il.Valiable.eatSound;
 import static gang.il.Valiable.holeSound;
 import static gang.il.Valiable.btnSound;
 import static gang.il.Valiable.passSound;
+import static gang.il.Valiable.soundPlay;
 import static gang.il.Valiable.soundPool;
 import static gang.il.Valiable.trapSound;
 import static gang.il.Valiable.wallSound;
@@ -41,7 +43,7 @@ public class StartPage extends AppCompatActivity {
         fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
@@ -94,5 +96,10 @@ public class StartPage extends AppCompatActivity {
         trapSound  = soundPool.load(this, R.raw.trap, 1);
         holeSound = soundPool.load(this, R.raw.hole, 1);
         wallSound = soundPool.load(this, R.raw.wall, 1);
+
+        if(readSoundOp(context).equals("off"))
+            soundPlay=false;
+        else
+            soundPlay=true;
     }
 }

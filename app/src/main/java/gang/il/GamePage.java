@@ -6,13 +6,13 @@ import android.graphics.PixelFormat;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static gang.il.GameOption.writeSoundOp;
 import static gang.il.GameSurfaceView.drawView;
 import static gang.il.Valiable.btnClick;
 import static gang.il.Valiable.btnClickType;
@@ -136,7 +136,6 @@ public class GamePage extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("backPressTest","onPause()");
 
     }
 
@@ -144,8 +143,6 @@ public class GamePage extends AppCompatActivity {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
             return;
         }
-        //((StagePage) mContext).setStage();
-        //((StagePage) mContext).init();
         drawView=false;
         mLastClickTime = SystemClock.elapsedRealtime();
         if(soundPlay) soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
@@ -156,7 +153,6 @@ public class GamePage extends AppCompatActivity {
         dialog = new StageClearDialog(GameContext, "클리어",backBtnListener, // 내용
                 nextDialogListener, clr_ResetListener); // 왼쪽 버튼 이벤트
         // 오른쪽 버튼 이벤트
-
         //요청 이 다이어로그를 종료할 수 있게 지정함
         dialog.setCancelable(true);
         dialog.getWindow().setGravity(Gravity.CENTER);
@@ -177,10 +173,12 @@ public class GamePage extends AppCompatActivity {
             if(soundPlay){
                 soundPlay=false;
                 soundBtn.setImageDrawable(GameContext.getResources().getDrawable(R.drawable.sound_off));
+                writeSoundOp(mContext,"off");
             }
             else{
                 soundPlay=true;
                 soundBtn.setImageDrawable(GameContext.getResources().getDrawable(R.drawable.sound_on));
+                writeSoundOp(mContext,"on");
                 soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
             }
         }
@@ -194,7 +192,6 @@ public class GamePage extends AppCompatActivity {
                 return;
             }
             mLastClickTime = SystemClock.elapsedRealtime();
-            //if(moveCount < StageDB.getMyMinCount(Integer.parseInt(stageCount))) ((StagePage) mContext).setStage(Integer.parseInt(stageCount),moveCount);
             stageCount = String.valueOf(Integer.parseInt(stageCount) + 1);
             if(stageCount.equals("2")){
                 drawView=false;
@@ -216,9 +213,6 @@ public class GamePage extends AppCompatActivity {
                 return;
             }
             mLastClickTime = SystemClock.elapsedRealtime();
-            //((StagePage) mContext).setStage();
-            //((StagePage) mContext).init();
-            //tutorialNum = 1;
             btnClickType="clr_reset";
             btnClick=true;
             if (dialog.isShowing())
@@ -233,7 +227,6 @@ public class GamePage extends AppCompatActivity {
                 return;
             }
             mLastClickTime = SystemClock.elapsedRealtime();
-            //tutorialNum = 1;
             btnClickType="reset";
             btnClick=true;
         }

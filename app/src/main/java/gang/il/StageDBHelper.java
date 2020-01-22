@@ -166,7 +166,6 @@ public class StageDBHelper extends SQLiteOpenHelper {
         if(c!=null)
             count = c.getCount();
         db.close();
-       //count = 60; //클리어 수 60으로(확인용)
         return count;
     }
 
@@ -178,7 +177,6 @@ public class StageDBHelper extends SQLiteOpenHelper {
     public void initCountDB(String mode, int minCount, int stage){
         db = getWritableDatabase();
         db.execSQL("insert into "+mode+"Count(Stage,Count, myCount) values("+stage+","+minCount+",null);"); //db에 스테이지 값 저장
-        //db.execSQL("insert into "+mode+"Count(Stage,Count, myCount) values("+stage+","+minCount+",500);"); //전체 스테이지 확인 위해 이동회수 500으로
         db.close();
     }
 
