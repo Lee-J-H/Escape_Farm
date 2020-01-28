@@ -72,7 +72,8 @@ public class StageDBHelper extends SQLiteOpenHelper {
         db.execSQL(dropNightStage);
         onCreate(db);
     }
-    public void init(){
+
+    public void init() {
         db = getWritableDatabase();
         String dropDayStage =
                 "DROP TABLE IF EXISTS DayStage";
@@ -91,7 +92,7 @@ public class StageDBHelper extends SQLiteOpenHelper {
 
     public void getStageObj() {
         db = getReadableDatabase();
-        Cursor c = db.rawQuery("select Structure, posX, posY from " + gameMode + "Stage where Stage="+stageCount +";", null);
+        Cursor c = db.rawQuery("select Structure, posX, posY from " + gameMode + "Stage where Stage=" + stageCount + ";", null);
         if (c.getCount() == 0) {
             return;
         }
@@ -99,13 +100,13 @@ public class StageDBHelper extends SQLiteOpenHelper {
         objCount = c.getCount();
         totalObj = new TotalObject[objCount];
         int caveNum = 0;
-        int count=0;
+        int count = 0;
         while (c.moveToNext()) {
             String structure = c.getString(0);
             int x = c.getInt(1);
             int y = c.getInt(2);
-            if(structure.equals("boundary")){
-                if(x!=1&&y!=1){
+            if (structure.equals("boundary")) {
+                if (x != 1 && y != 1) {
                     stageSize_x = x / 2;
                     stageSize_y = y / 2;
                 }
@@ -133,50 +134,66 @@ public class StageDBHelper extends SQLiteOpenHelper {
         }
         db.close();
     }
-    public int getMyMinCount(int stageNum){
+
+    public int getMyMinCount(int stageNum) {
         int myMinCount = 0;
         db = getReadableDatabase();
-        Cursor c = db.rawQuery("select myCount from "+gameMode+"Count where Stage ="+stageNum, null);
-        if(c != null){
+        Cursor c = db.rawQuery("select myCount from " + gameMode + "Count where Stage =" + stageNum, null);
+        if (c != null) {
             c.moveToFirst();
             myMinCount = c.getInt(0);
         }
         db.close();
         return myMinCount;
     }
-    public int getMinCount(int stageNum){
+
+    public int getMinCount(int stageNum) {
         int minCount = 0;
         db = getReadableDatabase();
-        Cursor c = db.rawQuery("select Count from "+gameMode+ "Count where Stage ="+stageNum, null);
+        Cursor c = db.rawQuery("select Count from " + gameMode + "Count where Stage =" + stageNum, null);
         c.moveToFirst();
         minCount = c.getInt(0);
         db.close();
         return minCount;
     }
-    public void recordCount(int minCount){
+
+    public void recordCount(int minCount) {
         db = getWritableDatabase();
-        db.execSQL("update "+gameMode+"Count set myCount="+minCount+" where Stage="+stageCount+";");
+        db.execSQL("update " + gameMode + "Count set myCount=" + minCount + " where Stage=" + stageCount + ";");
         db.close();
     }
 
-    public int clearStageNum(){
-        int count =0;
+    public int clearStageNum() {
+        int count = 0;
         db = getReadableDatabase();
-        Cursor c = db.rawQuery("select Stage from "+gameMode+"Count where myCount is not null;", null); //null이 아닌 개수대로 클리어 수 확인
-        if(c!=null)
+        Cursor c = db.rawQuery("select Stage from " + gameMode + "Count where myCount is not null;", null); //null이 아닌 개수대로 클리어 수 확인
+        if (c != null)
             count = c.getCount();
         db.close();
         return count;
     }
 
-    public void initObjDB(String mode,int stage,TotalObject... obj){
+    public void initObjDB(String mode, int stage, TotalObject... obj) {
         db = getWritableDatabase();
-        db.execSQL("insert into "+mode+"Stage(Stage, Structure, posX, posY) values("+stage +",'"+obj[0].getType()+"',"+obj[0].getPosX()+","+obj[0].getPosY()+");");
+        db.beginTransaction();
+        try {
+            db.execSQL("insert into " + mode + "Stage(Stage, Structure, posX, posY) values(" + stage + ",'" + obj[0].getType() + "'," + obj[0].getPosX() + "," + obj[0].getPosY() + ");");
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
         db.close();
     }
-    public void initCountDB(String mode, int minCount, int stage){
+
+    public void initCountDB(String mode, int minCount, int stage) {
         db = getWritableDatabase();
-        db.execSQL("insert into "+mode+"Count(Stage,Count, myCount) values("+stage+","+minCount+",null);"); //db에 스테이지 값 저장
+        db.beginTransaction();
+        try {
+            db.execSQL("insert into " + mode + "Count(Stage,Count, myCount) values(" + stage + "," + minCount + ",null);"); //db에 스테이지 값 저장
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
         db.close();
     }
 

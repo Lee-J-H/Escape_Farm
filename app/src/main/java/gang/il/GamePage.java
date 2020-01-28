@@ -6,11 +6,17 @@ import android.graphics.PixelFormat;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 
 import static gang.il.GameOption.writeSoundOp;
 import static gang.il.GameSurfaceView.drawView;
@@ -27,6 +33,7 @@ import static gang.il.Valiable.soundPool;
 import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.tutorialNum;
 import static gang.il.Valiable.dialog;
+import static gang.il.Valiable.adCount;
 
 public class GamePage extends AppCompatActivity {
     ImageView backBtn, resetBtn, soundBtn;
@@ -35,6 +42,7 @@ public class GamePage extends AppCompatActivity {
     GameSurfaceView gameSurfaceView;
     private long mLastClickTime = 0;
     Context GameContext;
+    private InterstitialAd mInterstitialAd;//광고
 
     @Override
     public void onBackPressed() {
@@ -57,26 +65,43 @@ public class GamePage extends AppCompatActivity {
         backBtn = (ImageView) findViewById(R.id.back_btn);
         resetBtn = (ImageView) findViewById(R.id.reset_btn);
         soundBtn = (ImageView) findViewById(R.id.sound_btn_game);
-        gameSurfaceView = (GameSurfaceView) findViewById(R.id.GameSurfaceView) ;
+        gameSurfaceView = (GameSurfaceView) findViewById(R.id.GameSurfaceView);
         backBtn.setOnClickListener(backBtnListener);
         resetBtn.setOnClickListener(ResetListener);
         soundBtn.setOnClickListener(soundBtnListener);
         setMinCount();
         gameSurfaceView.setZOrderOnTop(true);
         gameSurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888); //출처 https://mparchive.tistory.com/103  (surfaceVIew 배경 투명화)
-        if(stageCount.equals("1")) tutorialNum = 1;
-        if(soundPlay) soundBtn.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sound_on));
+        if (stageCount.equals("1")) tutorialNum = 1;
+        if (soundPlay)
+            soundBtn.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sound_on));
         else soundBtn.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sound_off));
+        MobileAds.initialize(this, GameContext.getResources().getString(R.string.ad_unit_id));
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(GameContext.getResources().getString(R.string.ad_unit_id));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                // Load the next interstitial.
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                btnClick = true;
+            }
+
+        });
+        adCount = 0;
     }
 
     public void setMoveCount() {
         TextView moveText = findViewById(R.id.moveCount);
         moveText.setText("이동횟수: " + moveCount);
     }
+
     public void setStageCount() {
         TextView stageText = findViewById(R.id.stageCount);
         stageText.setText("스테이지: " + stageCount);
     }
+
     public void setMinCount() {
         TextView min_text = findViewById(R.id.tv_min_count);
         min_text.setText("최소횟수: " + StageDB.getMinCount(Integer.valueOf(stageCount)));
@@ -139,18 +164,31 @@ public class GamePage extends AppCompatActivity {
 
     }
 
+    private void loadAD() {
+        if (adCount == 0) {
+            if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+            } else {
+                Log.d("ADFall", "The Interstitial wasn't loaded yet.");
+            }
+        }
+    }
+
     public void backStage() {
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
             return;
         }
-        drawView=false;
+        drawView = false;
         mLastClickTime = SystemClock.elapsedRealtime();
-        if(soundPlay) soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
-        moveCount=0;
-            finish();
+        adCount++;
+        if (adCount == 4) adCount = 0;
+        if (soundPlay) soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+        moveCount = 0;
+        finish();
     }
+
     public void Dialog() {
-        dialog = new StageClearDialog(GameContext, "클리어",backBtnListener, // 내용
+        dialog = new StageClearDialog(GameContext, "클리어", backBtnListener, // 내용
                 nextDialogListener, clr_ResetListener); // 왼쪽 버튼 이벤트
         // 오른쪽 버튼 이벤트
         //요청 이 다이어로그를 종료할 수 있게 지정함
@@ -164,21 +202,20 @@ public class GamePage extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             onBackPressed();
-                    }
+        }
     };
 
     private View.OnClickListener soundBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(soundPlay){
-                soundPlay=false;
+            if (soundPlay) {
+                soundPlay = false;
                 soundBtn.setImageDrawable(GameContext.getResources().getDrawable(R.drawable.sound_off));
-                writeSoundOp(mContext,"off");
-            }
-            else{
-                soundPlay=true;
+                writeSoundOp(mContext, "off");
+            } else {
+                soundPlay = true;
                 soundBtn.setImageDrawable(GameContext.getResources().getDrawable(R.drawable.sound_on));
-                writeSoundOp(mContext,"on");
+                writeSoundOp(mContext, "on");
                 soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
             }
         }
@@ -188,33 +225,40 @@ public class GamePage extends AppCompatActivity {
     //다이얼로그 클릭이벤트
     private View.OnClickListener nextDialogListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
                 return;
             }
             mLastClickTime = SystemClock.elapsedRealtime();
             stageCount = String.valueOf(Integer.parseInt(stageCount) + 1);
-            if(stageCount.equals("2")){
-                drawView=false;
+            if (stageCount.equals("2")) {
+                drawView = false;
                 gameSurfaceView.setVisibility(View.INVISIBLE);
                 gameSurfaceView.setVisibility(View.VISIBLE);
             } //튜토리얼 지우기
             setStageCount();
             setMinCount();
-            btnClickType="next";
-            btnClick=true;
+            btnClickType = "next";
+            if (adCount == 0) loadAD();
+            else btnClick = true;
+            adCount++;
+            if (adCount == 4) adCount = 0;
             if (dialog.isShowing())
                 dialog.dismiss();
         }
+        // }
     };
     private View.OnClickListener clr_ResetListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
                 return;
             }
             mLastClickTime = SystemClock.elapsedRealtime();
-            btnClickType="clr_reset";
-            btnClick=true;
+            btnClickType = "clr_reset";
+            if (adCount == 0) loadAD();
+            else btnClick = true;
+            adCount++;
+            if (adCount == 4) adCount = 0;
             if (dialog.isShowing())
                 dialog.dismiss();
         }
@@ -223,19 +267,22 @@ public class GamePage extends AppCompatActivity {
     private View.OnClickListener ResetListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
                 return;
             }
             mLastClickTime = SystemClock.elapsedRealtime();
-            btnClickType="reset";
-            btnClick=true;
+            btnClickType = "reset";
+            if (adCount == 0) loadAD();
+            else btnClick = true;
+            adCount++;
+            if (adCount == 4) adCount = 0;
         }
     };
 
-    public void onBtnClick(String type){
+    public void onBtnClick(String type) {
         moveCount = 0;
         setMoveCount();
-        if(soundPlay) soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
+        if (soundPlay) soundPool.play(btnSound, 1f, 1f, 0, 0, 1f); //버튼 사운드 재생
         {
             StageDB.getMinCount(Integer.parseInt(stageCount));
             StageDB.getStageObj();
@@ -246,8 +293,8 @@ public class GamePage extends AppCompatActivity {
                 }
             });
         }
-        if(type.equals("next")) drawInit = false;
-        else if(type.endsWith("reset")) tutorialNum = 1;
-        btnClick=false;
+        if (type.equals("next")) drawInit = false;
+        else if (type.endsWith("reset")) tutorialNum = 1;
+        btnClick = false;
     }
 }
