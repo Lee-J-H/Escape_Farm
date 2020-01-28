@@ -78,7 +78,7 @@ public class Tutorial {
                 break;
         }
         mCanvas.drawText(tutorialMessage1, startX + spaceX, startY + spaceY + spaceY / 2, mPaint);
-        mCanvas.drawText(tutorialMessage2, startX + spaceX, startY + spaceY * 2, mPaint);
+        mCanvas.drawText(tutorialMessage2, startX + spaceX, startY + spaceY*2.2f, mPaint);
     }
 
     public void drawArrow(int startX, int startY) {

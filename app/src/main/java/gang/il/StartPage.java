@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import static gang.il.GameOption.readSoundOp;
+import static gang.il.LoadingImg.progressDialog;
 import static gang.il.LoadingImg.progressON;
 import static gang.il.Valiable.StartPage;
 import static gang.il.Valiable.clearSound;
@@ -43,7 +44,7 @@ public class StartPage extends AppCompatActivity {
         fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
