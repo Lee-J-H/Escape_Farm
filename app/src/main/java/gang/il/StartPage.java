@@ -11,6 +11,10 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+
 import static gang.il.GameOption.readSoundOp;
 import static gang.il.LoadingImg.progressDialog;
 import static gang.il.LoadingImg.progressON;
@@ -19,6 +23,7 @@ import static gang.il.Valiable.clearSound;
 import static gang.il.Valiable.eatSound;
 import static gang.il.Valiable.holeSound;
 import static gang.il.Valiable.btnSound;
+import static gang.il.Valiable.mInterstitialAd;
 import static gang.il.Valiable.passSound;
 import static gang.il.Valiable.soundPlay;
 import static gang.il.Valiable.soundPool;
@@ -41,6 +46,7 @@ public class StartPage extends AppCompatActivity {
         setContentView(R.layout.start_page);
         LinearLayout fullscreen = (LinearLayout) findViewById(R.id.screen);
         soundInit();
+        adInit();
         fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,9 +58,16 @@ public class StartPage extends AppCompatActivity {
                 LoadDB loadDB = new LoadDB(context);
                 LoadDB.GetDB Data = new LoadDB.GetDB();
                 progressON(StartPage,null);
-                Data.execute("http://34.74.154.52/escapefarm/checkversion.php", "version","check");  //DB 버전 체크
+                Data.execute("http://18.222.11.106/escapefarm/checkversion.php", "version","check");  //DB 버전 체크
             }
         });
+    }
+
+    public void adInit(){
+        MobileAds.initialize(this, context.getResources().getString(R.string.ad_unit_id));
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(context.getResources().getString(R.string.ad_unit_id));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     @Override

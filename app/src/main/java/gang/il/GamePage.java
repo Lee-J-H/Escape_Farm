@@ -34,6 +34,7 @@ import static gang.il.Valiable.stageCount;
 import static gang.il.Valiable.tutorialNum;
 import static gang.il.Valiable.dialog;
 import static gang.il.Valiable.adCount;
+import static gang.il.Valiable.mInterstitialAd;
 
 public class GamePage extends AppCompatActivity {
     ImageView backBtn, resetBtn, soundBtn;
@@ -42,7 +43,7 @@ public class GamePage extends AppCompatActivity {
     GameSurfaceView gameSurfaceView;
     private long mLastClickTime = 0;
     Context GameContext;
-    private InterstitialAd mInterstitialAd;//광고
+    //private InterstitialAd mInterstitialAd;//광고
 
     @Override
     public void onBackPressed() {
@@ -76,10 +77,10 @@ public class GamePage extends AppCompatActivity {
         if (soundPlay)
             soundBtn.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sound_on));
         else soundBtn.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sound_off));
-        MobileAds.initialize(this, GameContext.getResources().getString(R.string.ad_unit_id));
+        /*MobileAds.initialize(this, GameContext.getResources().getString(R.string.ad_unit_id));
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(GameContext.getResources().getString(R.string.ad_unit_id));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());*/
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
@@ -272,8 +273,9 @@ public class GamePage extends AppCompatActivity {
             }
             mLastClickTime = SystemClock.elapsedRealtime();
             btnClickType = "reset";
-            if (adCount == 0) loadAD();
-            else btnClick = true;
+            //if (adCount == 0) loadAD();
+            //else btnClick = true;
+            btnClick = true;
             adCount++;
             if (adCount == 4) adCount = 0;
         }

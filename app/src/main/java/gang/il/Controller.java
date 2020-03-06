@@ -149,8 +149,8 @@ public class Controller {
             if(soundPlay) soundPool.play(holeSound, 1f, 1f, 0, 0, 1f); //동굴(구멍) 사운드 재생
             Cave Cave = new Cave();
             if (Cave.onCave(moveIndex)) {
-                move();
                 moveCount--;
+                move();
             }
         } else if (totalObj[moveIndex].getType().endsWith("fin")) { //이동지가 피니시인 경우
             if(soundPlay) soundPool.play(passSound, 1f, 1f, 0, 0, 1f); //동물 통과 사운드 재생

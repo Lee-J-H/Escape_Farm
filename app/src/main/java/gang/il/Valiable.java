@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.SoundPool;
 
+import com.google.android.gms.ads.InterstitialAd;
+
 import java.util.ArrayList;
 
 public class Valiable {
@@ -20,4 +22,5 @@ public class Valiable {
     public static float width, height;
     public static SoundPool soundPool;
     public static int eatSound, trapSound, clearSound, passSound, holeSound, btnSound, wallSound;
+    public static InterstitialAd mInterstitialAd;
 }
