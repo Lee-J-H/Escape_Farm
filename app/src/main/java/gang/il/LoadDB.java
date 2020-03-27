@@ -166,7 +166,7 @@ public class LoadDB {
                     if(mode.equals("day")) {
 
                         LoadDB.GetDB Data = new LoadDB.GetDB();
-                        Data.execute("http://318.222.11.106/escapefarm/minimumcount.php", "night", "minCount");  //서버에서 스테이지 정보(최소횟수) 로딩
+                        Data.execute("http://18.222.11.106/escapefarm/minimumcount.php", "night", "minCount");  //서버에서 스테이지 정보(최소횟수) 로딩
                     }
                     else{
                         LoadDB.GetDB Data = new LoadDB.GetDB();
